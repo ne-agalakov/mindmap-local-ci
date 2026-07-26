@@ -105,6 +105,10 @@ Three canonical Drive documents were updated and reverse-read:
 - status revision `AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y`;
 - recovery revision `AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E`.
 
+### Final documentation gate regression
+
+Первый PR-trigger финального documentation tree (`verify` `30198335321`, `package-source` `30198335318`) остановился на release-doc check до browser harness. Хранилище и macOS-тесты не падали. Root cause: case-sensitive marker ожидал `same-fixture...`, а README содержал `Same-fixture...`. Проверка исправлена на фактический обязательный marker; этот же gate остаётся регрессией против повторной рассинхронизации.
+
 ## Не доказано
 
 - merge provenance PR #38;

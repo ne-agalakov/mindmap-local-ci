@@ -75,6 +75,15 @@ Updated and reverse-read revisions:
 - status: `AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y`;
 - recovery: `AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E`.
 
+## Final documentation gate regression
+
+The first exact final-tree PR runs failed:
+
+- verify `30198335321`;
+- package-source `30198335318`.
+
+`macos-launchers` passed. Linux/full and packaging stopped during `npm test` before browser execution because `check-release-docs.sh` required lowercase `same-fixture...`, while README intentionally used sentence-initial `Same-fixture...`. Root cause: a case-sensitive exact-marker mismatch in the release documentation gate, not graph storage or application code. The expected marker was corrected to the actual required text; the release-doc test remains the regression guard.
+
 ## Covered
 
 - Phase 2C-A graph/payload contract and storage behavior;
