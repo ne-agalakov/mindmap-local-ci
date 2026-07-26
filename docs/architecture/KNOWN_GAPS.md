@@ -20,7 +20,7 @@ Phase 2C-A merge: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 ## Still open
 
 - same-fixture cross-environment graph snapshot equality;
-- Phase 2C-B deterministic migration mapping;
+- Phase 2C-B0 mapping contract final CI/artifact/Drive/merge acceptance;
 - exact-source isolated dry run;
 - source byte-stability;
 - deterministic target hash and repeat-run equality;

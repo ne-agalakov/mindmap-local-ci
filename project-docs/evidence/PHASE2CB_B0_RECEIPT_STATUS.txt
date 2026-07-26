@@ -1,0 +1,4 @@
+original_local_receipt: not_found_by_user
+reconstructed_receipt: project-docs/evidence/PHASE2CB_B0_UPLOAD_RECEIPT_RECONSTRUCTED.json
+original_rg_scan: not_executed_missing_command
+independent_follow_up_scan: passed_zero_findings

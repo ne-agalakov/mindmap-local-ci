@@ -22,19 +22,14 @@ Accepted foundations:
 
 ## Allowed now
 
-Only Phase 2C-B in a separate issue/branch/PR from accepted `main`:
+Only Phase 2C-B0 in a separate issue/branch/PR from accepted `main`:
 
-- define versioned deterministic legacy→run/graph mapping;
-- use the exact accepted source package read-only;
-- verify source bytes/hash before and after;
-- create only a fresh isolated temporary target;
-- reject non-empty or production/target-Mac names;
-- persist through accepted Phase 2B/2C-A adapters;
-- produce deterministic target snapshot/content hash;
-- repeat and prove the same result;
-- inject failures and prove full rollback;
-- typed-stop mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity and invalid references;
-- prove zero network/model calls.
+- define and test the versioned deterministic legacy→run/graph mapping using sanitized fixtures;
+- define typed stops, B1 rollback contract and diagnostic schema;
+- prove the B0 module has no SQLite, IndexedDB, network/model or runtime dependency;
+- run final public-mirror CI, artifact review, documentation/Drive readback and merge provenance.
+
+B0 must not open the exact source or create a target. B1 read-only exact-source → isolated temporary target remains blocked until B0 is accepted.
 
 ## Acceptance boundary
 

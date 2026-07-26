@@ -74,15 +74,20 @@ npm run test:state-core
 npm run test:storage-contract
 npm run test:indexeddb-storage
 npm run test:graph-storage
+npm run test:migration-contract
 npm run test:browser-storage
 npm run test:browser-graph-storage
 npm test
 npm run package:source
 ```
 
+## Phase 2C-B0 — implemented, not accepted
+
+A separate branch implements `phase2cb-mapping-v1` using sanitized fixtures only. It freezes exact source/target gates, graph mapping, quarantined run-history preservation, typed stops and the B1 rollback/diagnostic contract. It does not open SQLite or create a target. See `docs/architecture/PHASE2CB_MAPPING_CONTRACT.md`.
+
 ## Preserved boundary
 
-Phase 2C-B may now be planned and implemented only as a separate exact-source read-only → isolated temporary-target dry run.
+Only Phase 2C-B0 review and acceptance are currently allowed. The exact-source B1 dry run remains blocked until B0 passes final CI, artifact, documentation, Drive and merge-provenance gates.
 
 Still prohibited:
 
@@ -96,4 +101,4 @@ Still prohibited:
 
 ## Next verified step
 
-Open Phase 2C-B as a separate issue/branch/PR from accepted `main`. First freeze the deterministic migration mapping and typed stop contract. Then implement an isolated synthetic dry run proving source byte-stability, repeatability, deterministic target hash and full rollback. Actual migration remains a later explicit user-confirmed gate.
+Review and accept the Phase 2C-B0 deterministic mapping/typed-stop contract. Only after that merge provenance may B1 open the exact accepted source read-only and write a fresh isolated temporary target. Actual migration remains a later explicit user-confirmed gate.
