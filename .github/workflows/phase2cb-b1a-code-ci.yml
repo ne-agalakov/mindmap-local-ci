@@ -24,9 +24,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat ci-overlays/phase2cb-b1a/overlay.part* | tr -d '\r\n\t ' > /tmp/b1a-overlay.tar.gz.b64
-          base64 -d /tmp/b1a-overlay.tar.gz.b64 > /tmp/b1a-overlay.tar.gz
-          echo "70884a2e0b99b98d458d6f357afc26c73acd7e2dcd6aa88c041b4f10164239da  /tmp/b1a-overlay.tar.gz" | sha256sum -c -
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, glob, hashlib
+          encoded = "".join(Path(path).read_text(encoding="utf-8") for path in sorted(glob.glob("ci-overlays/phase2cb-b1a/overlay.part*")))
+          raw = base64.b64decode("".join(encoded.split()), validate=True)
+          digest = hashlib.sha256(raw).hexdigest()
+          expected = "70884a2e0b99b98d458d6f357afc26c73acd7e2dcd6aa88c041b4f10164239da"
+          if digest != expected:
+              raise SystemExit(f"overlay digest mismatch: {digest}")
+          Path("/tmp/b1a-overlay.tar.gz").write_bytes(raw)
+          print(f"overlay verified: {digest}")
+          PY
           tar -xzf /tmp/b1a-overlay.tar.gz -C .
           test ! -e mindmap-local-semantic-v060.sqlite
           test ! -e mindmap-local-semantic-v060.sqlite3
@@ -51,10 +60,18 @@ jobs:
         run: npm test
       - name: Actual Chrome B1a IndexedDB harness
         run: npm run test:browser-phase2cb-b1a
+      - name: Materialize clean local B1a commit for packaging
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf ci-overlays/phase2cb-b1a
+          rm -f .github/workflows/phase2cb-b1a-code-ci.yml
+          git config user.name "mindmap-ci"
+          git config user.email "mindmap-ci@users.noreply.github.com"
+          git add -A
+          git commit -m "ci(b1a): materialize verified code overlay"
+          test -z "$(git status --porcelain)"
       - name: Package source and legacy exporter
-        env:
-          MINDMAP_GIT_COMMIT_SHA: ${{ github.sha }}
-          MINDMAP_GIT_DIRTY: "false"
         run: |
           npm run package:source
           npm run package:legacy-exporter
@@ -82,9 +99,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat ci-overlays/phase2cb-b1a/overlay.part* | tr -d '\r\n\t ' > /tmp/b1a-overlay.tar.gz.b64
-          base64 -D /tmp/b1a-overlay.tar.gz.b64 > /tmp/b1a-overlay.tar.gz
-          echo "70884a2e0b99b98d458d6f357afc26c73acd7e2dcd6aa88c041b4f10164239da  /tmp/b1a-overlay.tar.gz" | shasum -a 256 -c
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, glob, hashlib
+          encoded = "".join(Path(path).read_text(encoding="utf-8") for path in sorted(glob.glob("ci-overlays/phase2cb-b1a/overlay.part*")))
+          raw = base64.b64decode("".join(encoded.split()), validate=True)
+          digest = hashlib.sha256(raw).hexdigest()
+          expected = "70884a2e0b99b98d458d6f357afc26c73acd7e2dcd6aa88c041b4f10164239da"
+          if digest != expected:
+              raise SystemExit(f"overlay digest mismatch: {digest}")
+          Path("/tmp/b1a-overlay.tar.gz").write_bytes(raw)
+          print(f"overlay verified: {digest}")
+          PY
           tar -xzf /tmp/b1a-overlay.tar.gz -C .
           test "$(tar -tzf /tmp/b1a-overlay.tar.gz | grep -v '/$' | wc -l | tr -d ' ')" = "19"
       - run: npm ci
