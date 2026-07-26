@@ -1,4 +1,4 @@
-# Work boundary after Phase 2C-A acceptance
+# Work boundary after Phase 2C-A acceptance — Phase 2C-B0 final gate
 
 Accepted foundations:
 
@@ -22,14 +22,14 @@ Accepted foundations:
 
 ## Allowed now
 
-Only Phase 2C-B0 in a separate issue/branch/PR from accepted `main`:
+Only PR #40 Phase 2C-B0 final-gate work:
 
-- define and test the versioned deterministic legacy→run/graph mapping using sanitized fixtures;
-- define typed stops, B1 rollback contract and diagnostic schema;
-- prove the B0 module has no SQLite, IndexedDB, network/model or runtime dependency;
-- run final public-mirror CI, artifact review, documentation/Drive readback and merge provenance.
+- repository metadata and three canonical Google Docs are synchronized and reverse-read;
+- reproduce the exact final private tree in the public CI mirror;
+- inspect downloaded source/exporter/browser artifacts;
+- merge only with expected-head provenance and then record post-merge provenance.
 
-B0 must not open the exact source or create a target. B1 read-only exact-source → isolated temporary target remains blocked until B0 is accepted.
+B1 exact-source access and isolated target creation remain blocked.
 
 ## Acceptance boundary
 

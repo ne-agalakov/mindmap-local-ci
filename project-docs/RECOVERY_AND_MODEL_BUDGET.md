@@ -71,10 +71,21 @@ Allowed only in a separate issue/branch/PR:
 
 Every long operation shows name/type, elapsed time and volume, last progress/heartbeat, state, model or «без AI», and downloadable diagnostics. Timer freezes on pause/error/completion. No automatic restart or AI retry.
 
+## Phase 2C-B0 recovery boundary
+
+B0 is a pure planner. It passed sanitized-fixture tests and exact-tree public CI/artifact inspection without opening the private source, creating a target, writing migration state or calling a model. Its status is implemented but not accepted. Repository/Drive synchronization and reverse-read are complete; exact final-head rerun, merge and provenance remain required.
+
 ## Current stop line
 
-Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration and real thoughts are prohibited.
+Only Phase 2C-B0 final documentation, Drive, CI/artifact and merge-provenance work is allowed.
+
+Exact private source opening, B1 target creation, Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration and real thoughts are prohibited.
 
 ## Next gate
 
-Freeze Phase 2C-B deterministic mapping and typed-stop contract, then prove an isolated dry run. Dry-run success never authorizes actual migration automatically.
+Complete B0 acceptance. B1 may start only after a separate post-merge authorization and must use read-only exact source → fresh isolated temporary target with source hash before/after, deterministic repeat hash, full rollback and zero model/network calls. Dry-run success never authorizes actual migration automatically.
+
+## Phase 2C-B0 Drive readback
+
+The canonical instruction, status and recovery documents were updated under revision guards and read back at `2026-07-26T14:35:01Z`. Revision IDs are stored in `project-docs/DRIVE_SYNC.json`. This documentation action opened no source, created no target and made no model call.
+

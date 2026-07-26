@@ -1,4 +1,4 @@
-# Known gaps after Phase 2C-A acceptance
+# Known gaps during Phase 2C-B0 final gate
 
 Green storage tests are not proof of migration, runtime or semantic readiness.
 
@@ -14,13 +14,18 @@ Green storage tests are not proof of migration, runtime or semantic readiness.
 - Drive post-merge update/readback and merge provenance are complete;
 - private Actions failure was explained by exhausted private minutes;
 - release-marker and generic-path scan regressions were diagnosed and recorded.
+- Phase 2C-B0 sanitized mapping/typed-stop tests passed;
+- Phase 2C-B0 pre-documentation private/public tree equality passed;
+- Phase 2C-B0 Linux/macOS/full/browser/package gates passed;
+- Phase 2C-B0 downloaded artifacts passed database/privacy/credential/forbidden-dependency inspection;
+- the stale Phase 2C-A-only artifact revision was identified as a documentation gate regression, not a mapping failure.
 
 Phase 2C-A merge: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 
 ## Still open
 
 - same-fixture cross-environment graph snapshot equality;
-- Phase 2C-B0 mapping contract final CI/artifact/Drive/merge acceptance;
+- Phase 2C-B0 exact final-head rerun, merge and post-merge provenance;
 - exact-source isolated dry run;
 - source byte-stability;
 - deterministic target hash and repeat-run equality;

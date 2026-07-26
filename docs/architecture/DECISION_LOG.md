@@ -112,3 +112,40 @@ Consequences:
 - same-fixture cross-environment equality remains open;
 - no actual target-Mac migration, model execution, runtime/UI integration or real thought import is authorized;
 - release-doc marker case and generic-path scan failures are recorded as gate regressions, not storage failures.
+
+## ADR-008 — Freeze deterministic B0 mapping before exact-source access
+
+Date: 2026-07-26
+
+Decision: Phase 2C-B is split into B0 and B1. B0 is a pure deterministic planner tested only with sanitized fixtures. It freezes exact source/target identity checks, graph/run mapping, typed stops and B1 rollback/diagnostic requirements before any private SQLite source is opened.
+
+Evidence:
+
+- implementation commit `1020c958dc51b63a63cd503733c23b4654d966b5`;
+- pre-documentation private/public exact tree `ada806f53d27c83a3375aa4fd01879d0dca48881`;
+- public verify `30205617026`;
+- public package `30205616954`;
+- downloaded source/exporter/browser artifacts inspected;
+- database, credential, concrete local-path and forbidden B0 dependency findings: 0;
+- private source opened, target created and model calls: 0.
+
+A documentation mismatch was found after the first exact-head artifact inspection: `ARTIFACT_REVISION.json` still represented only accepted Phase 2C-A. The code/CI gate passed, but B0 acceptance remains blocked until metadata, Drive, rerun and merge provenance are synchronized.
+
+Consequences:
+
+- B1 remains prohibited until B0 merge provenance is complete;
+- no exact private source, native target or transaction rollback claim is inferred from B0;
+- actual target-Mac migration remains a later explicit user-confirmed gate.
+
+## ADR-009 — Drive readback precedes the exact final-head rerun
+
+Date: 2026-07-26
+
+Decision: after the stale Phase 2C-A-only artifact revision was found, B0 repository metadata and all three canonical Google Docs were synchronized and reverse-read before constructing the exact final-head CI mirror. CI evidence from the earlier tree remains historical evidence and is not substituted for the required final-tree rerun.
+
+Consequences:
+
+- release documentation gate validates B0 implemented/not-accepted, B1 blocked and zero source/target/model actions;
+- a final CI/artifact rerun is mandatory after the documentation commit;
+- no B1 or migration action is authorized by documentation synchronization.
+

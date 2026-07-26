@@ -76,13 +76,49 @@ Drive после merge обновлён и прочитан обратно:
 1. Release-doc marker был регистрозависим: ожидал `same-fixture`, README начинал предложение с `Same-fixture`. Исправлен сам gate; storage-код не падал.
 2. Первый внешний privacy regex сопоставил два документационных шаблона пути, а не реальные пути. Формулировки уточнены; повторный scan дал ноль concrete local user-home findings.
 
+## Phase 2C-B0 — реализована, но не принята
+
+PR #40 реализует только pure mapping planner `phase2cb-mapping-v1` на sanitized fixtures:
+
+- exact source/target identity gates;
+- deterministic mapping IDs, ordering, canonical JSON and hashes;
+- explicit placement, unresolved and damaged references;
+- quarantined legacy run history without invented modern attempts;
+- typed stops before mutation;
+- frozen B1 rollback/diagnostic contract;
+- no SQLite, IndexedDB, network, model or runtime dependency in the B0 module.
+
+Exact pre-documentation gate:
+
+```text
+private head: 69429ee80d7be0425501054ed54f3052867c9968
+public head:  8fc83312f71a29ec50fd57659fb39ff9ae5c0784
+shared tree:  ada806f53d27c83a3375aa4fd01879d0dca48881
+```
+
+- verify `30205617026` — success;
+- package `30205616954` — success;
+- Linux/macOS/full tests/actual Chrome/package — passed;
+- outer artifact `66d641699fd1d11f3e8745890bfa5dc7a4325b57f67d9cad78ebd72fdbc967a2`;
+- inner source `54505aab1fc45048f6ebbe6050b9eefec945be29a7652cb01a06a719bfc30efa`;
+- inner exporter `e8ae3b3e2870e89062eacc404cfcb75689a08006188b1765beb88582adef6b3c`;
+- browser proof `86a800ba525d188a35934cc4f40f62b896d3483f43cbf951b959aba54e200b36`;
+- privacy/credential/database/forbidden-dependency findings — 0.
+
+Найден и исправлен отдельный release-blocker: exact tested package сохранял `ARTIFACT_REVISION` только в состоянии принятой Phase 2C-A. Mapping-код не падал, но документационная рассинхронизация запрещает merge.
+
 ## Границы доказательства
 
 Не доказаны:
 
+- принятие/merge provenance Phase 2C-B0;
+- exact final-head public CI/artifact review для синхронизированного B0 tree;
+- exact-source B1 dry run;
+- source byte-stability;
+- native IndexedDB isolated target;
+- deterministic repeat-run target hash;
+- injected B1 transaction rollback;
 - same-fixture cross-environment snapshot equality;
-- Phase 2C-B migration dry run;
-- source byte-stability и deterministic migrated target;
 - actual target-Mac migration;
 - production runtime/UI и REQ-OBS-001;
 - service-level exactly-once model execution;
@@ -90,10 +126,21 @@ Drive после merge обновлён и прочитан обратно:
 
 ## Стоп-линия
 
-Разрешены только planning/implementation Phase 2C-B в отдельном issue/branch/PR и тесты на exact read-only source package + isolated temporary target.
+Разрешены только финальная синхронизация/проверка/merge Phase 2C-B0 в PR #40.
 
-Запрещены Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration и реальные мысли.
+Запрещены opening exact private SQLite source, B1 target creation, Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration и реальные мысли.
 
 ## Следующий проверяемый шаг
 
-Открыть Phase 2C-B от accepted `main`. Сначала зафиксировать versioned deterministic mapping и typed stops; затем доказать isolated dry run, source byte-stability, repeatability, deterministic target hash и full rollback. Успех dry run не разрешает actual migration автоматически.
+Repository metadata и три canonical Google Docs обновлены и прочитаны обратно. Повторить exact final-head public CI/artifact inspection и слить PR #40 только при неизменном expected head; затем отдельно записать post-merge provenance. Только отдельный post-merge gate может разрешить B1 read-only source → fresh isolated temporary target. Actual migration автоматически не разрешается.
+
+### Phase 2C-B0 Drive readback
+
+Canonical Google Docs updated and reverse-read on `2026-07-26T14:35:01Z`:
+
+- instruction `AIroW3496qPwmnEkRHJm7VfUnzHsjREVxT8yFbFEWmDkzRKZnr7TdtDbG21LBIvtgL4rWUQ7VTplg1xpEKCFJqnX0P7JoWpx8o-Z-8TKI4I`;
+- status `AIroW35iMdez6GJ2RFE5vJ4wH_DC6XWdaQJeKLbNL9gmEbIF9eJm0Dz5tMvI--HfSzMCil42lahleajeyuDkNoGYRrw7yPIUnLdXqkVebFI`;
+- recovery `AIroW35_V_znhKFxWPXm5oYB4mRs8XDAK9seNc1sjUFCtwc-TpPw74-Nm53V7FewUe7J8qkg-QyWa7v-53-pkBJjL72Nl3qRm-5JkGlFmUc`.
+
+All three exact B0 headings were found after write. This closes the pre-merge Drive synchronization gate, not B0 acceptance.
+

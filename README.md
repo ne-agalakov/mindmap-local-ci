@@ -85,6 +85,30 @@ npm run package:source
 
 A separate branch implements `phase2cb-mapping-v1` using sanitized fixtures only. It freezes exact source/target gates, graph mapping, quarantined run-history preservation, typed stops and the B1 rollback/diagnostic contract. It does not open SQLite or create a target. See `docs/architecture/PHASE2CB_MAPPING_CONTRACT.md`.
 
+## Phase 2C-B0 exact-head evidence
+
+The pre-documentation head `69429ee80d7be0425501054ed54f3052867c9968` was reproduced in the history-free public CI mirror as commit `8fc83312f71a29ec50fd57659fb39ff9ae5c0784`. Both repositories had the exact tree `ada806f53d27c83a3375aa4fd01879d0dca48881`.
+
+Passed:
+
+- public `verify` run `30205617026`;
+- public `package-source` run `30205616954`;
+- Linux lint/full suite;
+- GitHub-hosted macOS tests;
+- actual Chrome run-storage and graph-storage harnesses;
+- source/exporter packaging;
+- downloaded source/exporter/browser-proof inspection;
+- database, credential, concrete local-path and forbidden B0 dependency findings: 0.
+
+Downloaded artifacts:
+
+- outer source artifact `66d641699fd1d11f3e8745890bfa5dc7a4325b57f67d9cad78ebd72fdbc967a2`;
+- inner source ZIP `54505aab1fc45048f6ebbe6050b9eefec945be29a7652cb01a06a719bfc30efa`;
+- inner exporter ZIP `e8ae3b3e2870e89062eacc404cfcb75689a08006188b1765beb88582adef6b3c`;
+- browser proof artifact `86a800ba525d188a35934cc4f40f62b896d3483f43cbf951b959aba54e200b36`.
+
+This closes the code/CI/artifact execution gate for that exact tree. B0 remains unaccepted until final repository metadata, Google Drive readback, exact-head rerun and merge provenance are complete.
+
 ## Preserved boundary
 
 Only Phase 2C-B0 review and acceptance are currently allowed. The exact-source B1 dry run remains blocked until B0 passes final CI, artifact, documentation, Drive and merge-provenance gates.

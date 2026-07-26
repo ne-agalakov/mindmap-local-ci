@@ -42,22 +42,19 @@ Phase 2C-A фиксирует `mindmap-graph-v1`: payloads, thoughts, typed hier
 
 Target-Mac и GitHub harness использовали разные fixtures, поэтому абсолютные snapshot hashes не сравниваются. Внутри каждого fixture close/reopen equality пройдена. Same-fixture cross-environment equality остаётся непокрытой.
 
-## Phase 2C-B — migration dry-run
+## Phase 2C-B
 
-Только отдельная ветка/issue/PR от accepted main.
+Phase 2C-B разделена на два независимых gate.
 
-Обязательные условия:
+### B0 — deterministic mapping contract
 
-- exact accepted private source/hash, open read-only;
-- source bytes/hash до и после совпадают;
-- новый пустой isolated temporary target;
-- никаких target-Mac/production namespaces;
-- versioned deterministic mapping и target hash;
-- repeat run даёт тот же hash;
-- failure/typed stop не оставляет partial target;
-- mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity, invalid reference и non-empty target блокируют операцию;
-- network/model/Ollama/Qwen/DeepSeek = 0;
-- actual migration этим этапом не разрешается.
+Реализована в PR #40 только на sanitized fixtures. B0 задаёт versioned mapping `phase2cb-mapping-v1`, exact source/target identities, explicit unresolved/damaged handling, quarantined run history, typed stops и B1 rollback/diagnostic contract. B0 не открывает SQLite, не создаёт target и не вызывает модели.
+
+Pre-documentation exact-tree CI/artifact gate прошёл на private head `69429ee80d7be0425501054ed54f3052867c9968` / public head `8fc83312f71a29ec50fd57659fb39ff9ae5c0784`, shared tree `ada806f53d27c83a3375aa4fd01879d0dca48881`. B0 ещё не принята: final repository metadata и Drive readback завершены; обязательны exact final-head rerun, merge и post-merge provenance.
+
+### B1 — exact-source isolated dry run
+
+Заблокирована до принятия B0. После отдельного gate B1 сможет открыть exact accepted source только read-only и писать только в fresh isolated temporary target. Source hash до/после должен совпасть; repeat run должен дать тот же target hash; любой stop/failure обязан оставить no partial target. Actual target-Mac migration этим не разрешается.
 
 ## Восстановление и AI-расход
 
@@ -79,4 +76,4 @@ Google Drive — источник продуктовых документов; G
 
 ## Ближайший шаг
 
-Создать Phase 2C-B issue/branch/PR от merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Сначала зафиксировать deterministic migration mapping, source/target identities и typed stops. Затем реализовать только isolated dry run и доказать source byte-stability, repeatability, deterministic target hash и rollback. Actual migration не выполнять.
+Завершить acceptance Phase 2C-B0: repository metadata и три canonical Google Docs уже синхронизированы и прочитаны обратно; теперь повторить exact final-head public CI/artifact inspection и слить PR #40 с exact provenance. До отдельного post-merge решения не открывать exact private source и не начинать B1.

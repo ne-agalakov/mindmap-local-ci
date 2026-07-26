@@ -118,3 +118,30 @@ The embedded source/exporter commit matched `ee5401a4a2ca7763467562417b9c5c4aece
 PR #38 was squash-merged with expected head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` as `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Google Drive was updated after merge and reverse-read.
 
 Same-fixture cross-environment hash equality remains uncovered. Phase 2C-B is limited to an isolated dry run; actual migration remains prohibited.
+
+## Phase 2C-B0 pre-documentation exact-head gate
+
+Private PR #40 head `69429ee80d7be0425501054ed54f3052867c9968` was exported history-free to public commit `8fc83312f71a29ec50fd57659fb39ff9ae5c0784`. Both had tree `ada806f53d27c83a3375aa4fd01879d0dca48881`.
+
+- verify `30205617026` — passed;
+- package `30205616954` — passed;
+- outer source artifact `66d641699fd1d11f3e8745890bfa5dc7a4325b57f67d9cad78ebd72fdbc967a2`;
+- inner source `54505aab1fc45048f6ebbe6050b9eefec945be29a7652cb01a06a719bfc30efa`;
+- inner exporter `e8ae3b3e2870e89062eacc404cfcb75689a08006188b1765beb88582adef6b3c`;
+- browser proof artifact `86a800ba525d188a35934cc4f40f62b896d3483f43cbf951b959aba54e200b36`;
+- snapshot digest `dded4d331a4e756305b08a5bbbba11a473fff8d588325dc77ec7b63549d9033f`.
+
+No private history, database, credentials, concrete local user path or personal thought payload was transferred. The B0 module had zero SQLite/IndexedDB/network/model/runtime dependencies.
+
+Artifact inspection found that repository metadata still represented only accepted Phase 2C-A. Therefore this gate is retained as valid evidence for the exact pre-documentation tree, but PR #40 cannot merge until the corrected final head is rerun and Drive is updated/read back.
+
+## Phase 2C-B0 canonical Drive readback
+
+On `2026-07-26T14:35:01Z`, the three canonical Google Docs were updated under revision guards and read back by exact B0 heading:
+
+- instruction `AIroW3496qPwmnEkRHJm7VfUnzHsjREVxT8yFbFEWmDkzRKZnr7TdtDbG21LBIvtgL4rWUQ7VTplg1xpEKCFJqnX0P7JoWpx8o-Z-8TKI4I`;
+- status `AIroW35iMdez6GJ2RFE5vJ4wH_DC6XWdaQJeKLbNL9gmEbIF9eJm0Dz5tMvI--HfSzMCil42lahleajeyuDkNoGYRrw7yPIUnLdXqkVebFI`;
+- recovery `AIroW35_V_znhKFxWPXm5oYB4mRs8XDAK9seNc1sjUFCtwc-TpPw74-Nm53V7FewUe7J8qkg-QyWa7v-53-pkBJjL72Nl3qRm-5JkGlFmUc`.
+
+This closes documentation synchronization for the final PR tree. Exact final-head public CI/artifact review, merge and post-merge provenance remain required.
+
