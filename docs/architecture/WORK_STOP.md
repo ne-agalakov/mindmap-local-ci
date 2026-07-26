@@ -1,4 +1,4 @@
-# Work boundary after Phase 2B acceptance
+# Work boundary during Phase 2C-A final merge gate
 
 Accepted foundations:
 
@@ -7,38 +7,38 @@ Accepted foundations:
 - Phase 2A merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
 - Phase 2B merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`.
 
+Phase 2C-A implementation and all pre-merge evidence gates have passed. PR #38 is not accepted until merge and exact provenance.
+
 ## Still prohibited
 
 - do not click Candidate 5 continuation;
 - do not start Qwen or DeepSeek;
-- do not package Candidate 6 from legacy orchestration;
+- do not package Candidate 6;
 - do not migrate, repair or modify the legacy database;
+- do not begin Phase 2C-B before Phase 2C-A merge provenance;
 - do not execute actual target-Mac import;
-- do not change target-Mac browser storage;
-- do not integrate the new storage into `app/page.tsx` or production runtime;
+- do not change target-Mac production browser storage;
+- do not integrate new storage into production runtime/UI;
 - do not modify old IndexedDB/sql.js, Ollama routes or model configuration;
 - do not import personal data;
-- do not claim REQ-OBS-001, exactly-once model execution, semantic success or product readiness from migration dry-run tests.
+- do not claim REQ-OBS-001, exactly-once model execution, semantic success or product readiness.
 
 ## Allowed now
 
-Only Phase 2C in a separate issue/branch/PR from accepted `main`:
+Only completion of the Phase 2C-A acceptance gate:
 
-- use the exact accepted private source package and hash;
-- open source read-only;
-- verify source hash/bytes before and after;
-- create only a new isolated temporary `mindmap-state-core-v1*` target;
-- reject non-empty or production/target-Mac target names;
-- apply a versioned deterministic mapping contract;
-- persist migrated state through the accepted Phase 2B adapter;
-- produce deterministic target snapshot/content hash;
-- repeat the dry run and prove the same hash;
-- inject failures and prove full target rollback;
-- prove typed stops for mismatch, personal data, wrong schema/workspace, duplicate runs, ambiguity and invalid references;
-- prove zero network/model calls.
+- update repository documentation to the verified evidence;
+- mirror the exact final documentation tree into public CI;
+- run Linux/macOS/full/browser/package checks;
+- download and inspect exact artifacts outside the runner;
+- merge PR #38 only with expected-head protection;
+- record merge SHA in a separate provenance update;
+- update and reverse-read Google Drive.
 
-## Acceptance boundary
+## After acceptance
 
-Phase 2C success does not authorize target-Mac migration. Actual migration requires a later separate gate with explicit confirmation, target backup/rollback, REQ-OBS-001, exact source/target hashes and no AI.
+Phase 2C-B may be planned in a separate issue/branch/PR from accepted main. It may only use the exact private source read-only and a fresh isolated temporary target. It must prove source byte-stability, deterministic mapping/hash, repeatability, typed stops, full rollback and zero network/model calls.
+
+Phase 2C-B success does not authorize actual target-Mac migration. Actual migration requires a later explicit user-confirmed gate with backup/rollback and REQ-OBS-001.
 
 Legacy source SHA-256 remains `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`.

@@ -2,92 +2,99 @@
 
 Date: 2026-07-26
 
-Status: the exact Phase 2C-A code head passed an offline real-Chrome IndexedDB proof on the target Mac. PR #38 is **not accepted** because GitHub Actions, downloaded-artifact, Drive synchronization and merge-provenance gates remain open.
+Status: implementation, target-Mac focused browser proof, public-mirror full CI, downloaded-artifact inspection and Drive readback passed. PR #38 is **not accepted until merge and exact merge provenance are complete**.
 
 ## Exact source binding
 
-- repository: `ne-agalakov/mindmap-local`;
+- private repository: `ne-agalakov/mindmap-local`;
 - PR: `#38`;
 - verified code head: `02df8758a7c42b33b22b397dae74445cd6a5f7ac`;
-- uploaded proof JSON SHA-256: `5b47e3681a23474d21ee2f703c93a94a8f79d2b93c11e65642667ce8283b97bc`;
-- offline runner ZIP SHA-256: `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
-- executed browser harness SHA-256: `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`;
-- compile manifest SHA-256: `7af9f964a6d09dc18a6336930218e3f17ea5ed34ddc73490e9ce7b8ab0607914`.
+- private documentation head used for the first public snapshot: `85b158ebed11f494fe7e4766453693de01d75bfe`;
+- public snapshot commit: `f4f7d3a127fd0ed3c09431f24ade3acd73b78810`;
+- public tree: `5c7dc8a0cf607ce24f591ba91c4431d30f035f51`;
+- snapshot digest: `7fa3dc7f0fedcd8b6f96d309fecb178a1e6d1a3b7919eec928809be5ea6988f4`.
 
-The committed JSON is an unmodified copy of the returned proof file.
+## Target-Mac proof
 
-## Passed actual-browser assertions
-
-The proof used Google Chrome `150.0.7871.184`, Node.js `v24.18.0`, real browser IndexedDB and an isolated temporary Chrome profile.
+- proof JSON: `5b47e3681a23474d21ee2f703c93a94a8f79d2b93c11e65642667ce8283b97bc`;
+- offline runner ZIP: `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
+- harness: `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`;
+- compile manifest: `7af9f964a6d09dc18a6336930218e3f17ea5ed34ddc73490e9ce7b8ab0607914`;
+- Chrome `150.0.7871.184`, Node `v24.18.0`, real IndexedDB, isolated profile.
 
 Passed:
 
 - atomic graph commit;
 - close/reopen persistence;
 - reopen-stable idempotency;
-- synthetic/personal workspace isolation;
-- accepted run-adapter compatibility in the unified database;
-- transaction abort rollback;
-- refusal to silently extend an existing run-only database;
-- schema metadata verification;
-- persisted corruption detection by replay/hash mismatch;
-- follow-up write rejection with `integrity_mismatch` after corruption;
-- link lifecycle: initial confirmed link rejected, proposed → confirmed accepted, confirmed → proposed rejected;
-- deterministic 64-character snapshot hash: `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`.
+- workspace isolation;
+- run-adapter coexistence;
+- abort rollback;
+- run-only database refusal;
+- schema metadata;
+- persisted corruption detection and `integrity_mismatch`;
+- proposed → confirmed link lifecycle;
+- local fixture snapshot `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`.
 
-## Safety boundary
+The macOS application-management warning remains unexplained. Source audit found no write path into `/Applications`; it is recorded as an environmental anomaly.
 
-The runner reported:
+## Private Actions root cause
 
-- local loopback only;
-- no required network access;
-- no npm or Vite use;
-- no private data;
-- zero model calls;
-- no migration;
-- isolated temporary browser profile removed after the run.
+The original private jobs did not execute any step because private Actions minutes were exhausted. This explains the pre-step failures; it is not a code/test failure.
 
-The source audit of `run.mjs` found no write path into `/Applications`: it only reads browser metadata, starts the browser executable, creates/removes a temporary profile and writes the proof JSON beside the runner.
+## Public mirror CI
 
-## macOS privacy warning
+The public mirror contains a history-free snapshot only. No old commits, private PRs, Issues, Actions history, deleted files, database or personal data were transferred.
 
-During the run macOS displayed a privacy notification stating that Terminal was blocked while attempting to make changes to applications on the Mac.
+Final repeated runs on the unchanged snapshot tree:
 
-Facts:
+- verify `30196934408`: Linux full, lint, complete test suite, actual Chrome run-storage, actual Chrome graph-storage and macOS launchers — success;
+- package-source `30196934411`: tests, source package, compact exporter package and upload — success.
 
-- the proof completed successfully immediately before the notification was captured;
-- the runner source does not request modification of the Chrome application bundle;
-- the notification origin is not proven.
+## Downloaded-artifact inspection
 
-Therefore the warning does not invalidate the recorded IndexedDB assertions, but it remains an unresolved environmental anomaly. No claim is made that all operating-system side effects are explained. The test must not be repeated solely to investigate this warning unless a later gate requires it.
+- outer source artifact: `c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67`;
+- inner source ZIP: `ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b`;
+- inner exporter ZIP: `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
+- browser graph proof artifact: `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`;
+- browser log: `ca1315e9f561da019ba219e195185375b3f5b0ff25e2569818acff4d9a3f40e1`.
 
-## GitHub Actions blocker
+Required files and embedded public commit passed. Findings for DB, `.env`, credentials, private keys, `/Users/...`, runtime cache and personal data: `0`.
 
-The original and manually repeated workflow runs failed before executing their first step:
+## Snapshot-hash boundary
 
-- `verify` run `30173090094`;
-- `package-source` run `30173090107`.
+GitHub browser fixture snapshot: `bc59236e3ce7173c3f91176fb163f808a99de6f2343afcdc6eea8b12bdca5a54`.
 
-The latest jobs contain no step records, downloadable logs or artifacts. This is not evidence that tests failed. It is also not a green gate. The exact infrastructure cause remains unproven.
+It differs from the offline snapshot because the harnesses use different fixed thought text, IDs and timestamps. They are not the same canonical state. Both harnesses prove close/reopen equality for their own fixture. Same-fixture cross-environment hash equality is not covered and must not be inferred.
 
-## Covered by this evidence
+## Drive readback
 
-- actual macOS Chrome IndexedDB behavior for the focused Phase 2C-A scenarios;
-- graph/run store coexistence in a fresh unified database;
-- atomicity, rollback, idempotency, isolation and corruption refusal;
-- no model, migration or private-data use by the proof runner.
+Updated and reverse-read revisions:
+
+- instruction: `AIroW379xc8qrT6UxiJg722b6cW5MN6sLIh1gK6Lnm3V4AKoq-8Co7w_hg0xuuz--a0HDeLlgo3iLE0Slrw-CxIab5qrmJZiU1iaqJmzEE8`;
+- status: `AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y`;
+- recovery: `AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E`.
+
+## Covered
+
+- Phase 2C-A graph/payload contract and storage behavior;
+- target-Mac focused Chrome scenarios;
+- GitHub-hosted Linux/macOS/full tests/browser tests;
+- source/exporter packaging and external artifact inspection;
+- Drive synchronization/readback;
+- zero model/migration/private-data use in evidence workflows.
 
 ## Not covered
 
-- full `npm test` and lint on the exact final PR head;
-- Linux and GitHub-hosted macOS jobs;
-- GitHub-hosted browser-harness artifact;
-- source-package and exporter-package artifact review;
-- Google Drive update and reverse read;
 - merge provenance;
+- same-fixture cross-environment snapshot equality;
 - Phase 2C-B exact-source dry run;
-- actual target-Mac migration, runtime/UI integration, REQ-OBS-001 or semantic quality.
+- actual target-Mac migration;
+- production runtime/UI and REQ-OBS-001;
+- service-level exactly-once model POST;
+- semantic quality and multi-order stability;
+- personal-data safety.
 
 ## Next gate
 
-Restore a runnable GitHub Actions gate, then run verification and packaging on the exact final PR head. Download and inspect the generated artifact, synchronize Drive and reverse-read it, merge PR #38 with exact provenance, and only then unblock Phase 2C-B. Actual target-Mac migration remains prohibited.
+Mirror the exact final documentation head, rerun public CI and external artifact inspection, merge PR #38 with expected-head protection, then record merge provenance in a separate GitHub/Drive update. Actual migration remains prohibited.

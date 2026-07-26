@@ -1,6 +1,6 @@
 # MindMap Local v0.6-alpha.19
 
-MindMap is a local-first personal AI system intended to turn a stream of thoughts into understanding, connections, priorities, decisions, actions, results, and durable memory.
+MindMap is a local-first personal AI system intended to turn a stream of thoughts into understanding, connections, priorities, decisions, actions, results and durable memory.
 
 ## Current status
 
@@ -13,82 +13,37 @@ Accepted foundations:
 - Phase 2A transactional storage contract and ADR: merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
 - Phase 2B native IndexedDB adapter: merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`.
 
-Phase 2C-A is implemented in PR #38 but is **not accepted**. The verified code head is:
+Phase 2C-A is implemented in PR #38. Its code, focused target-Mac proof, public-mirror Linux/macOS/browser CI, packaging, downloaded-artifact inspection and Google Drive readback have passed. It is **not accepted until PR #38 is merged and exact merge provenance is recorded**.
+
+## Phase 2C-A graph and payload storage
+
+The implementation adds:
+
+- canonical `mindmap-graph-v1` records for content payloads, thoughts, typed area/direction/project hierarchy, placement or `unresolved`, links, embeddings and damaged references;
+- deterministic graph event replay and canonical snapshot hashes;
+- strict hierarchy, placement, payload, embedding, link-lifecycle and workspace validation;
+- serialized in-memory reference storage;
+- native IndexedDB graph storage sharing a fresh unified database with the accepted run adapter;
+- atomic graph events, materialized state and idempotency receipt;
+- stale-revision and idempotency-conflict rejection;
+- corruption refusal, abort rollback and synthetic/personal isolation;
+- refusal to silently extend an existing run-only database.
+
+Verified code head:
 
 ```text
 02df8758a7c42b33b22b397dae74445cd6a5f7ac
 ```
 
-A focused offline real-Chrome IndexedDB proof passed on the target Mac. GitHub Actions, downloaded-artifact, Drive synchronization and merge-provenance gates remain open.
-
-## Accepted Phase 2B adapter
-
-Phase 2B final reviewed head:
+Current private documentation head before the final gate:
 
 ```text
-5a8b4f6a418b465da7383d7c999485bae1f9a900
+85b158ebed11f494fe7e4766453693de01d75bfe
 ```
 
-Code head:
+## Target-Mac browser evidence
 
-```text
-2ced13b72d1f582028348bedc2ca6a7ef0e57246
-```
-
-The adapter under `storage/indexeddb/` implements the accepted `TransactionalStateStorage` port:
-
-- validated database names under `mindmap-state-core-v1*`;
-- legacy `mindmap-local-semantic-v060` refusal before `indexedDB.open`;
-- versioned meta, runs, events, artifacts and receipts stores;
-- one atomic transaction for event batch, aggregate, artifacts and receipt;
-- transaction completion as the commit signal;
-- final revision/content-hash recheck across adapter instances;
-- deterministic replay and content-hash validation;
-- reopen-stable idempotency and conflict detection;
-- synthetic/personal compound-key isolation;
-- abort rollback and schema-upgrade rollback;
-- deterministic snapshot after close/reopen.
-
-The same adapter passed `fake-indexeddb` and actual headless Chrome IndexedDB:
-
-```text
-browserIndexedDb: true
-atomicCommit: true
-reopen: true
-idempotency: true
-workspaceIsolation: true
-abortRollback: true
-upgradeRollback: true
-snapshotHash: 23c72cfd4768f5c76f0f376646fcbbd8a7630fb973e85704f460f19af6b27409
-```
-
-The first browser workflow passed all storage assertions but exposed a temporary Chrome-profile cleanup race. The runner now waits for Chrome/server termination before cleanup; the repeated workflow passed.
-
-## Final Phase 2B evidence
-
-- Linux full + actual Chrome harness: passed;
-- macOS targeted: passed;
-- source and compact-exporter packaging: passed;
-- GitHub Actions artifact SHA-256: `706a463af20e4cc1aaa956a8e0812376886e543e83f249aa1359b9ce673881c7`;
-- inner source ZIP SHA-256: `9c338e5a3b4e13d8b81bdafcf592fab30fa9e7a41034b9c5e1a21fd25494e2c2`;
-- inner exporter ZIP SHA-256: `e69444565228be51418a499f6d778fb91741b95f780f15c2fc8b3da850a2ebd9`;
-- embedded commit, portable checksums, required files, privacy and credential scans passed;
-- Google Drive was updated after merge and read back.
-
-## Phase 2C-A — implemented, not accepted
-
-PR #38 adds:
-
-- canonical `mindmap-graph-v1` records for content payloads, thoughts, typed hierarchy, placement/unresolved, links, embeddings and damaged references;
-- deterministic graph event replay and snapshot hashes;
-- strict graph invariants and proposal lifecycle rules;
-- serialized in-memory reference storage;
-- native IndexedDB graph storage sharing a fresh unified database with the accepted run adapter;
-- atomic graph events, materialized state and idempotency receipt;
-- corruption refusal, abort rollback and workspace isolation;
-- focused fake-IndexedDB and actual-browser harnesses.
-
-The target-Mac proof is bound to exact code head `02df8758a7c42b33b22b397dae74445cd6a5f7ac`:
+The offline real-Chrome proof passed:
 
 ```text
 browserIndexedDb: true
@@ -106,17 +61,39 @@ snapshotHash: ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1
 Evidence:
 
 - proof JSON SHA-256: `5b47e3681a23474d21ee2f703c93a94a8f79d2b93c11e65642667ce8283b97bc`;
-- offline runner ZIP SHA-256: `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
-- browser harness SHA-256: `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`;
-- no npm, Vite, private data, migration or model calls were used.
+- offline runner ZIP: `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
+- executed harness: `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`.
 
-During the run macOS displayed a Terminal application-management warning. The runner source contains no write path into `/Applications`; the warning origin remains unresolved and is recorded without being treated as a proven code failure.
+The macOS application-management warning remains an unexplained environmental anomaly. The runner contains no write path into `/Applications`; the warning is neither ignored nor represented as a proven code failure.
 
-GitHub `verify` and `package-source` runs, including a manual retry, failed before their first step and produced no step logs or artifacts. This is an unresolved infrastructure blocker, not a passed gate and not evidence that the test suite failed.
+## Public CI mirror evidence
 
-See `docs/architecture/PHASE2CA_VERIFICATION.md` and `docs/evidence/phase2ca-macos-indexeddb-proof.json`.
+Private GitHub Actions could not start because the account's private minutes were exhausted. A separate public mirror was created from a history-free, audited snapshot:
 
-Commands:
+```text
+private source: 85b158ebed11f494fe7e4766453693de01d75bfe
+public snapshot: f4f7d3a127fd0ed3c09431f24ade3acd73b78810
+tree:            5c7dc8a0cf607ce24f591ba91c4431d30f035f51
+snapshot digest: 7fa3dc7f0fedcd8b6f96d309fecb178a1e6d1a3b7919eec928809be5ea6988f4
+```
+
+Repeated public gates on the unchanged tree passed:
+
+- verify run `30196934408`: Linux full, lint, complete test suite, actual Chrome run-storage and graph-storage harnesses, macOS launchers;
+- package-source run `30196934411`: full tests, source packaging, compact exporter packaging and artifact upload.
+
+Downloaded artifacts were inspected outside the runner:
+
+- source artifact: `c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67`;
+- inner source ZIP: `ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b`;
+- inner exporter ZIP: `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
+- browser proof artifact: `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`.
+
+No database, `.env`, credential, local `/Users/...` path, runtime cache, personal data or model path was found.
+
+The target-Mac and GitHub browser snapshot hashes are not compared as one state because the harnesses use different fixed payloads, IDs and timestamps. Each harness proves close/reopen equality for its own fixture. Same-fixture cross-environment hash equality remains an explicit uncovered regression.
+
+## Commands
 
 ```bash
 npm run install:ci
@@ -130,17 +107,6 @@ npm test
 npm run package:source
 ```
 
-## Exact legacy evidence
-
-```text
-Diagnostics SHA-256: 5fbcf8eb9ee8abf32939707270761568e56a6b3ca7a347e3953212baf0cd18e5
-Database SHA-256:    356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918
-Database size:       5,070,848 bytes
-Evidence SHA-256:    51e3d9563b09c91427716eee559745fed35d729e9ffd71f180afa91c3fc7aa2b
-```
-
-The source remains private and immutable. PR #17 remains closed unmerged research input.
-
 ## Preserved boundary
 
 Still prohibited:
@@ -149,11 +115,11 @@ Still prohibited:
 - Qwen or DeepSeek execution;
 - Candidate 6;
 - opening, writing or repairing the legacy database;
-- Phase 2C-B before Phase 2C-A acceptance;
-- actual target-Mac migration or target-Mac production-storage change;
-- production runtime/UI integration and REQ-OBS-001 claims;
+- Phase 2C-B before Phase 2C-A merge provenance;
+- actual target-Mac migration or production-storage change;
+- runtime/UI integration and REQ-OBS-001 claims;
 - semantic claims or personal data.
 
 ## Next verified step
 
-Restore a runnable GitHub Actions gate for PR #38. Run full verification and packaging on the exact final head, download and inspect the artifact, synchronize Drive and reverse-read it, then merge with exact provenance. Only that acceptance may unblock the separate Phase 2C-B exact-source isolated dry run. Actual target-Mac migration remains prohibited.
+Run the exact final documentation head through the public mirror, download and inspect its artifacts, merge PR #38 with an expected-head guard, and record the merge SHA in a separate provenance update with Google Drive readback. Only then may Phase 2C-B planning begin. Actual migration remains prohibited.
