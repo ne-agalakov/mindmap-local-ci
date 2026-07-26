@@ -4,13 +4,13 @@
 
 ## Основное правило
 
-Локальная модель не компенсирует ошибки кода, миграции или восстановления. Повторный AI-запрос допустим только после доказательства, что нужного ответа нет в сохранённых данных, и отдельного подтверждения Артёма. Для deterministic-code и storage/migration ошибок сначала выполняется read-only диагностика.
+Локальная модель не компенсирует ошибки кода, миграции или восстановления. Повторный AI-запрос допустим только после доказательства отсутствия нужного ответа в сохранённых данных и отдельного подтверждения пользователя. Для deterministic-code и storage/migration ошибок сначала выполняется read-only диагностика.
 
 ## Принятый legacy-источник
 
 - size `5 070 848` bytes;
 - SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- evidence SHA-256 `51e3d9563b09c91427716eee559745fed35d729e9ffd71f180afa91c3fc7aa2b`;
+- evidence `51e3d9563b09c91427716eee559745fed35d729e9ffd71f180afa91c3fc7aa2b`;
 - export/inspection `readonly`;
 - bytes modified false;
 - write/migration/network/model calls 0;
@@ -21,50 +21,47 @@ Raw source remains private and outside Git.
 
 ## Accepted storage foundations
 
-- Phase 1A merge `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`.
+- Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`;
+- Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
+- Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
+- Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 
-Accepted Phase 2B invariants: validated namespace, legacy-name refusal, atomic run transaction, transaction-completion commit signal, stale-writer rejection, reopen idempotency, workspace isolation, abort rollback, failed-upgrade rollback and deterministic snapshot.
+## Accepted Phase 2C-A recovery invariants
 
-## Phase 2C-A recovery/storage evidence
-
-PR #38 code head `02df8758a7c42b33b22b397dae74445cd6a5f7ac` adds atomic graph/payload storage.
-
-Target-Mac real-Chrome proof passed:
-
-- graph atomic commit and close/reopen;
-- idempotency and synthetic/personal isolation;
-- coexistence with accepted run adapter;
+- atomic graph events/materialized state/receipt;
+- transaction completion as commit;
+- reopen idempotency;
+- synthetic/personal workspace isolation;
+- run+graph coexistence in a fresh database;
 - abort rollback;
-- refusal of run-only database;
-- schema metadata;
+- run-only database refusal;
 - corruption detection and follow-up `integrity_mismatch`;
-- proposed → confirmed link lifecycle.
+- explicit proposed → confirmed link lifecycle.
 
-Offline proof snapshot: `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`.
+Final reviewed head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` and public exact tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d` passed verify `30198811851` and package `30198811852`.
 
-A public, history-free mirror of private head `85b158ebed11f494fe7e4766453693de01d75bfe` passed verify `30196934408` and package `30196934411`. Downloaded artifacts:
+Downloaded evidence:
 
-- outer source `c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67`;
-- inner source `ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b`;
-- inner exporter `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
-- browser proof `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`.
+- outer `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
+- source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
+- exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
+- browser `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
+- browser log `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`.
 
-Database, secret, personal-data, local-path and runtime-cache findings = 0. Model/migration calls = 0.
+No database, secret, concrete local user-home path, runtime cache or personal thought/database payload was found. AI/model/migration calls = 0.
 
-The target-Mac and GitHub graph harnesses use different fixed records, so their absolute hashes differ by fixture. Each proves reopen equality independently. Same-fixture cross-environment equality remains an explicit missing regression.
+The two browser fixtures differ. Close/reopen equality passed within each; same-fixture cross-environment equality remains open.
 
-## Future Phase 2C-B dry-run protocol
+## Phase 2C-B dry-run protocol
 
-Allowed only after Phase 2C-A merge provenance:
+Allowed only in a separate issue/branch/PR:
 
 - exact accepted source/hash and read-only open;
 - source byte-stability before/after;
 - synthetic workspace and zero personal thoughts;
 - fresh empty temporary target, never production/target-Mac;
 - deterministic versioned mapping and target hash;
-- repeat run equality;
+- repeat-run equality;
 - typed stops for mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity, invalid reference and non-empty target;
 - injected failure rolls back target fully;
 - network/model/Ollama/Qwen/DeepSeek = 0;
@@ -76,8 +73,8 @@ Every long operation shows name/type, elapsed time and volume, last progress/hea
 
 ## Current stop line
 
-Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, Phase 2C-B before Phase 2C-A acceptance, actual target-Mac migration, runtime/UI integration and real data are prohibited.
+Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration and real thoughts are prohibited.
 
-## Release gate
+## Next gate
 
-The exact final documentation head must pass Linux/macOS/browser/package CI in the public mirror and its artifacts must be independently inspected. Then PR #38 may be merged with an expected-head guard. The merge SHA must be recorded in a separate GitHub/Drive provenance update and reverse-read. A dry-run success never authorizes actual migration automatically.
+Freeze Phase 2C-B deterministic mapping and typed-stop contract, then prove an isolated dry run. Dry-run success never authorizes actual migration automatically.

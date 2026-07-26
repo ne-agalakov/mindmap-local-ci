@@ -2,110 +2,89 @@
 
 Date: 2026-07-26
 
-Status: implementation, target-Mac focused browser proof, public-mirror full CI, downloaded-artifact inspection and Drive readback passed. PR #38 is **not accepted until merge and exact merge provenance are complete**.
+Status: accepted and merged.
 
-## Exact source binding
+## Exact provenance
 
 - private repository: `ne-agalakov/mindmap-local`;
 - PR: `#38`;
-- verified code head: `02df8758a7c42b33b22b397dae74445cd6a5f7ac`;
-- private documentation head used for the first public snapshot: `85b158ebed11f494fe7e4766453693de01d75bfe`;
-- public snapshot commit: `f4f7d3a127fd0ed3c09431f24ade3acd73b78810`;
-- public tree: `5c7dc8a0cf607ce24f591ba91c4431d30f035f51`;
-- snapshot digest: `7fa3dc7f0fedcd8b6f96d309fecb178a1e6d1a3b7919eec928809be5ea6988f4`.
+- implementation code head: `02df8758a7c42b33b22b397dae74445cd6a5f7ac`;
+- final reviewed head: `29a317b58cbecaea13e4f21c02af2b945a6e6edc`;
+- squash merge: `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
+- final public CI head: `ee5401a4a2ca7763467562417b9c5c4aece01214`;
+- shared exact tree: `e81ae1b309a806f0078b5a8a2057f51d4c0e403d`.
 
 ## Target-Mac proof
 
-- proof JSON: `5b47e3681a23474d21ee2f703c93a94a8f79d2b93c11e65642667ce8283b97bc`;
-- offline runner ZIP: `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
-- harness: `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`;
-- compile manifest: `7af9f964a6d09dc18a6336930218e3f17ea5ed34ddc73490e9ce7b8ab0607914`;
-- Chrome `150.0.7871.184`, Node `v24.18.0`, real IndexedDB, isolated profile.
+- proof JSON `5b47e3681a23474d21ee2f703c93a94a8f79d2b93c11e65642667ce8283b97bc`;
+- runner ZIP `aef0111128e2182218081ef2fa5536e24bde3bc4383961455e5150c5ba559419`;
+- harness `ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a`;
+- local fixture `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`.
 
-Passed:
+Passed atomic commit, reopen, idempotency, workspace isolation, run-adapter coexistence, abort rollback, run-only refusal, schema metadata, corruption refusal and link lifecycle.
 
-- atomic graph commit;
-- close/reopen persistence;
-- reopen-stable idempotency;
-- workspace isolation;
-- run-adapter coexistence;
-- abort rollback;
-- run-only database refusal;
-- schema metadata;
-- persisted corruption detection and `integrity_mismatch`;
-- proposed → confirmed link lifecycle;
-- local fixture snapshot `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`.
+The macOS application-management warning remains an unexplained environmental anomaly; no application-bundle write path exists in runner source.
 
-The macOS application-management warning remains unexplained. Source audit found no write path into `/Applications`; it is recorded as an environmental anomaly.
+## Final public CI
 
-## Private Actions root cause
+- verify `30198811851` — success;
+- package `30198811852` — success;
+- Linux lint/full tests — success;
+- actual Chrome run/graph storage — success;
+- GitHub-hosted macOS — success;
+- source/exporter packaging — success.
 
-The original private jobs did not execute any step because private Actions minutes were exhausted. This explains the pre-step failures; it is not a code/test failure.
+## Final downloaded artifacts
 
-## Public mirror CI
+- outer source `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
+- inner source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
+- inner exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
+- browser proof `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
+- browser log `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`;
+- embedded public commit `ee5401a4a2ca7763467562417b9c5c4aece01214`.
 
-The public mirror contains a history-free snapshot only. No old commits, private PRs, Issues, Actions history, deleted files, database or personal data were transferred.
+Required files and checksums passed. DB, `.env`, credentials, private keys, concrete local user-home paths, runtime cache and personal thought/database payload findings: `0`.
 
-Final repeated runs on the unchanged snapshot tree:
+## Fixed gate regressions
 
-- verify `30196934408`: Linux full, lint, complete test suite, actual Chrome run-storage, actual Chrome graph-storage and macOS launchers — success;
-- package-source `30196934411`: tests, source package, compact exporter package and upload — success.
-
-## Downloaded-artifact inspection
-
-- outer source artifact: `c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67`;
-- inner source ZIP: `ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b`;
-- inner exporter ZIP: `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
-- browser graph proof artifact: `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`;
-- browser log: `ca1315e9f561da019ba219e195185375b3f5b0ff25e2569818acff4d9a3f40e1`.
-
-Required files and embedded public commit passed. Findings for DB, `.env`, credentials, private keys, concrete local user-home paths, runtime cache and personal data: `0`.
+1. A case-sensitive release-doc marker expected lowercase sentence text. Root cause was the gate marker, not graph storage. The marker was corrected and rerun.
+2. A privacy regex first matched generic path examples in documentation. Wording was corrected; final scan produced zero concrete local user-home findings.
 
 ## Snapshot-hash boundary
 
-GitHub browser fixture snapshot: `bc59236e3ce7173c3f91176fb163f808a99de6f2343afcdc6eea8b12bdca5a54`.
+- target-Mac fixture `ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1`;
+- GitHub fixture `bc59236e3ce7173c3f91176fb163f808a99de6f2343afcdc6eea8b12bdca5a54`.
 
-It differs from the offline snapshot because the harnesses use different fixed thought text, IDs and timestamps. They are not the same canonical state. Both harnesses prove close/reopen equality for their own fixture. Same-fixture cross-environment hash equality is not covered and must not be inferred.
+Fixtures differ by text/IDs/timestamps. Each passed close/reopen equality. Same-fixture cross-environment equality is not covered.
 
 ## Drive readback
 
-Updated and reverse-read revisions:
+Post-merge revisions:
 
-- instruction: `AIroW379xc8qrT6UxiJg722b6cW5MN6sLIh1gK6Lnm3V4AKoq-8Co7w_hg0xuuz--a0HDeLlgo3iLE0Slrw-CxIab5qrmJZiU1iaqJmzEE8`;
-- status: `AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y`;
-- recovery: `AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E`.
-
-## Final documentation gate regression
-
-The first exact final-tree PR runs failed:
-
-- verify `30198335321`;
-- package-source `30198335318`.
-
-`macos-launchers` passed. Linux/full and packaging stopped during `npm test` before browser execution because `check-release-docs.sh` required lowercase `same-fixture...`, while README intentionally used sentence-initial `Same-fixture...`. Root cause: a case-sensitive exact-marker mismatch in the release documentation gate, not graph storage or application code. The expected marker was corrected to the actual required text; the release-doc test remains the regression guard.
-
-The first external privacy scan of the corrected artifact matched only two documentation-only generic user-home-pattern examples, not a concrete username or filesystem path. The wording was corrected so the machine scan and the claim both resolve to zero findings.
+- instruction `AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E`;
+- status `AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0`;
+- recovery `AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU`.
 
 ## Covered
 
-- Phase 2C-A graph/payload contract and storage behavior;
-- target-Mac focused Chrome scenarios;
-- GitHub-hosted Linux/macOS/full tests/browser tests;
-- source/exporter packaging and external artifact inspection;
+- graph/payload contract and transactional storage;
+- target-Mac focused browser scenarios;
+- GitHub-hosted Linux/macOS/full/browser tests;
+- packaging and external artifact inspection;
 - Drive synchronization/readback;
-- zero model/migration/private-data use in evidence workflows.
+- exact merge provenance;
+- zero model/migration/private-thought use.
 
 ## Not covered
 
-- merge provenance;
-- same-fixture cross-environment snapshot equality;
+- same-fixture cross-environment equality;
 - Phase 2C-B exact-source dry run;
 - actual target-Mac migration;
 - production runtime/UI and REQ-OBS-001;
 - service-level exactly-once model POST;
 - semantic quality and multi-order stability;
-- personal-data safety.
+- real-data safety.
 
 ## Next gate
 
-Mirror the exact final documentation head, rerun public CI and external artifact inspection, merge PR #38 with expected-head protection, then record merge provenance in a separate GitHub/Drive update. Actual migration remains prohibited.
+Phase 2C-B may freeze a deterministic migration mapping and implement only an exact-source read-only → isolated temporary-target dry run. Actual migration remains prohibited.

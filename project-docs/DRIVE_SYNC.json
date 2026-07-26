@@ -1,7 +1,7 @@
 {
   "version": "0.6.0-alpha.19",
   "artifactRevision": 5,
-  "syncedAt": "2026-07-26T10:07:08Z",
+  "syncedAt": "2026-07-26T10:55:28Z",
   "documents": [
     {
       "name": "MindMap — инструкция проекта.md",
@@ -19,95 +19,82 @@
       "format": "google-doc"
     }
   ],
-  "archivedDocuments": [
-    {
-      "driveFileId": "1JZmF83ARu9UB3sb5H6IOLU7MHFM7eEXF",
-      "name": "ARCHIVE — MindMap — инструкция проекта — alpha.18.md"
-    },
-    {
-      "driveFileId": "16sR7PYLfm6xc5lUxdhYTzz6mCb7e3fk9",
-      "name": "ARCHIVE — MindMap — решения и статус — alpha.18.md"
-    },
-    {
-      "driveFileId": "1dU8zkshlga_TVXauLaHAYwTSTvxUJs7p",
-      "name": "ARCHIVE — MindMap — восстановление и бюджет локальной модели — alpha.18.md"
-    }
-  ],
   "syncStatus": "synced_native_google_docs_verified",
-  "readBackAt": "2026-07-26T10:07:08Z",
+  "readBackAt": "2026-07-26T10:55:28Z",
   "readBackChecks": [
     {
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "revisionId": "AIroW379xc8qrT6UxiJg722b6cW5MN6sLIh1gK6Lnm3V4AKoq-8Co7w_hg0xuuz--a0HDeLlgo3iLE0Slrw-CxIab5qrmJZiU1iaqJmzEE8",
+      "revisionId": "AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E",
       "verifiedMarkers": [
-        "Phase 2C-A — финальный gate перед merge",
-        "85b158ebed11f494fe7e4766453693de01d75bfe",
-        "30196934408",
-        "c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67",
-        "Phase 2C-B"
+        "Phase 2C-A — принята и слита",
+        "29a317b58cbecaea13e4f21c02af2b945a6e6edc",
+        "292634312ad04fa6e6cfc5a5ded311ac1020094d",
+        "30198811851",
+        "Actual target-Mac migration"
       ]
     },
     {
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "revisionId": "AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y",
+      "revisionId": "AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0",
       "verifiedMarkers": [
-        "Phase 2C-A — CI и artifact gate пройдены, merge pending",
-        "5c7dc8a0cf607ce24f591ba91c4431d30f035f51",
-        "30196934411",
-        "bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31",
-        "same-fixture"
+        "Phase 2C-A — accepted merge provenance",
+        "292634312ad04fa6e6cfc5a5ded311ac1020094d",
+        "ee5401a4a2ca7763467562417b9c5c4aece01214",
+        "2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c",
+        "same-fixture cross-environment"
       ]
     },
     {
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "revisionId": "AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E",
+      "revisionId": "AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU",
       "verifiedMarkers": [
-        "Phase 2C-A — recovery/storage gate перед merge",
-        "same-fixture cross-environment equality",
-        "AI/model calls",
-        "merge provenance",
-        "actual target-Mac migration"
+        "Phase 2C-A — accepted recovery/storage boundary",
+        "e81ae1b309a806f0078b5a8a2057f51d4c0e403d",
+        "Phase 2C-B",
+        "actual target-Mac migration",
+        "AI/model/Ollama/Qwen/DeepSeek"
       ]
     }
   ],
   "architectureAudit": {
-    "status": "alpha19_frozen_phase2ca_final_gate_merge_pending",
+    "status": "alpha19_frozen_phase2ca_accepted_phase2cb_dry_run_next",
     "phase1AMergeCommit": "e7b7593932614f8dfa843298f35eff0230c1e827",
     "phase2AMergeCommit": "aa5eaaae08a3da4d0ff00ea03aea12b793137a21",
     "phase2BMergeCommit": "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
     "phase2CAPullRequest": 38,
     "phase2CACodeHead": "02df8758a7c42b33b22b397dae74445cd6a5f7ac",
-    "phase2CAPrivateSnapshotHead": "85b158ebed11f494fe7e4766453693de01d75bfe",
-    "phase2CAPublicSnapshotCommit": "f4f7d3a127fd0ed3c09431f24ade3acd73b78810",
-    "phase2CAPublicTree": "5c7dc8a0cf607ce24f591ba91c4431d30f035f51",
-    "phase2CASnapshotDigest": "7fa3dc7f0fedcd8b6f96d309fecb178a1e6d1a3b7919eec928809be5ea6988f4",
-    "phase2CAVerifyRun": 30196934408,
-    "phase2CAPackageRun": 30196934411,
-    "phase2CAArtifactOuterSha256": "c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67",
-    "phase2CAArtifactInnerSha256": "ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b",
-    "phase2CAExporterInnerSha256": "fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8",
-    "phase2CABrowserProofSha256": "bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31",
+    "phase2CAFinalReviewedHead": "29a317b58cbecaea13e4f21c02af2b945a6e6edc",
+    "phase2CAMergeCommit": "292634312ad04fa6e6cfc5a5ded311ac1020094d",
+    "phase2CAPublicFinalHead": "ee5401a4a2ca7763467562417b9c5c4aece01214",
+    "phase2CAPublicFinalTree": "e81ae1b309a806f0078b5a8a2057f51d4c0e403d",
+    "phase2CAVerifyRun": 30198811851,
+    "phase2CAPackageRun": 30198811852,
+    "phase2CAArtifactOuterSha256": "2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c",
+    "phase2CAArtifactInnerSha256": "81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b",
+    "phase2CAExporterInnerSha256": "1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109",
+    "phase2CABrowserProofSha256": "5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755",
     "phase2CAImplemented": true,
-    "phase2CAAccepted": false,
-    "phase2CBAllowed": false,
+    "phase2CAAccepted": true,
+    "phase2CBAllowed": true,
     "actualMigrationAllowed": false,
     "candidate6Allowed": false,
     "deepseekRunAllowed": false,
     "legacyDatabaseWriteAllowed": false,
     "zeroModelCalls": true,
-    "nextGate": "phase2ca_final_documentation_ci_artifact_merge_provenance"
+    "nextGate": "phase2cb_deterministic_mapping_and_isolated_exact_source_dry_run"
   },
   "github": {
     "privateRepository": "ne-agalakov/mindmap-local",
     "publicCiMirror": "ne-agalakov/mindmap-local-ci",
+    "phase2CAMergeCommit": "292634312ad04fa6e6cfc5a5ded311ac1020094d",
     "ci": {
-      "linuxFull": "passed-public-snapshot",
-      "actualChromeRunStorage": "passed-public-snapshot",
-      "actualChromeGraphStorage": "passed-public-snapshot",
-      "macosTargeted": "passed-public-snapshot",
-      "sourcePackaging": "passed-public-snapshot",
-      "downloadedArtifactVerification": "passed-public-snapshot",
-      "driveReadback": "passed-pre-merge",
+      "linuxFull": "passed-final-exact-tree",
+      "actualChromeRunStorage": "passed-final-exact-tree",
+      "actualChromeGraphStorage": "passed-final-exact-tree",
+      "macosTargeted": "passed-final-exact-tree",
+      "sourcePackaging": "passed-final-exact-tree",
+      "downloadedArtifactVerification": "passed-final-exact-tree",
+      "driveReadback": "passed-after-merge",
       "zeroModelCalls": true
     }
   }

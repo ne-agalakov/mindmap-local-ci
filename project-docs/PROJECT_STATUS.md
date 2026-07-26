@@ -6,14 +6,15 @@
 
 Персональная local-first AI-система: мысль → понимание → связи → приоритет → решение → действие → результат → память.
 
-Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные данные.
+Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
 
 ## Принятые этапы
 
-- Phase 0 exact source: merge `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
-- Phase 1A pure state-core: merge `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A storage contract/ADR: merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B native IndexedDB adapter: merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`.
+- Phase 0 exact source: `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
+- Phase 1A pure state-core: `e7b7593932614f8dfa843298f35eff0230c1e827`;
+- Phase 2A storage contract: `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
+- Phase 2B native IndexedDB run storage: `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
+- Phase 2C-A graph/payload storage: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 
 Legacy source remains private and immutable:
 
@@ -23,108 +24,76 @@ Legacy source remains private and immutable:
 - integrity `ok`;
 - write/migration/network/model calls — 0.
 
-## Phase 2C-A — final gates passed, merge pending
+## Phase 2C-A — принята
 
-PR #38 implements canonical graph/payload contracts and native IndexedDB graph storage.
-
-Verified code head:
+PR #38 squash-merged from exact reviewed head:
 
 ```text
-02df8758a7c42b33b22b397dae74445cd6a5f7ac
+reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
+merge:         292634312ad04fa6e6cfc5a5ded311ac1020094d
 ```
 
-Private head before the final documentation update:
+Приняты canonical graph/payload contracts и native IndexedDB graph storage:
 
-```text
-85b158ebed11f494fe7e4766453693de01d75bfe
-```
-
-Accepted behavior within the current evidence boundary:
-
-- content-addressed thought payloads;
-- typed area → direction → project hierarchy;
-- exactly one placement or explicit `unresolved` per thought;
-- proposed/confirmed/rejected link lifecycle;
-- embeddings bound to exact thought content hash/model/dimensions;
-- damaged references separate from unresolved;
-- atomic event batch + materialized graph + receipt;
-- deterministic replay and reopen-stable snapshot hash;
-- stale-revision/idempotency conflict rejection;
+- payloads, thoughts, typed hierarchy;
+- placement либо explicit `unresolved`;
+- proposed/confirmed/rejected links;
+- embeddings bound to exact text;
+- damaged references separately;
+- atomic event/materialized-state/receipt transaction;
+- deterministic replay and reopen-stable hash;
+- stale/idempotency guards;
 - workspace isolation, abort rollback and corruption refusal;
-- coexistence with the accepted run adapter in a fresh unified database;
-- refusal to silently upgrade a run-only database.
+- fresh unified run+graph database;
+- run-only database refusal.
 
-### Target-Mac proof
+### Финальная проверка
 
-Real Chrome IndexedDB passed atomic commit, reopen, idempotency, workspace isolation, run-adapter compatibility, abort rollback, run-only refusal, schema metadata, corruption detection and link lifecycle.
-
-Local snapshot hash:
+Exact public counterpart:
 
 ```text
-ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1
+public head: ee5401a4a2ca7763467562417b9c5c4aece01214
+shared tree: e81ae1b309a806f0078b5a8a2057f51d4c0e403d
 ```
 
-The macOS privacy warning remains an unresolved environmental anomaly; no `/Applications` write path exists in the runner source.
+- verify `30198811851` — success;
+- package `30198811852` — success;
+- Linux/macOS/full tests/actual Chrome/package — passed;
+- outer artifact `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
+- inner source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
+- inner exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
+- browser proof `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
+- privacy/credential/data findings — 0.
 
-### Public CI mirror
+Drive после merge обновлён и прочитан обратно:
 
-The private runner blocker was proven to be exhausted private Actions minutes, not a test failure. A separate public history-free snapshot passed:
+- instruction `AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E`;
+- status `AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0`;
+- recovery `AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU`.
 
-- verify `30196934408`;
-- package-source `30196934411`;
-- Linux full, lint, complete tests;
-- GitHub-hosted macOS launchers;
-- actual Chrome run-storage and graph-storage;
-- source/exporter packaging.
+### Исправленные причины финального gate
 
-Snapshot provenance:
+1. Release-doc marker был регистрозависим: ожидал `same-fixture`, README начинал предложение с `Same-fixture`. Исправлен сам gate; storage-код не падал.
+2. Первый внешний privacy regex сопоставил два документационных шаблона пути, а не реальные пути. Формулировки уточнены; повторный scan дал ноль concrete local user-home findings.
 
-```text
-private source: 85b158ebed11f494fe7e4766453693de01d75bfe
-public commit:  f4f7d3a127fd0ed3c09431f24ade3acd73b78810
-tree:           5c7dc8a0cf607ce24f591ba91c4431d30f035f51
-digest:         7fa3dc7f0fedcd8b6f96d309fecb178a1e6d1a3b7919eec928809be5ea6988f4
-```
+## Границы доказательства
 
-Downloaded artifacts:
+Не доказаны:
 
-- outer source `c26b5d16138713b69eba3aedba1d84512cac8e0c9429a598921a8ead8fab1c67`;
-- inner source `ce8dded192e282a15faf652e2dd9b68aec4fd045403ef5a6027c4e25f155c45b`;
-- inner exporter `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
-- browser proof `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`.
-
-Privacy/credential findings: `0`.
-
-The local and GitHub harnesses use different deterministic fixtures, so their absolute snapshot hashes are not expected to match. Reopen equality passed inside each fixture. Same-fixture cross-environment equality remains uncovered.
-
-### Drive
-
-Three canonical Drive documents were updated and reverse-read:
-
-- instruction revision `AIroW379xc8qrT6UxiJg722b6cW5MN6sLIh1gK6Lnm3V4AKoq-8Co7w_hg0xuuz--a0HDeLlgo3iLE0Slrw-CxIab5qrmJZiU1iaqJmzEE8`;
-- status revision `AIroW36MA-FzprvDJ93NZDney89F4rNOr_Lj-0l-DxgpxPf-ZMDMd2AmuyIYvueFBb0yb3utGjeeO5EkfoeWpXn3NCsnoJNsVSotZZdtg-Y`;
-- recovery revision `AIroW35fvugGJYnXlnAUOruMPEUqNQ8RXTw83EFnefU8YXp8kd3peGkkYBd9XzB2raJ9EwuEHZL_tDW8Q92ppCJ3izgavGiBTYhqoWt1T9E`.
-
-### Final documentation gate regression
-
-Первый PR-trigger финального documentation tree (`verify` `30198335321`, `package-source` `30198335318`) остановился на release-doc check до browser harness. Хранилище и macOS-тесты не падали. Root cause: case-sensitive marker ожидал `same-fixture...`, а README содержал `Same-fixture...`. Проверка исправлена на фактический обязательный marker; этот же gate остаётся регрессией против повторной рассинхронизации.
-
-## Не доказано
-
-- merge provenance PR #38;
 - same-fixture cross-environment snapshot equality;
-- Phase 2C-B exact-source dry run;
-- source byte-stability and deterministic migrated target;
-- target-Mac production migration;
-- production runtime/UI integration;
-- REQ-OBS-001 in the new runtime;
+- Phase 2C-B migration dry run;
+- source byte-stability и deterministic migrated target;
+- actual target-Mac migration;
+- production runtime/UI и REQ-OBS-001;
 - service-level exactly-once model execution;
-- semantic quality, multi-order stability and personal-data safety.
+- semantic quality, multi-order stability и personal-data safety.
 
 ## Стоп-линия
 
-Запрещены Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, Phase 2C-B до acceptance Phase 2C-A, actual target-Mac migration, runtime/UI integration и реальные данные.
+Разрешены только planning/implementation Phase 2C-B в отдельном issue/branch/PR и тесты на exact read-only source package + isolated temporary target.
+
+Запрещены Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration и реальные мысли.
 
 ## Следующий проверяемый шаг
 
-Создать точный final documentation head, зеркально проверить его в public CI, скачать и проверить final artifacts, затем squash-merge PR #38 с expected-head guard. После merge отдельно записать merge provenance в GitHub и Drive и прочитать Drive обратно. Только после этого разрешается планирование Phase 2C-B; actual migration остаётся запрещённой.
+Открыть Phase 2C-B от accepted `main`. Сначала зафиксировать versioned deterministic mapping и typed stops; затем доказать isolated dry run, source byte-stability, repeatability, deterministic target hash и full rollback. Успех dry run не разрешает actual migration автоматически.

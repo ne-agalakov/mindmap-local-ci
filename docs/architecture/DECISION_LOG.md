@@ -90,3 +90,25 @@ snapshotHash: 23c72cfd4768f5c76f0f376646fcbbd8a7630fb973e85704f460f19af6b27409
 The first browser job exposed a harness cleanup race only after all storage assertions passed. Root cause: Chrome still held its temporary profile during deletion. The runner now awaits process exit before cleanup; the repeated full gate passed.
 
 Consequences: browser-storage evidence is explicit and reusable, but it does not prove target-Mac migration, production UI/runtime, REQ-OBS-001 or semantic quality.
+
+## ADR-007 — Accept canonical graph/payload storage before migration
+
+Date: 2026-07-26
+
+Decision: accept Phase 2C-A as merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Migration cannot proceed with run history alone; the canonical graph aggregate must preserve payloads, thoughts, typed hierarchy, placement/unresolved, links, embeddings and damaged references transactionally.
+
+Evidence:
+
+- final reviewed head `29a317b58cbecaea13e4f21c02af2b945a6e6edc`;
+- exact public tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d`;
+- verify `30198811851` and package `30198811852`;
+- target-Mac Chrome proof;
+- downloaded source/exporter/browser inspection;
+- post-merge Drive readback.
+
+Consequences:
+
+- Phase 2C-B may define and test an isolated exact-source dry run;
+- same-fixture cross-environment equality remains open;
+- no actual target-Mac migration, model execution, runtime/UI integration or real thought import is authorized;
+- release-doc marker case and generic-path scan failures are recorded as gate regressions, not storage failures.

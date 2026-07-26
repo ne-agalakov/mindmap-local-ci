@@ -1,17 +1,17 @@
 # ADR-0002 — canonical MindMap graph and payload storage
 
 Date: 2026-07-25  
-Updated: 2026-07-26
+Accepted: 2026-07-26
 
-Status: implemented in Phase 2C-A. Target-Mac proof, public-mirror full CI, downloaded-artifact inspection and Drive readback passed. Acceptance is pending PR #38 merge and exact merge provenance.
+Status: accepted as Phase 2C-A merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 
 ## Context
 
-The accepted Phase 2B adapter persists run aggregates, events and artifact metadata. It cannot represent the actual MindMap graph: thought text, embeddings, typed hierarchy, primary placement, unresolved state, links or damaged references. A run-history-only import would lose the knowledge graph and cannot be called migration.
+The accepted Phase 2B adapter persists run aggregates, events and artifact metadata. It cannot represent thought text, embeddings, typed hierarchy, placement, unresolved state, links or damaged references. A run-history-only import would lose the knowledge graph.
 
 ## Decision
 
-Add a separate event-sourced graph aggregate under namespace `mindmap-graph-v1`, stored transactionally alongside but not inside the run aggregate.
+Use a separate event-sourced graph aggregate under namespace `mindmap-graph-v1`, stored transactionally alongside the run aggregate.
 
 It contains:
 
@@ -19,45 +19,46 @@ It contains:
 - thought records;
 - typed area/direction/project nodes;
 - exactly one placement or unresolved record per thought;
-- proposed/confirmed/rejected graph links;
-- embeddings bound to exact thought-text hash, model and dimensions;
+- proposed/confirmed/rejected links;
+- embeddings bound to exact text hash, model and dimensions;
 - damaged references separate from unresolved;
-- deterministic workspace revision and canonical snapshot hash.
+- deterministic revision and canonical snapshot hash.
 
-A fresh unified database contains accepted run stores and graph stores. An existing run-only database is refused rather than silently upgraded. Any upgrade/import path requires a separate explicit migration decision and tests.
+A fresh unified database contains accepted run and graph stores. A run-only database is refused rather than silently upgraded.
 
 ## Invariants
 
 - roots are areas only;
 - direction parent is area; project parent is direction;
 - thought placement parent is direction or project;
-- every thought has exactly one placement or unresolved record;
+- every thought has one placement or unresolved record;
 - no cycles or duplicate typed paths;
 - payload hash matches content;
-- embedding bytes equal `dimensions × 4` and bind to current thought text;
-- synthetic/personal workspaces are mechanically isolated;
+- embedding bytes equal `dimensions × 4` and bind to current text;
+- synthetic/personal workspaces are isolated;
 - proposed links are never silently confirmed;
 - graph mutations are event-sequenced and atomic;
-- stale revision, identity conflict, payload conflict and invalid references reject before mutation;
-- replay and snapshot hash are deterministic for the same canonical state;
-- abort before commit leaves no partial graph, payload or receipt.
+- stale revision, identity/payload conflict and invalid references reject before mutation;
+- replay/hash are deterministic for the same canonical state;
+- abort leaves no partial graph, payload or receipt.
 
-## Verification
+## Acceptance evidence
 
-Code head: `02df8758a7c42b33b22b397dae74445cd6a5f7ac`.
+```text
+reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
+merge:         292634312ad04fa6e6cfc5a5ded311ac1020094d
+public head:   ee5401a4a2ca7763467562417b9c5c4aece01214
+shared tree:   e81ae1b309a806f0078b5a8a2057f51d4c0e403d
+```
 
-Target-Mac real Chrome passed atomic commit, reopen, idempotency, workspace isolation, run-adapter coexistence, abort rollback, run-only refusal, schema metadata, corruption refusal and link lifecycle.
+Target-Mac real Chrome, public Linux/macOS/full/browser CI, packaging, external artifact inspection and Drive readback passed. Final runs: `30198811851` and `30198811852`.
 
-The public history-free mirror of private head `85b158ebed11f494fe7e4766453693de01d75bfe` passed Linux full, lint, complete tests, macOS launchers, actual Chrome run/graph harnesses and packaging in runs `30196934408` and `30196934411`. Downloaded artifacts passed inventory, checksum, privacy and credential inspection.
-
-Google Drive canonical documents were updated and reverse-read.
-
-The offline and GitHub harnesses use different deterministic fixtures. Their absolute snapshot hashes therefore do not represent the same state. Each proves reopen equality; same-fixture cross-environment equality remains uncovered.
+Same-fixture cross-environment equality remains uncovered because local and GitHub proofs used different fixed fixtures.
 
 ## Consequences
 
-- Phase 2C-B remains blocked until PR #38 is merged and merge provenance is recorded;
+- Phase 2C-B may be planned and implemented as a separate isolated dry-run gate;
 - private source payloads remain outside Git;
 - run-only databases are not silently upgraded;
-- actual target-Mac migration remains a later explicit user-confirmed gate;
-- runtime/UI, REQ-OBS-001 rendering, model execution and semantic quality are outside this ADR.
+- actual target-Mac migration requires a later explicit user-confirmed gate;
+- runtime/UI, REQ-OBS-001, model execution and semantic quality remain outside this ADR.
