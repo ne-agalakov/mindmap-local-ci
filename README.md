@@ -89,7 +89,7 @@ Downloaded artifacts were inspected outside the runner:
 - inner exporter ZIP: `fcc1c4522d3151b4884df2cf32bde6dc0c34279ced4bf0c22266216414d431c8`;
 - browser proof artifact: `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`.
 
-No database, `.env`, credential, local `/Users/...` path, runtime cache, personal data or model path was found.
+No database, `.env`, credential, concrete local user-home path, runtime cache, personal data or model path was found.
 
 The target-Mac and GitHub browser snapshot hashes are not compared as one state because the harnesses use different fixed payloads, IDs and timestamps. Each harness proves close/reopen equality for its own fixture. Same-fixture cross-environment hash equality remains an explicit uncovered regression.
 

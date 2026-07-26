@@ -59,7 +59,7 @@ Final repeated runs on the unchanged snapshot tree:
 - browser graph proof artifact: `bdb578601f74b7214b8a51c0d3a3c1b1d8b6bab47f79a555d554ec7a504dbb31`;
 - browser log: `ca1315e9f561da019ba219e195185375b3f5b0ff25e2569818acff4d9a3f40e1`.
 
-Required files and embedded public commit passed. Findings for DB, `.env`, credentials, private keys, `/Users/...`, runtime cache and personal data: `0`.
+Required files and embedded public commit passed. Findings for DB, `.env`, credentials, private keys, concrete local user-home paths, runtime cache and personal data: `0`.
 
 ## Snapshot-hash boundary
 
@@ -83,6 +83,8 @@ The first exact final-tree PR runs failed:
 - package-source `30198335318`.
 
 `macos-launchers` passed. Linux/full and packaging stopped during `npm test` before browser execution because `check-release-docs.sh` required lowercase `same-fixture...`, while README intentionally used sentence-initial `Same-fixture...`. Root cause: a case-sensitive exact-marker mismatch in the release documentation gate, not graph storage or application code. The expected marker was corrected to the actual required text; the release-doc test remains the regression guard.
+
+The first external privacy scan of the corrected artifact matched only two documentation-only generic user-home-pattern examples, not a concrete username or filesystem path. The wording was corrected so the machine scan and the claim both resolve to zero findings.
 
 ## Covered
 
