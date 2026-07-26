@@ -1,0 +1,95 @@
+name: phase2cb-b1a-code-ci
+
+on:
+  push:
+    branches: [phase2cb-b1a-code-ci]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-b1a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Reconstruct and verify exact B1a code overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat ci-overlays/phase2cb-b1a/overlay.part* > /tmp/b1a-overlay.tar.gz.b64
+          base64 -d /tmp/b1a-overlay.tar.gz.b64 > /tmp/b1a-overlay.tar.gz
+          echo "20af74f859261476dc1ce2d18b45157ac94d6bbb1163585101b54dfb2961548e  /tmp/b1a-overlay.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/b1a-overlay.tar.gz -C .
+          test ! -e mindmap-local-semantic-v060.sqlite
+          test ! -e mindmap-local-semantic-v060.sqlite3
+          git diff --stat
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Focused accepted-storage and B1a regressions
+        run: |
+          node --experimental-strip-types --test \
+            tests/storage-contract-phase2a.test.mjs \
+            tests/native-indexeddb-storage-phase2b.test.mjs \
+            tests/graph-storage-phase2ca.test.mjs \
+            tests/graph-storage-indexeddb-phase2ca.test.mjs \
+            tests/phase2cb-mapping-contract.test.mjs \
+            tests/phase2cb-b1a-executor.test.mjs \
+            tests/phase2cb-b1a-indexeddb.test.mjs \
+            tests/phase2cb-b1a-sqlite-source.test.mjs
+      - name: Full test suite
+        run: npm test
+      - name: Actual Chrome B1a IndexedDB harness
+        run: npm run test:browser-phase2cb-b1a
+      - name: Package source and legacy exporter
+        env:
+          MINDMAP_GIT_COMMIT_SHA: ${{ github.sha }}
+          MINDMAP_GIT_DIRTY: "false"
+        run: |
+          npm run package:source
+          npm run package:legacy-exporter
+      - name: Upload B1a logs and packages
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2cb-b1a-code-ci-${{ github.sha }}
+          path: |
+            release-artifacts/*.zip
+            browser-phase2cb-b1a-output.log
+            test-output.log
+          if-no-files-found: ignore
+
+  macos-b1a:
+    runs-on: macos-14
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Reconstruct and verify exact B1a code overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat ci-overlays/phase2cb-b1a/overlay.part* > /tmp/b1a-overlay.tar.gz.b64
+          base64 -D /tmp/b1a-overlay.tar.gz.b64 > /tmp/b1a-overlay.tar.gz
+          echo "20af74f859261476dc1ce2d18b45157ac94d6bbb1163585101b54dfb2961548e  /tmp/b1a-overlay.tar.gz" | shasum -a 256 -c
+          tar -xzf /tmp/b1a-overlay.tar.gz -C .
+      - run: npm ci
+      - name: B1a core and read-only SQLite regressions on macOS
+        run: |
+          node --experimental-strip-types --test \
+            tests/phase2cb-b1a-executor.test.mjs \
+            tests/phase2cb-b1a-sqlite-source.test.mjs
+      - name: Existing macOS launcher regressions
+        run: npm run test:macos
