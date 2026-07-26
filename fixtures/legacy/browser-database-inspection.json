@@ -1,0 +1,168 @@
+{
+  "format": "mindmap-legacy-database-inspection",
+  "schemaVersion": 1,
+  "source": {
+    "name": "mindmap-legacy-2026-07-25T13-01-40Z-356b943275cc.sqlite",
+    "sizeBytes": 5070848,
+    "sha256": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918",
+    "sqliteHeaderValid": true,
+    "sourceModified": false,
+    "sha256AfterInspection": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918"
+  },
+  "database": {
+    "openMode": "readonly",
+    "queryOnly": true,
+    "quickCheck": "ok",
+    "integrityCheck": "ok",
+    "tables": {
+      "thoughts": 96,
+      "knowledgeNodes": 30,
+      "links": 0,
+      "aiDecisions": 133
+    }
+  },
+  "privacy": {
+    "thoughtTextIncluded": false,
+    "nodeLabelsIncluded": false,
+    "rawModelPayloadsIncluded": false,
+    "rawDatabaseCommitted": false
+  },
+  "workspaceClassification": {
+    "rule": "thought IDs matching /^synthetic-\\d{3}$/ belong to synthetic workspace; every other thought belongs to personal review",
+    "syntheticThoughts": 96,
+    "personalThoughts": 0,
+    "allSyntheticIdsContinuous001To096": true,
+    "sourceDataset": "approved-96-v1",
+    "migrationSplitRequired": true
+  },
+  "structure": {
+    "roots": 6,
+    "rootKinds": {
+      "area": 6,
+      "direction": 0
+    },
+    "invalidParentReferences": 0,
+    "invalidParentTypes": 0,
+    "cycles": 0,
+    "duplicatePaths": 0,
+    "primaryPlacementMissing": 1,
+    "primaryPlacementInvalid": 0,
+    "primaryPlacementWrongType": 0,
+    "additionalPlacementInvalid": 0,
+    "unresolvedMatchesMissingPrimary": true,
+    "embeddingDimensions": {
+      "768": 96
+    },
+    "embeddingParseErrors": 0,
+    "embeddingNonFinite": 0,
+    "latestCandidateCount": 2,
+    "candidateInvalidIds": 0,
+    "candidateSelfPairs": 0,
+    "candidateDuplicatePairs": 0,
+    "linksWithInvalidEndpoints": 0
+  },
+  "events": {
+    "eventTypes": {
+      "batch_completed": 1,
+      "batch_failed": 12,
+      "batch_paused": 2,
+      "batch_started": 23,
+      "pipeline_candidates": 2,
+      "pipeline_cluster": 3,
+      "pipeline_cluster_assignment": 24,
+      "pipeline_cluster_plan": 3,
+      "pipeline_embeddings": 6,
+      "pipeline_extract": 32,
+      "pipeline_hierarchy": 2,
+      "pipeline_hierarchy_assignment": 15,
+      "pipeline_hierarchy_plan": 3,
+      "pipeline_preflight": 3,
+      "pipeline_relations": 1,
+      "pipeline_validated": 1
+    },
+    "runCount": 3,
+    "timestampOrderingRule": "created_at ASC, source rowid ASC",
+    "timestampTies": [
+      {
+        "createdAt": "2026-07-23T12:23:44.274Z",
+        "sequences": [
+          129,
+          130
+        ]
+      },
+      {
+        "createdAt": "2026-07-23T16:16:18.713Z",
+        "sequences": [
+          131,
+          132
+        ]
+      }
+    ],
+    "forbiddenContinuationOrAiAttemptEventsPresent": false
+  },
+  "activeRun": {
+    "runId": "v06-run-03-1784797750173",
+    "dataset": "approved-96-v1",
+    "orderVariant": "original",
+    "runModel": "qwen3:8b",
+    "configuredModel": "deepseek-r1:8b",
+    "pipelineVersions": [
+      "0.6.0-alpha.12",
+      "0.6.0-alpha.13",
+      "0.6.0-alpha.15",
+      "0.6.0-alpha.18"
+    ],
+    "eventCount": 44,
+    "terminalEventType": "batch_paused",
+    "terminalCreatedAt": "2026-07-23T16:16:18.713Z",
+    "currentStage": "candidates",
+    "candidateCount": 2,
+    "unresolvedThoughtCount": 1,
+    "unresolvedClusterCount": 1,
+    "persistedContinuationBlock": false,
+    "derivedGuard": {
+      "status": "blocked",
+      "reason": "run_model_mismatch",
+      "requiresContinuationClick": false,
+      "aiCallAllowed": false
+    }
+  },
+  "diagnosticsComparison": {
+    "sourceSha256": "5fbcf8eb9ee8abf32939707270761568e56a6b3ca7a347e3953212baf0cd18e5",
+    "sourceSizeBytes": 6968844,
+    "thoughtsExactEqual": true,
+    "knowledgeNodesExactEqual": true,
+    "linksExactEqual": true,
+    "aiDecisionsExactEqual": true,
+    "diagnosticsIntentionallyOmitEmbeddings": true
+  },
+  "migrationPackage": {
+    "format": "mindmap-legacy-migration-package-manifest",
+    "schemaVersion": 1,
+    "sourceDatabaseSha256": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918",
+    "sourceWorkspace": "synthetic",
+    "syntheticRecordCounts": {
+      "thoughts": 96,
+      "nodes": 30,
+      "links": 0,
+      "aiDecisions": 133
+    },
+    "personalRecordCounts": {
+      "thoughts": 0
+    },
+    "targetNamespace": "mindmap-state-core-v1",
+    "targetWritePerformed": false,
+    "legacyWriteAllowed": false,
+    "networkCallAllowed": false,
+    "aiCallAllowed": false,
+    "importStatus": "blocked_until_phase2_transactional_storage_exists"
+  },
+  "execution": {
+    "databaseWritePerformed": false,
+    "databaseMigrationPerformed": false,
+    "networkFetchCalls": 0,
+    "ollamaCalls": 0,
+    "qwenCalls": 0,
+    "deepseekCalls": 0
+  }
+}

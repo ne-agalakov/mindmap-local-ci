@@ -1,0 +1,95 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - name: Run full test suite
+        id: full_tests
+        shell: bash
+        env:
+          MINDMAP_GIT_COMMIT_SHA: ${{ github.sha }}
+          MINDMAP_GIT_DIRTY: "false"
+        run: |
+          set +e
+          npm test 2>&1 | tee test-output.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Run actual Chrome run-storage harness
+        id: browser_storage
+        if: steps.full_tests.outputs.status == '0'
+        shell: bash
+        run: |
+          set +e
+          npm run test:browser-storage 2>&1 | tee browser-storage-output.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Run actual Chrome graph-storage harness
+        id: browser_graph_storage
+        if: steps.full_tests.outputs.status == '0' && steps.browser_storage.outputs.status == '0'
+        shell: bash
+        run: |
+          set +e
+          npm run test:browser-graph-storage 2>&1 | tee browser-graph-storage-output.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload test diagnostics
+        if: steps.full_tests.outputs.status != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-test-output-${{ github.sha }}
+          path: test-output.log
+          if-no-files-found: error
+      - name: Upload run-storage browser diagnostics
+        if: steps.browser_storage.outputs.status != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-storage-output-${{ github.sha }}
+          path: browser-storage-output.log
+          if-no-files-found: error
+      - name: Upload graph-storage browser proof
+        if: always() && steps.browser_graph_storage.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-graph-storage-proof-${{ github.sha }}
+          path: browser-graph-storage-output.log
+          if-no-files-found: error
+      - name: Fail when tests failed
+        if: steps.full_tests.outputs.status != '0' || steps.browser_storage.outputs.status != '0' || steps.browser_graph_storage.outputs.status != '0'
+        run: exit 1
+
+  macos-launchers:
+    runs-on: macos-14
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: bash -n start-mindmap.command start-mindmap-deepseek.command start-legacy-exporter.command
+      - run: npm ci
+      - run: npm run test:macos
+        env:
+          MINDMAP_GIT_COMMIT_SHA: ${{ github.sha }}
+          MINDMAP_GIT_DIRTY: "false"

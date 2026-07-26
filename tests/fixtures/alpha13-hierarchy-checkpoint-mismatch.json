@@ -1,0 +1,114 @@
+{
+  "fixtureKind": "reconstructed_persisted_shape",
+  "failureSignature": [
+    "invalid_placement_leaf",
+    "missing_placement"
+  ],
+  "clusters": [
+    {
+      "id": "home",
+      "name": "Дом",
+      "description": "",
+      "memberThoughtIds": ["t1"],
+      "confidence": 0.9
+    },
+    {
+      "id": "energy",
+      "name": "Энергия",
+      "description": "",
+      "memberThoughtIds": ["t2"],
+      "confidence": 0.9
+    },
+    {
+      "id": "video",
+      "name": "Видео",
+      "description": "",
+      "memberThoughtIds": ["t3"],
+      "confidence": 0.9
+    }
+  ],
+  "hierarchyPlanNodes": [
+    {
+      "id": "area-work",
+      "name": "Работа",
+      "kind": "area",
+      "description": "",
+      "sourceClusterIds": [],
+      "confidence": 0.9
+    },
+    {
+      "id": "direction-video",
+      "name": "Видеография",
+      "kind": "direction",
+      "parentId": "area-work",
+      "description": "",
+      "sourceClusterIds": [],
+      "confidence": 0.9
+    }
+  ],
+  "hierarchyAssignments": [
+    {
+      "clusterId": "home",
+      "confidence": 0.5
+    },
+    {
+      "clusterId": "energy",
+      "confidence": 0.5
+    },
+    {
+      "clusterId": "video",
+      "directionId": "direction-video",
+      "confidence": 0.9
+    }
+  ],
+  "repairCheckpoints": [
+    {
+      "nodes": [
+        {
+          "id": "area-home-v2",
+          "name": "Дом",
+          "kind": "area",
+          "description": "",
+          "sourceClusterIds": [],
+          "confidence": 0.8
+        },
+        {
+          "id": "direction-home-v2",
+          "name": "Устройство дома",
+          "kind": "direction",
+          "parentId": "area-home-v2",
+          "description": "",
+          "sourceClusterIds": [],
+          "confidence": 0.8
+        }
+      ],
+      "assignments": [
+        {
+          "clusterId": "home",
+          "directionId": "direction-home-v2",
+          "confidence": 0.8
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "id": "direction-energy",
+          "name": "Энергоснабжение",
+          "kind": "direction",
+          "parentId": "area-home-v2",
+          "description": "",
+          "sourceClusterIds": [],
+          "confidence": 0.8
+        }
+      ],
+      "assignments": [
+        {
+          "clusterId": "energy",
+          "directionId": "direction-energy",
+          "confidence": 0.8
+        }
+      ]
+    }
+  ]
+}

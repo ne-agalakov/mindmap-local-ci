@@ -1,0 +1,122 @@
+{
+  "version": "0.6.0-alpha.19",
+  "artifactRevision": 5,
+  "syncedAt": "2026-07-25T18:20:00Z",
+  "documents": [
+    {
+      "name": "MindMap — инструкция проекта.md",
+      "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
+      "format": "google-doc"
+    },
+    {
+      "name": "MindMap — решения и статус.md",
+      "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
+      "format": "google-doc"
+    },
+    {
+      "name": "MindMap — восстановление и бюджет локальной модели.md",
+      "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
+      "format": "google-doc"
+    }
+  ],
+  "archivedDocuments": [
+    {
+      "driveFileId": "1JZmF83ARu9UB3sb5H6IOLU7MHFM7eEXF",
+      "name": "ARCHIVE — MindMap — инструкция проекта — alpha.18.md"
+    },
+    {
+      "driveFileId": "16sR7PYLfm6xc5lUxdhYTzz6mCb7e3fk9",
+      "name": "ARCHIVE — MindMap — решения и статус — alpha.18.md"
+    },
+    {
+      "driveFileId": "1dU8zkshlga_TVXauLaHAYwTSTvxUJs7p",
+      "name": "ARCHIVE — MindMap — восстановление и бюджет локальной модели — alpha.18.md"
+    }
+  ],
+  "syncStatus": "synced_native_google_docs_verified",
+  "readBackAt": "2026-07-25T18:20:00Z",
+  "readBackChecks": [
+    {
+      "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
+      "revisionId": "AIroW34csETCc9jKs-X_XlrgpOjIpr_vPtUTLMMyVD1gZF7iCMRfNTtrTKbM28kIt_pAh-GRufBlcSw9JRQczLs39iaCaXlsCZ879IwsZtU",
+      "verifiedMarkers": [
+        "Phase 2B — native IndexedDB adapter реализован и code-head проверен",
+        "Phase 2B — принята и слита",
+        "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
+        "5a8b4f6a418b465da7383d7c999485bae1f9a900",
+        "706a463af20e4cc1aaa956a8e0812376886e543e83f249aa1359b9ce673881c7",
+        "Actual target-Mac migration"
+      ]
+    },
+    {
+      "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
+      "revisionId": "AIroW35NhpWUBsdHv96uz2t2UCMxmWKdKEgvSfwpXq5lhHOy3L3BSkIjSRkINM2gI61Kbyey3gj6uNmH7f8cFtf9PJZcexR_v0v7RvMkffU",
+      "verifiedMarkers": [
+        "Phase 2B — native IndexedDB adapter: code-head результат",
+        "Phase 2B — принята в GitHub",
+        "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
+        "5a8b4f6a418b465da7383d7c999485bae1f9a900",
+        "9c338e5a3b4e13d8b81bdafcf592fab30fa9e7a41034b9c5e1a21fd25494e2c2",
+        "migration dry-run"
+      ]
+    },
+    {
+      "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
+      "revisionId": "AIroW372SNQsUO7-RnGedHbcZCl9gDU7NhBqNdKJMuTlJaUEPcoFyL8dVF5iZiv5aPLrmZ5DgP0FyyrXDxU6DutagsFG7Dbt14sWoqHsKwM",
+      "verifiedMarkers": [
+        "Phase 2B — browser storage recovery invariants proven on code head",
+        "Phase 2B — browser storage принят",
+        "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
+        "706a463af20e4cc1aaa956a8e0812376886e543e83f249aa1359b9ce673881c7",
+        "migration dry-run",
+        "Actual target-Mac migration"
+      ]
+    }
+  ],
+  "architectureAudit": {
+    "status": "alpha19_frozen_phase2b_accepted_migration_dry_run_next",
+    "phase1AMergeCommit": "e7b7593932614f8dfa843298f35eff0230c1e827",
+    "phase2AMergeCommit": "aa5eaaae08a3da4d0ff00ea03aea12b793137a21",
+    "phase2BIssue": 19,
+    "phase2BPullRequest": 33,
+    "phase2BMergeCommit": "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
+    "phase2BFinalReviewedHead": "5a8b4f6a418b465da7383d7c999485bae1f9a900",
+    "phase2BCodeHead": "2ced13b72d1f582028348bedc2ca6a7ef0e57246",
+    "phase2BTargetNamespacePrefix": "mindmap-state-core-v1",
+    "phase2BBrowserSnapshotSha256": "23c72cfd4768f5c76f0f376646fcbbd8a7630fb973e85704f460f19af6b27409",
+    "phase2BFinalArtifactOuterSha256": "706a463af20e4cc1aaa956a8e0812376886e543e83f249aa1359b9ce673881c7",
+    "phase2BFinalArtifactInnerSha256": "9c338e5a3b4e13d8b81bdafcf592fab30fa9e7a41034b9c5e1a21fd25494e2c2",
+    "phase2BFinalExporterInnerSha256": "e69444565228be51418a499f6d778fb91741b95f780f15c2fc8b3da850a2ebd9",
+    "supersededIndexedDbSpikePullRequest": 17,
+    "supersededIndexedDbSpikeHead": "821d4b9874cb1ad5f080db343ecf65173ec4750c",
+    "browserDatabaseSha256": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918",
+    "phase0Accepted": true,
+    "phase1AAccepted": true,
+    "phase2AAccepted": true,
+    "phase2BImplemented": true,
+    "phase2BAccepted": true,
+    "migrationDryRunAllowed": true,
+    "actualMigrationAllowed": false,
+    "candidate6Allowed": false,
+    "deepseekRunAllowed": false,
+    "legacyDatabaseWriteAllowed": false,
+    "zeroModelCalls": true,
+    "nextGate": "phase2c_isolated_migration_dry_run"
+  },
+  "github": {
+    "repository": "ne-agalakov/mindmap-local",
+    "phase0MergeCommit": "850a5fc60a154047eae1f6a5d4f63c7969ae8412",
+    "phase1AMergeCommit": "e7b7593932614f8dfa843298f35eff0230c1e827",
+    "phase2AMergeCommit": "aa5eaaae08a3da4d0ff00ea03aea12b793137a21",
+    "phase2BMergeCommit": "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
+    "ci": {
+      "linuxFull": "passed-final-reviewed-head",
+      "actualChromeIndexedDb": "passed-final-reviewed-head",
+      "macosTargeted": "passed-final-reviewed-head",
+      "sourcePackaging": "passed-final-reviewed-head",
+      "downloadedArtifactVerification": "passed-final-reviewed-head",
+      "driveReadback": "passed-after-merge",
+      "zeroModelCalls": true
+    }
+  }
+}

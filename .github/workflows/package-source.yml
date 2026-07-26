@@ -1,0 +1,40 @@
+name: package-source
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ env.SOURCE_SHA }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+        env:
+          MINDMAP_GIT_COMMIT_SHA: ${{ env.SOURCE_SHA }}
+          MINDMAP_GIT_DIRTY: "false"
+      - run: npm run package:source
+      - run: npm run package:legacy-exporter
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mindmap-source-${{ env.SOURCE_SHA }}
+          path: release-artifacts/*
+          if-no-files-found: error

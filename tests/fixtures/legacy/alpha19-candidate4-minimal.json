@@ -1,0 +1,52 @@
+{
+  "format": "mindmap-diagnostics",
+  "schemaVersion": 3,
+  "appVersion": "0.6.0-alpha.18",
+  "semanticPipelineVersion": "0.6.0-alpha.18",
+  "exportedAt": "2026-07-23T17:29:00.460Z",
+  "syntheticTest": {"runId": "run-qwen", "total": 96, "processingOrder": "original"},
+  "thoughts": [{"id":"synthetic-001"}],
+  "knowledgeNodes": [],
+  "links": [],
+  "aiDecisions": [
+    {
+      "id": "start",
+      "eventType": "batch_started",
+      "createdAt": "2026-07-23T09:09:10.173Z",
+      "engine": "user",
+      "input": {
+        "testDataset": "approved-96-v1",
+        "total": 96,
+        "resume": false,
+        "runId": "run-qwen",
+        "orderVariant": "original",
+        "pipelineVersion": "0.6.0-alpha.12"
+      }
+    },
+    {
+      "id": "preflight",
+      "eventType": "pipeline_preflight",
+      "createdAt": "2026-07-23T09:09:11.000Z",
+      "engine": "ollama",
+      "model": "qwen3:8b",
+      "input": {"runId": "run-qwen"},
+      "output": {"model": "qwen3:8b"}
+    },
+    {
+      "id": "candidates",
+      "eventType": "pipeline_candidates",
+      "createdAt": "2026-07-23T16:16:18.713Z",
+      "engine": "offline",
+      "input": {"runId": "run-qwen", "zeroModelCalls": true, "unresolvedThoughtCount": 1},
+      "output": {"candidateCount": 2, "candidates": [{"sourceId":"a","targetId":"b"}]}
+    },
+    {
+      "id": "pause",
+      "eventType": "batch_paused",
+      "createdAt": "2026-07-23T16:16:18.713Z",
+      "engine": "offline",
+      "input": {"runId": "run-qwen", "orderVariant": "original", "completed": 96, "stage": "candidates", "zeroModelCalls": true},
+      "output": {"candidateCount": 2, "unresolvedThoughtCount": 1}
+    }
+  ]
+}

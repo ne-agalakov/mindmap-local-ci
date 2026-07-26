@@ -1,0 +1,102 @@
+{
+  "format": "mindmap-phase0-evidence",
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-25T13:01:40.609Z",
+  "sources": [
+    {
+      "name": "mindmap-diagnostics-2026-07-23.json",
+      "role": "exact user diagnostics used for canonical legacy inspection",
+      "sizeBytes": 6968844,
+      "sha256": "5fbcf8eb9ee8abf32939707270761568e56a6b3ca7a347e3953212baf0cd18e5",
+      "committed": false,
+      "reasonNotCommitted": "contains private thought text and raw AI decision payloads"
+    },
+    {
+      "name": "mindmap-legacy-2026-07-25T13-01-40Z-356b943275cc.sqlite",
+      "role": "exact target-Mac IndexedDB/sql.js blob exported unchanged by the standalone read-only exporter",
+      "sizeBytes": 5070848,
+      "sha256": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918",
+      "committed": false,
+      "reasonNotCommitted": "contains private local MindMap data and full embeddings"
+    },
+    {
+      "name": "mindmap-legacy-2026-07-25T13-01-40Z-356b943275cc.evidence.json",
+      "role": "browser-generated read-only export evidence matching the exact SQLite bytes",
+      "sizeBytes": 816,
+      "sha256": "51e3d9563b09c91427716eee559745fed35d729e9ffd71f180afa91c3fc7aa2b",
+      "committed": false,
+      "reasonNotCommitted": "preserved beside the private SQLite source; normalized facts are recorded in the sanitized fixture"
+    },
+    {
+      "name": "mindmap-local-v0.6-alpha.18 2.zip",
+      "role": "legacy source archive associated with the diagnostic state",
+      "sizeBytes": 465105281,
+      "sha256": "467747d297a3eeec197116091ff0b1b8ddc69b4490b9b15e546a7085c1e507f7",
+      "committed": false,
+      "reasonNotCommitted": "large historical artifact; preserved outside repository"
+    },
+    {
+      "name": "mindmap-local-v0.6.0-alpha.19-fe1bc46e2b84.zip",
+      "role": "GitHub-verified Alpha.19 source artifact used for the architecture audit",
+      "sizeBytes": 292097,
+      "sha256": "dd02b879a1435494ad490f6cbf0050cecbdef523ee9c1e58afe83483578ebdbd",
+      "committed": false,
+      "reasonNotCommitted": "reproducible GitHub Actions artifact"
+    }
+  ],
+  "canonicalFixture": {
+    "path": "fixtures/legacy/alpha19-candidate4-run03.canonical.json",
+    "sizeBytes": 6643,
+    "sha256": "f4d98bca4eadbd3bc9033a17032bab2804e15577bfd7767b6481c328309c3a20",
+    "generatedBy": "tools/legacy-inspector.mjs + tools/legacy-fixture-projector.mjs",
+    "configuredModel": "deepseek-r1:8b",
+    "containsPrivateThoughtText": false,
+    "containsRawModelResponses": false,
+    "containsRawEventPayloads": false,
+    "sourceEventDigestsIncluded": true
+  },
+  "browserDatabaseFixture": {
+    "path": "fixtures/legacy/browser-database-inspection.json",
+    "sizeBytes": 4795,
+    "sha256": "771bb3347970cbb451f6c7a8fa42829e26a2a2b51224a3f8b2dba8c9900c3653",
+    "generatedBy": "tools/legacy-database-inspector.mjs",
+    "configuredModel": "deepseek-r1:8b",
+    "databaseQuickCheck": "ok",
+    "databaseIntegrityCheck": "ok",
+    "sourceHashStableBeforeAndAfterInspection": true,
+    "diagnosticsRowsExactEqual": true,
+    "containsPrivateThoughtText": false,
+    "containsNodeLabels": false,
+    "containsRawModelPayloads": false
+  },
+  "confirmedState": {
+    "activeRunId": "v06-run-03-1784797750173",
+    "dataset": "approved-96-v1",
+    "orderVariant": "original",
+    "runModel": "qwen3:8b",
+    "configuredModel": "deepseek-r1:8b",
+    "stage": "candidates",
+    "statusFromLegacyTerminalEvent": "paused",
+    "derivedStateCoreGuard": "blocked",
+    "candidateCount": 2,
+    "unresolvedThoughtCount": 1,
+    "persistedContinuationBlock": false,
+    "requiresContinuationClickToDeriveGuard": false,
+    "aiCallAllowed": false,
+    "thoughts": 96,
+    "knowledgeNodes": 30,
+    "links": 0,
+    "aiDecisions": 133,
+    "syntheticThoughts": 96,
+    "personalThoughts": 0
+  },
+  "execution": {
+    "legacySourceModified": false,
+    "databaseWritePerformed": false,
+    "databaseMigrationPerformed": false,
+    "networkCalls": 0,
+    "ollamaCalls": 0,
+    "qwenCalls": 0,
+    "deepseekCalls": 0
+  }
+}

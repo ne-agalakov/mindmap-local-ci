@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <title>MindMap — безопасный экспорт legacy-базы</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #101722; color: #edf4ff; display: grid; place-items: center; padding: 24px; }
+    main { width: min(760px, 100%); background: #182231; border: 1px solid #314057; border-radius: 24px; padding: 28px; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+    h1 { margin: 0 0 12px; font-size: 28px; }
+    p { line-height: 1.55; color: #bac8da; }
+    .warning { background: #33261b; border: 1px solid #74512f; border-radius: 16px; padding: 16px; color: #ffe1bb; }
+    .facts { display: grid; gap: 8px; margin: 20px 0; padding: 16px; background: #111a26; border-radius: 16px; font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    button, a.download { border: 0; border-radius: 14px; padding: 13px 18px; font: inherit; font-weight: 650; cursor: pointer; text-decoration: none; display: inline-flex; justify-content: center; }
+    button { background: #e8f0ff; color: #142033; }
+    button:disabled { opacity: .5; cursor: default; }
+    .downloads { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    a.download { background: #2d425f; color: #fff; }
+    #status { min-height: 48px; margin-top: 18px; white-space: pre-wrap; }
+    .ok { color: #9ee6b0; }
+    .error { color: #ffaaa5; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Экспорт точной legacy-базы</h1>
+    <p>Этот отдельный инструмент только читает старое IndexedDB-хранилище в режиме <strong>readonly</strong>, вычисляет SHA-256 и подготавливает два файла. Он не запускает MindMap, миграцию или AI.</p>
+    <div class="warning"><strong>Важно:</strong> файл SQLite содержит приватные локальные данные, включая мысли и диагностическую историю. Не публикуй его и не отправляй посторонним.</div>
+    <div class="facts">
+      <span>Origin: <b id="origin"></b></span>
+      <span>Database: mindmap-local-semantic-v060</span>
+      <span>Store: database</span>
+      <span>Key: mindmap-v0.6.sqlite</span>
+      <span>Mode: readonly · без AI · без сети</span>
+    </div>
+    <button id="prepare" type="button">Проверить и подготовить экспорт</button>
+    <div id="status" aria-live="polite"></div>
+    <div id="downloads" class="downloads" hidden>
+      <a id="database-download" class="download" download>Скачать точную .sqlite-копию</a>
+      <a id="evidence-download" class="download" download>Скачать evidence.json</a>
+    </div>
+  </main>
+  <script type="module" src="./page.mjs"></script>
+</body>
+</html>

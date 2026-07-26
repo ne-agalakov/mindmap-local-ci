@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "proofKind": "local-offline-real-chromium-indexeddb",
+  "prHead": "02df8758a7c42b33b22b397dae74445cd6a5f7ac",
+  "startedAt": "2026-07-26T05:19:39.327Z",
+  "finishedAt": "2026-07-26T05:19:39.916Z",
+  "browserIndexedDb": true,
+  "networkRequired": false,
+  "npmUsed": false,
+  "viteUsed": false,
+  "privateDataUsed": false,
+  "modelCalls": 0,
+  "migrationExecuted": false,
+  "atomicCommit": true,
+  "reopen": true,
+  "idempotency": true,
+  "workspaceIsolation": true,
+  "runAdapterCompatibility": true,
+  "snapshotHash": "ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1",
+  "abortRollback": true,
+  "runOnlyRefusal": true,
+  "schemaMetadata": {
+    "databaseVersion": 1,
+    "runNamespace": "mindmap-state-core-v1",
+    "graphSchema": "unified-mindmap-v1"
+  },
+  "corruptionDetection": {
+    "loadError": "graph_state_replay_mismatch:synthetic",
+    "followUpRejection": "integrity_mismatch"
+  },
+  "linkLifecycle": {
+    "initialConfirmedRejected": true,
+    "proposedThenConfirmed": true,
+    "downgradeRejected": true
+  },
+  "runner": {
+    "node": "v24.18.0",
+    "browserPath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "browserVersion": "Google Chrome 150.0.7871.184",
+    "prHead": "02df8758a7c42b33b22b397dae74445cd6a5f7ac",
+    "harnessSha256": "ecfee87cac41410a2d1f5b71f3c1a90303f53f42afcf3007c11dd33b6ba2231a",
+    "compileManifestSha256": "7af9f964a6d09dc18a6336930218e3f17ea5ed34ddc73490e9ce7b8ab0607914",
+    "isolatedTemporaryProfile": true,
+    "localLoopbackOnly": true,
+    "browserEvents": [
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO atomic:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO atomic:done",
+          "Object"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO abort:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO abort:done"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO run-only:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO run-only:done"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO metadata:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO metadata:done",
+          "Object"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO corruption:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO corruption:done",
+          "Object"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO link:start"
+        ]
+      },
+      {
+        "type": "console:log",
+        "values": [
+          "SCENARIO link:done",
+          "Object"
+        ]
+      }
+    ]
+  }
+}
