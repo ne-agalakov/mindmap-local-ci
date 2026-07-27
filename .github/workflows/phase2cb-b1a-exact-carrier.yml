@@ -45,7 +45,7 @@ jobs:
           echo "70884a2e0b99b98d458d6f357afc26c73acd7e2dcd6aa88c041b4f10164239da  /tmp/b1a.tar.gz" | sha256sum -c -
           test "$(tar -tzf /tmp/b1a.tar.gz | grep -v '/$' | wc -l | tr -d ' ')" = "19"
           tar -xzf /tmp/b1a.tar.gz -C .
-      - name: Prove and publish exact tree
+      - name: Publish candidate and enforce exact tree
         shell: bash
         run: |
           set -euo pipefail
@@ -58,9 +58,10 @@ jobs:
           expected_tree="2ad85a074d941a1d946ab8111d7cdb62b1ce8f55"
           echo "actual_tree=$actual_tree"
           echo "expected_tree=$expected_tree"
-          test "$actual_tree" = "$expected_tree"
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git commit -m "ci(phase2cb-b1a): exact private PR #43 tree"
-          test "$(git rev-parse HEAD^{tree})" = "$expected_tree"
+          git commit -m "ci(phase2cb-b1a): candidate tree $actual_tree"
+          test "$(git rev-parse HEAD^{tree})" = "$actual_tree"
+          git push --force origin HEAD:phase2cb-b1a-candidate-tree
+          test "$actual_tree" = "$expected_tree"
           git push --force origin HEAD:phase2cb-b1a-exact-tree
