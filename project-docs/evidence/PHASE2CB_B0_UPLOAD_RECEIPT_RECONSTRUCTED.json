@@ -1,0 +1,37 @@
+{
+  "format": "mindmap-phase2cb-b0-upload-receipt-reconstructed-v1",
+  "repository": "ne-agalakov/mindmap-local",
+  "branch": "phase2cb/mapping-contract",
+  "acceptedBase": "6dae9e1e17acd648dbea5c0afeeb25c158f1bcfb",
+  "initialContractCommit": "dc4b491b08a2ab8683f26f9ca9c738324ab4a854",
+  "implementationCommit": "1020c958dc51b63a63cd503733c23b4654d966b5",
+  "tree": "f2a9bd2530891adc4b8e8ca114968dd2ee8cbfde",
+  "focusedTests": {
+    "passed": 19,
+    "failed": 0
+  },
+  "releaseDocumentGate": "passed",
+  "forbiddenDependencyScan": {
+    "originalLauncher": "not_executed_missing_rg",
+    "independentFollowUp": "passed",
+    "patterns": [
+      "node:sqlite",
+      "indexedDB",
+      "fetch(",
+      "/api/",
+      "Ollama",
+      "Qwen",
+      "DeepSeek",
+      "app/page.tsx",
+      "mindmap-local-semantic-v060"
+    ],
+    "findings": 0
+  },
+  "privateSourceOpened": false,
+  "databaseIncluded": false,
+  "migrationExecuted": false,
+  "targetDatabaseCreated": false,
+  "networkOrModelCalls": 0,
+  "receiptReconstructionReason": "The launcher printed a successful receipt path, but the user could not find the local Desktop JSON. Provenance was reconstructed from the successful terminal transcript and exact GitHub commit reverse-read.",
+  "status": "evidence_reconstructed_not_original_local_receipt"
+}

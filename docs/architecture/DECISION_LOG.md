@@ -2,113 +2,90 @@
 
 ## ADR-001 — Freeze Alpha.19 orchestration
 
-Date: 2026-07-25
+Date: 2026-07-25.
 
-Decision: do not create another candidate on top of the current `app/page.tsx` orchestration. Preserve it as read-only legacy evidence and migration input.
+Decision: preserve Alpha.19 as read-only legacy evidence and migration input. Do not create Candidate 6 on top of its monolithic orchestration.
 
-Consequences: no Candidate 5 continuation, no DeepSeek run, no Candidate 6 from legacy orchestration, new state-core/storage namespaces only.
+## ADR-002 — Repository-native evidence workflow
 
-## ADR-002 — Repository-native agent workflow
+Date: 2026-07-25.
 
-Date: 2026-07-25
+Decision: GitHub commit/tree/artifacts are the technical source of truth; Google Drive contains canonical product documents. Every phase is a bounded issue/branch/PR and evidence precedes acceptance.
 
-Decision: durable coding instructions live in short `AGENTS.md`; architecture facts and plans live in linked repository documents. Every implementation phase is a bounded issue and PR.
+## ADR-003 — Accept immutable legacy source
 
-Consequences: GitHub is the technical source of truth; evidence precedes code; PR acceptance names exact scenarios, hashes and proof limits.
+Date: 2026-07-25.
 
-## ADR-003 — Accept the exact browser database as Phase 0 source
+Decision: accept the private SQLite blob with SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, size `5 070 848`, 96 synthetic and 0 personal thoughts as immutable source. Legacy write and actual migration remain prohibited.
 
-Date: 2026-07-25
+## ADR-004 — Run state is a pure aggregate
 
-Decision: accept the private target-Mac SQLite blob with SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918` as immutable legacy source.
+Date: 2026-07-25.
 
-Evidence: source hash unchanged, integrity `ok`, 96 synthetic and zero personal thoughts, zero write/migration/network/model calls.
+Decision: authoritative run behavior uses immutable identity, closed transitions, typed commands/events/rejections, deterministic replay and derived compatibility guards outside React/browser/model services.
 
-Consequences: legacy writes and actual migration remain prohibited; later migration must use a new namespace and preserve source bytes.
+## ADR-005 — Native IndexedDB behind the accepted contract
 
-## ADR-004 — Run state is an explicit pure aggregate
+Date: 2026-07-25.
 
-Date: 2026-07-25
+Decision: use native IndexedDB through a thin repository-owned adapter against `storage/contracts.ts`. Transaction completion, abort, version upgrade, compound workspace keys, receipt persistence and revision/contentHash recheck are explicit invariants.
 
-Decision: authoritative run behavior is defined by immutable identity, a closed state machine, typed commands/events/rejections, deterministic replay and derived compatibility guards. React, storage, browser APIs and model services are outside this boundary.
+## ADR-006 — Actual Chrome is required
 
-Consequences: model mismatch blocks before action; inspection emits no event; authorization and attempt are explicit/idempotent; Phase 2 persists the same contract transactionally.
+Date: 2026-07-25.
 
-## ADR-005 — Native IndexedDB behind the accepted Phase 2 contract
+Decision: `fake-indexeddb` tests are necessary but insufficient. The same adapter must run in real headless Chrome and prove commit, reopen, idempotency, isolation, rollback, upgrade rollback and stable snapshot hash.
 
-Date: 2026-07-25
+## ADR-007 — Accept graph/payload storage before migration
 
-Decision: implement the Phase 2B production-candidate adapter with native IndexedDB against `storage/contracts.ts`, not against the competing contract from closed PR #17.
+Date: 2026-07-26.
 
-Reason:
+Decision: accept Phase 2C-A merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Migration requires canonical payloads, thoughts, typed hierarchy, placement/unresolved, links, embeddings and damaged references transactionally.
 
-- explicit control of transaction completion, abort and version upgrades is a release invariant;
-- `fake-indexeddb` already provides fast deterministic coverage;
-- a thin adapter avoids a new production dependency;
-- compound keys and object-store transactions are sufficient for the bounded state volume;
-- direct browser execution can verify the same adapter without framework/runtime integration.
+## ADR-008 — Freeze B0 mapping before source access
 
-Consequences:
+Date: 2026-07-26.
 
-- database names must start with `mindmap-state-core-v1`;
-- legacy `mindmap-local-semantic-v060` is rejected before `indexedDB.open`;
-- events, aggregate, artifacts and receipt share one readwrite transaction;
-- request success is not commit; transaction completion is authoritative;
-- persisted revision/contentHash are rechecked inside the write transaction;
-- idempotency receipts survive reopen;
-- synthetic/personal workspaces use compound keys;
-- actual migration and runtime/UI integration remain separate gates.
+Decision: split Phase 2C-B into pure B0 mapping/typed-stop planning and later execution. B0 uses sanitized fixtures only and freezes source/target gates, deterministic mapping and rollback/diagnostic requirements before any exact-source access.
 
-## ADR-006 — Real Chrome IndexedDB is required for Phase 2B acceptance
+## ADR-009 — Drive readback before final rerun
 
-Date: 2026-07-25
+Date: 2026-07-26.
 
-Decision: `fake-indexeddb` tests are necessary but insufficient. The same Vite-built adapter must execute in headless Chrome against actual browser IndexedDB.
+Decision: repository metadata and all canonical Google Docs must be synchronized and reverse-read before the exact final-tree CI/artifact rerun. Earlier green trees remain historical evidence only.
 
-Required browser scenarios:
+## ADR-010 — Accept B0, keep B1 separate
 
-- atomic commit;
-- close/reopen;
-- idempotent retry;
-- workspace isolation;
-- abort rollback after queued writes;
-- failed schema upgrade preserving the previous readable version;
-- stable snapshot content hash.
+Date: 2026-07-26.
 
-Evidence on code head `2ced13b72d1f582028348bedc2ca6a7ef0e57246`:
+Decision: accept B0 merge `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216` after exact tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb`, verify `30208230376`, package `30208230352`, downloaded-artifact inspection and post-merge Drive readback. Exact source, target and models remained untouched.
 
-```text
-atomicCommit: true
-reopen: true
-idempotency: true
-workspaceIsolation: true
-abortRollback: true
-upgradeRollback: true
-snapshotHash: 23c72cfd4768f5c76f0f376646fcbbd8a7630fb973e85704f460f19af6b27409
-```
+## ADR-011 — Reject and correct B1a delivery defects
 
-The first browser job exposed a harness cleanup race only after all storage assertions passed. Root cause: Chrome still held its temporary profile during deletion. The runner now awaits process exit before cleanup; the repeated full gate passed.
+Date: 2026-07-27.
 
-Consequences: browser-storage evidence is explicit and reusable, but it does not prove target-Mac migration, production UI/runtime, REQ-OBS-001 or semantic quality.
+Decision: reject initial B1a head `42644037d2b4d66d3e92cff4a591d5b3ea58078f` because exact-tree comparison proved invalid Chrome runner syntax and invalid `actions/checkout4`. Correct only those two files and require full exact-tree rerun. The other 17 B1a files were byte-identical.
 
-## ADR-007 — Accept canonical graph/payload storage before migration
+Evidence: corrected code head `df2570b6cfea74296248297b7000b29876036e95`; corrected tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`; verify `30239528354`; package `30239528365`.
 
-Date: 2026-07-26
+## ADR-012 — Accept B1a and keep B1b behind a new explicit gate
 
-Decision: accept Phase 2C-A as merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Migration cannot proceed with run history alone; the canonical graph aggregate must preserve payloads, thoughts, typed hierarchy, placement/unresolved, links, embeddings and damaged references transactionally.
+Date: 2026-07-27.
 
-Evidence:
+Decision: accept Phase 2C-B1a squash merge `aec5edaca877cec5d769f4ce4efff674a9c92a7d` only for sanitized executor/harness behavior.
 
-- final reviewed head `29a317b58cbecaea13e4f21c02af2b945a6e6edc`;
-- exact public tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d`;
-- verify `30198811851` and package `30198811852`;
-- target-Mac Chrome proof;
-- downloaded source/exporter/browser inspection;
-- post-merge Drive readback.
+Final evidence:
 
-Consequences:
+- private final head `c1237b9ba012d60dc720bf940082c7d8e88f4e1e`;
+- public exact head `667b218b8bf863c45ae074db65a314e77786f8d0`;
+- shared tree `58d2bb0e9b7edebb3d3d830064406feffbff5181`;
+- verify `30245125059`;
+- package `30245125058`;
+- downloaded source/browser artifacts and manifests independently verified;
+- post-merge canonical Drive readback verified.
 
-- Phase 2C-B may define and test an isolated exact-source dry run;
-- same-fixture cross-environment equality remains open;
-- no actual target-Mac migration, model execution, runtime/UI integration or real thought import is authorized;
-- release-doc marker case and generic-path scan failures are recorded as gate regressions, not storage failures.
+Accepted behavior: physical read-only sanitized SQLite; source byte identity; deterministic repeated plan/target hashes; actual Chrome IndexedDB temporary targets; injected rollback; typed stops; no automatic retry; REQ-OBS trace/live diagnostics; zero network/model calls.
+
+Proof boundary: exact private source was not opened, no real migration target was created and actual migration was not performed.
+
+Consequence: B1b is not authorized automatically. A B1b attempt requires a new explicit user confirmation for exactly one read-only exact-source dry run against a fresh isolated temporary target. Actual migration remains a separate later gate.

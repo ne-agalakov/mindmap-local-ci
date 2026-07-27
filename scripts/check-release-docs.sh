@@ -4,9 +4,7 @@ set -euo pipefail
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${project_root}"
 
-package_version="$(
-  node --input-type=module -e 'import packageJson from "./package.json" with { type: "json" }; process.stdout.write(packageJson.version)'
-)"
+package_version="$(node --input-type=module -e 'import packageJson from "./package.json" with { type: "json" }; process.stdout.write(packageJson.version)')"
 release_label="${package_version%.0-alpha.*}-alpha.${package_version##*.}"
 alpha_number="${package_version##*.}"
 
@@ -22,28 +20,21 @@ require_text() {
 require_text "app/lib/semantic-pipeline.ts" "SEMANTIC_PIPELINE_VERSION = \"${package_version}\""
 require_text "app/page.tsx" "appVersion: \"${package_version}\""
 require_text "app/page.tsx" "<small>v0.6 alpha.${alpha_number}</small>"
-require_text "README.md" "# MindMap Local v${release_label}"
-require_text "README.md" "Accepted Phase 2C-A"
-require_text "README.md" "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-require_text "README.md" "Same-fixture cross-environment"
 require_text "start-mindmap.command" "MindMap v${release_label}"
-require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-A — принята"
-require_text "project-docs/PROJECT_STATUS.md" "## Следующий проверяемый шаг"
-require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Актуально для v${release_label}"
-require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Accepted Phase 2C-A recovery invariants"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "Alpha.${alpha_number}"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "REQ-OBS-001"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-require_text "docs/architecture/ADR-0002-PHASE2C-GRAPH-PAYLOAD-STORAGE.md" "Status: accepted"
-require_text "docs/architecture/PHASE2CA_VERIFICATION.md" "Status: accepted and merged"
-require_text "docs/architecture/PHASE2CA_VERIFICATION.md" "ee5401a4a2ca7763467562417b9c5c4aece01214"
-require_text "docs/architecture/WORK_STOP.md" "after Phase 2C-A acceptance"
-require_text "docs/architecture/KNOWN_GAPS.md" "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-require_text "docs/architecture/README.md" "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-require_text "docs/architecture/DECISION_LOG.md" "ADR-007"
-require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-A exact-tree public mirror"
-require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-phase2ca-accepted"
-require_text "ARTIFACT_REVISION.json" "2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c"
+require_text "README.md" "# MindMap Local v${release_label}"
+require_text "README.md" "Phase 2C-B1a — accepted"
+require_text "README.md" "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
+require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-B1a — принята"
+require_text "project-docs/PROJECT_INSTRUCTION.md" "B1a принята"
+require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Phase 2C-B1a — accepted recovery boundary"
+require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-B1a merge and post-merge Drive provenance"
+require_text "docs/architecture/WORK_STOP.md" "Work boundary after Phase 2C-B1a acceptance"
+require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps after Phase 2C-B1a acceptance"
+require_text "docs/architecture/DECISION_LOG.md" "ADR-012"
+require_text "project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md" "58d2bb0e9b7edebb3d3d830064406feffbff5181"
+require_text "project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md" "B1b is not authorized automatically"
+require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-phase2cb-b1a-accepted-b1b-blocked"
+require_text "ARTIFACT_REVISION.json" "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
 
 instruction_length="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; process.stdout.write(String(Array.from(readFileSync("project-docs/PROJECT_INSTRUCTION.md", "utf8")).length))')"
 if (( instruction_length > 8000 )); then
@@ -55,68 +46,79 @@ node --input-type=module - "${package_version}" <<'NODE'
 import { readFile } from "node:fs/promises";
 
 const expectedVersion = process.argv[2];
+const fail = (message) => {
+  console.error(`Release documentation gate failed: ${message}`);
+  process.exit(65);
+};
+
 let drive;
 let artifact;
 try {
   drive = JSON.parse(await readFile("project-docs/DRIVE_SYNC.json", "utf8"));
   artifact = JSON.parse(await readFile("ARTIFACT_REVISION.json", "utf8"));
 } catch {
-  console.error("Release documentation gate failed: synchronized JSON is absent or invalid.");
-  process.exit(65);
+  fail("synchronized JSON is absent or invalid.");
 }
 
-const requiredDocuments = new Set([
-  "MindMap — инструкция проекта.md",
-  "MindMap — решения и статус.md",
-  "MindMap — восстановление и бюджет локальной модели.md",
-]);
-const syncedDocuments = new Set(
-  Array.isArray(drive.documents)
-    ? drive.documents
-        .filter((item) => typeof item?.driveFileId === "string" && item.driveFileId.length > 0)
-        .map((item) => item.name)
-    : [],
-);
-const requiredMarkers = new Set([
-  "Phase 2C-A — принята и слита",
-  "Phase 2C-A — accepted merge provenance",
-  "Phase 2C-A — accepted recovery/storage boundary",
-  "29a317b58cbecaea13e4f21c02af2b945a6e6edc",
-  "292634312ad04fa6e6cfc5a5ded311ac1020094d",
-  "ee5401a4a2ca7763467562417b9c5c4aece01214",
-  "actual target-Mac migration",
-]);
-const actualMarkers = new Set(
-  Array.isArray(drive.readBackChecks)
-    ? drive.readBackChecks.flatMap((item) => Array.isArray(item?.verifiedMarkers) ? item.verifiedMarkers : [])
-    : [],
-);
+const expectedRevisions = {
+  instruction: "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
+  status: "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
+  recovery: "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
+};
+
+if (drive.version !== expectedVersion) fail("Drive version mismatch.");
+if (drive.artifactRevision !== 9) fail("Drive artifact revision is not 9.");
+if (drive.syncStatus !== "synced_native_google_docs_verified") fail("Drive sync is not verified.");
+if (drive.readBackAt !== drive.syncedAt) fail("Drive readback time mismatch.");
+
+const documents = Array.isArray(drive.documents) ? drive.documents : [];
+if (documents.length !== 3 || documents.some((item) =>
+  item?.revisionId !== item?.driveRevisionId
+  || item?.readBackStatus !== "verified"
+)) fail("Drive document revision/readback evidence is incomplete.");
+
+const revisions = Object.fromEntries(documents.map((item) => [item.name, item.revisionId]));
+if (revisions["MindMap — инструкция проекта.md"] !== expectedRevisions.instruction) fail("instruction revision mismatch.");
+if (revisions["MindMap — решения и статус.md"] !== expectedRevisions.status) fail("status revision mismatch.");
+if (revisions["MindMap — восстановление и бюджет локальной модели.md"] !== expectedRevisions.recovery) fail("recovery revision mismatch.");
+
+const audit = drive.architectureAudit ?? {};
+if (
+  audit.phase2CB1aImplemented !== true
+  || audit.phase2CB1aAccepted !== true
+  || audit.phase2CB1bAllowed !== false
+  || audit.phase2CB1Allowed !== false
+  || audit.actualMigrationAllowed !== false
+  || audit.phase2CB1aPostMergeDriveReadback !== true
+  || audit.exactSourceOpenedDuringPhase2CB1a !== false
+  || audit.realMigrationTargetCreatedDuringPhase2CB1a !== false
+  || audit.migrationExecutedDuringPhase2CB1a !== false
+  || audit.zeroModelCallsDuringPhase2CB1a !== true
+  || audit.zeroNetworkCallsDuringPhase2CB1a !== true
+  || audit.automaticRetryAllowedDuringPhase2CB1a !== false
+) fail("DRIVE_SYNC.json does not preserve accepted B1a / blocked B1b boundary.");
+
 const expectedDriveStatus = `synced_native_google_docs_verified_${drive.syncedAt}`;
-
-if (drive.version !== expectedVersion
-  || drive.readBackAt !== drive.syncedAt
-  || drive.syncStatus !== "synced_native_google_docs_verified"
-  || ![...requiredDocuments].every((name) => syncedDocuments.has(name))
-  || ![...requiredMarkers].every((marker) => actualMarkers.has(marker))
-  || drive.architectureAudit?.phase2CAMergeCommit !== "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-  || drive.architectureAudit?.phase2CAAccepted !== true
-  || drive.architectureAudit?.phase2CBAllowed !== true
-  || drive.architectureAudit?.actualMigrationAllowed !== false
-  || drive.architectureAudit?.zeroModelCalls !== true
-  || artifact.appVersion !== expectedVersion
+if (
+  artifact.appVersion !== expectedVersion
+  || artifact.artifactRevision !== 9
+  || artifact.status !== "frozen-legacy-runtime-phase2cb-b1a-accepted-b1b-blocked"
   || artifact.driveSyncStatus !== expectedDriveStatus
-  || artifact.repository !== "ne-agalakov/mindmap-local"
-  || artifact.phase2CAMergeCommit !== "292634312ad04fa6e6cfc5a5ded311ac1020094d"
-  || artifact.phase2CAAccepted !== true
-  || artifact.phase2CBAllowed !== true
+  || artifact.phase2CB1aImplemented !== true
+  || artifact.phase2CB1aAccepted !== true
+  || artifact.phase2CB1bAllowed !== false
+  || artifact.phase2CB1Allowed !== false
   || artifact.actualMigrationAllowed !== false
-  || artifact.zeroModelCallsDuringPhase2CA !== true
-  || artifact.legacyDatabaseOpenedDuringPhase2CA !== false
-  || artifact.legacyDatabaseWritePerformedDuringPhase2CA !== false
-  || artifact.targetMigrationPerformedDuringPhase2CA !== false) {
-  console.error(`Release documentation gate failed: Phase 2C-A accepted provenance is not synchronized for ${expectedVersion}.`);
-  process.exit(65);
-}
+  || artifact.phase2CB1aPostMergeDriveReadback !== true
+  || artifact.exactSourceOpenedDuringPhase2CB1a !== false
+  || artifact.realMigrationTargetCreatedDuringPhase2CB1a !== false
+  || artifact.migrationExecutedDuringPhase2CB1a !== false
+  || artifact.zeroModelCallsDuringPhase2CB1a !== true
+  || artifact.zeroNetworkCallsDuringPhase2CB1a !== true
+  || artifact.automaticRetryAllowedDuringPhase2CB1a !== false
+  || artifact.phase2CB1aMergeCommit !== "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
+  || artifact.phase2CB1aFinalSharedTree !== "58d2bb0e9b7edebb3d3d830064406feffbff5181"
+) fail("ARTIFACT_REVISION.json does not preserve accepted B1a / blocked B1b provenance.");
 NODE
 
-echo "Release documentation gate passed for ${package_version}."
+echo "Release documentation gate passed for ${package_version} Phase 2C-B1a accepted / B1b blocked boundary."
