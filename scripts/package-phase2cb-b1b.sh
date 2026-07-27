@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-REPOSITORY="${MINDMAP_PACKAGE_REPOSITORY:-ne-agalakov/mindmap-local}"
+REPOSITORY="${MINDMAP_PACKAGE_REPOSITORY:-${GITHUB_REPOSITORY:-ne-agalakov/mindmap-local}}"
 COMMIT="$(git rev-parse HEAD)"
 if [[ -n "${MINDMAP_PACKAGE_COMMIT_SHA:-}" ]]; then
   REQUESTED_COMMIT="$(git rev-parse "${MINDMAP_PACKAGE_COMMIT_SHA}^{commit}")"
