@@ -1,0 +1,87 @@
+name: export-b1b-exact-overlay
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/export-b1b-exact-overlay.yml"
+      - "carrier/b1b-v2-*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and export exact overlay
+        id: export
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_commit="fcfe8b72e5df1f0af2aa65feaffcb017994e788b"
+          expected_tree="e046f513cbadcde4ba63ed3b60c28b125f0d57f9"
+          expected_overlay_sha="567b70c70b157accd491d8a72119652d80512c2cf4d808737ad992315b301a56"
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          cat > "$tmp/chunks.sha256" <<'SUMS'
+          bae323e32f033410a09924a62c274408db49e4b98ad94e68c56f4b004200ee0e  carrier/b1b-v2-00
+          cc40488a0e7953fae75cc986da33c35b5d863e6bd4ec526035499e49978609c8  carrier/b1b-v2-01
+          c71a051d010cb417d33e8a1a1f9b1b6d09ee9ab9f9113c1c97b6b740ac033531  carrier/b1b-v2-02
+          ee06fb3db435d74b282fc643eb878c18997f0519512fbf3fd43e314f4d3bb634  carrier/b1b-v2-03
+          5bd93c2576295252ed779f64967bcf93d5930ffd706a6fbe7dae50ad9819e18e  carrier/b1b-v2-04
+          a285b8c793236602fd431911df32b67a6746d3795142618674d51f5634c36c40  carrier/b1b-v2-05
+          5913e317f269359631a7bd98579df8adb89ec7884a507b2ec663f9a8f1f2ce63  carrier/b1b-v2-06
+          8dc3479c967a0936caa9ff8b0426f2128711febfb90770cf83e73c412680b9bb  carrier/b1b-v2-07
+          2309591e33d681d8fc86f69229dbe201bcac2067e5f42f8751f0026560c68322  carrier/b1b-v2-08
+          f4986cc410de4dd768f9f568a00d6e37abb956ae04de0a62bbf32aae10f14097  carrier/b1b-v2-09
+          SUMS
+
+          while read -r expected file; do
+            actual="$(tr -d '[:space:]' < "$file" | sha256sum | awk '{print $1}')"
+            test "$actual" = "$expected"
+          done < "$tmp/chunks.sha256"
+
+          for index in 00 01 02 03 04 05 06 07 08 09; do
+            tr -d '[:space:]' < "carrier/b1b-v2-${index}"
+          done | base64 -d > "$tmp/overlay.tar.gz"
+
+          actual_overlay_sha="$(sha256sum "$tmp/overlay.tar.gz" | awk '{print $1}')"
+          test "$actual_overlay_sha" = "$expected_overlay_sha"
+
+          git worktree add --detach "$tmp/exact" "$base_commit"
+          tar -xzf "$tmp/overlay.tar.gz" -C "$tmp/exact"
+          cd "$tmp/exact"
+          git add -A
+          actual_tree="$(git write-tree)"
+          test "$actual_tree" = "$expected_tree"
+
+          cp "$tmp/overlay.tar.gz" "$GITHUB_WORKSPACE/b1b-exact-overlay.tar.gz"
+          cat > "$GITHUB_WORKSPACE/b1b-overlay-receipt.json" <<JSON
+          {
+            "format": "mindmap-phase2cb-b1b-exact-overlay-v1",
+            "privateCommit": "7933e0afcba9bb1f3efcc7b95eb42aa6d67b3164",
+            "baseCommit": "$base_commit",
+            "privateTree": "$expected_tree",
+            "publicReconstructedTree": "$actual_tree",
+            "treesEqual": true,
+            "overlaySha256": "$actual_overlay_sha",
+            "exactSourceIncluded": false,
+            "exactSourceOpened": false,
+            "migrationExecuted": false,
+            "modelCalls": 0
+          }
+          JSON
+      - name: Upload verified overlay
+        uses: actions/upload-artifact@v4
+        with:
+          name: b1b-exact-overlay-${{ github.sha }}
+          path: |
+            b1b-exact-overlay.tar.gz
+            b1b-overlay-receipt.json
+          if-no-files-found: error
