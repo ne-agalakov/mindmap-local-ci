@@ -1,0 +1,70 @@
+name: materialize-b1b-exact-tree
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/materialize-b1b-exact.yml"
+      - "carrier/b1b-overlay-*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct exact private tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          base_commit="fcfe8b72e5df1f0af2aa65feaffcb017994e788b"
+          expected_tree="e046f513cbadcde4ba63ed3b60c28b125f0d57f9"
+          output_branch="phase2cb-b1b-package-exact"
+          overlay_sha="567b70c70b157accd491d8a72119652d80512c2cf4d808737ad992315b301a56"
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          cat carrier/b1b-overlay-00.b64 carrier/b1b-overlay-01.b64 carrier/b1b-overlay-02.b64 | base64 -d > "$tmp/overlay.tar.gz"
+          echo "${overlay_sha}  $tmp/overlay.tar.gz" | sha256sum -c -
+
+          git worktree add --detach "$tmp/exact" "$base_commit"
+          tar -xzf "$tmp/overlay.tar.gz" -C "$tmp/exact"
+          cd "$tmp/exact"
+          git add -A
+          actual_tree="$(git write-tree)"
+          printf 'expected tree: %s\nactual tree:   %s\n' "$expected_tree" "$actual_tree"
+          test "$actual_tree" = "$expected_tree"
+
+          git config user.name "MindMap CI"
+          git config user.email "ci@example.invalid"
+          git commit -m "CI mirror: exact Phase 2C-B1b one-shot package tree"
+          exact_commit="$(git rev-parse HEAD)"
+          git push origin "HEAD:refs/heads/${output_branch}" --force
+
+          cat > "$tmp/receipt.json" <<JSON
+          {
+            "format": "mindmap-phase2cb-b1b-public-materialization-v1",
+            "privateCommit": "7933e0afcba9bb1f3efcc7b95eb42aa6d67b3164",
+            "privateTree": "$expected_tree",
+            "publicCommit": "$exact_commit",
+            "publicTree": "$actual_tree",
+            "treesEqual": true,
+            "overlaySha256": "$overlay_sha",
+            "historyTransferred": false,
+            "exactSourceIncluded": false,
+            "exactSourceOpened": false,
+            "migrationExecuted": false,
+            "modelCalls": 0
+          }
+          JSON
+          cp "$tmp/receipt.json" "$GITHUB_WORKSPACE/b1b-materialization-receipt.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b1b-materialization-receipt-${{ github.sha }}
+          path: b1b-materialization-receipt.json
+          if-no-files-found: error
