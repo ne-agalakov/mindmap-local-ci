@@ -1,90 +1,90 @@
 {
   "version": "0.6.0-alpha.19",
-  "artifactRevision": 8,
-  "syncedAt": "2026-07-27T05:35:22Z",
+  "artifactRevision": 9,
+  "syncedAt": "2026-07-27T07:24:43Z",
+  "syncStatus": "synced_native_google_docs_verified",
+  "readBackAt": "2026-07-27T07:24:43Z",
   "documents": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
       "format": "google-doc",
-      "revisionId": "AIroW36K3Iq8m6dAwSPcI4bropFE55ZTLVgSokZFkI5D1eGMWY-8HJtPorCQSTN0sOD2p0h7QKcTctQCrDMGPon05gtLxQa2sgoiV7JRsag",
-      "driveRevisionId": "AIroW36K3Iq8m6dAwSPcI4bropFE55ZTLVgSokZFkI5D1eGMWY-8HJtPorCQSTN0sOD2p0h7QKcTctQCrDMGPon05gtLxQa2sgoiV7JRsag",
+      "revisionId": "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
+      "driveRevisionId": "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
       "readBackStatus": "verified",
-      "verifiedMarker": "Phase 2C-B1a — exact-tree implementation gate пройден (27 июля 2026)"
+      "verifiedMarker": "Phase 2C-B1a — принята после merge (27 июля 2026)"
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
       "format": "google-doc",
-      "revisionId": "AIroW37cSu7nj57SJ8uA8jXXqE-pcObCMunZA_ge4NCFtX6KJq4lD8H_lE_ZuDaBa7LEdC0cfAC_2eWEEg2Of3PiDU9tc4EmJ4az9k_1OPA",
-      "driveRevisionId": "AIroW37cSu7nj57SJ8uA8jXXqE-pcObCMunZA_ge4NCFtX6KJq4lD8H_lE_ZuDaBa7LEdC0cfAC_2eWEEg2Of3PiDU9tc4EmJ4az9k_1OPA",
+      "revisionId": "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
+      "driveRevisionId": "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
       "readBackStatus": "verified",
-      "verifiedMarker": "Статус B1a: `implemented / final documentation gate pending`."
+      "verifiedMarker": "B1a accepted on sanitized fixtures only."
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
       "format": "google-doc",
-      "revisionId": "AIroW35eVrOsCHSJux6s5j-t-JgF0RDkttXKMgfgRYeCwgMEhov29RRtxs80LUk-jJ7wVvnRb6_GTrUS75nIu888QFqb2GkzvD_XkA0XGRU",
-      "driveRevisionId": "AIroW35eVrOsCHSJux6s5j-t-JgF0RDkttXKMgfgRYeCwgMEhov29RRtxs80LUk-jJ7wVvnRb6_GTrUS75nIu888QFqb2GkzvD_XkA0XGRU",
+      "revisionId": "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
+      "driveRevisionId": "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
       "readBackStatus": "verified",
-      "verifiedMarker": "B1b разрешается только после полного принятия B1a"
+      "verifiedMarker": "No automatic retry, model call or B1b execution is authorized."
     }
   ],
-  "syncStatus": "synced_native_google_docs_verified",
-  "readBackAt": "2026-07-27T05:35:22Z",
   "readBackChecks": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "revisionId": "AIroW36K3Iq8m6dAwSPcI4bropFE55ZTLVgSokZFkI5D1eGMWY-8HJtPorCQSTN0sOD2p0h7QKcTctQCrDMGPon05gtLxQa2sgoiV7JRsag",
-      "driveRevisionId": "AIroW36K3Iq8m6dAwSPcI4bropFE55ZTLVgSokZFkI5D1eGMWY-8HJtPorCQSTN0sOD2p0h7QKcTctQCrDMGPon05gtLxQa2sgoiV7JRsag",
+      "revisionId": "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
+      "driveRevisionId": "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
       "status": "verified",
       "verifiedMarkers": [
-        "Phase 2C-B1a — exact-tree implementation gate пройден (27 июля 2026)",
-        "df2570b6cfea74296248297b7000b29876036e95",
-        "8ef2603b85aef1e7f1ff055cce7579259e3ee659",
-        "B1b",
-        "model/network calls = 0"
+        "Phase 2C-B1a — принята после merge (27 июля 2026)",
+        "aec5edaca877cec5d769f4ce4efff674a9c92a7d",
+        "58d2bb0e9b7edebb3d3d830064406feffbff5181",
+        "B1b не разрешена автоматически",
+        "network/model calls = 0"
       ]
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "revisionId": "AIroW37cSu7nj57SJ8uA8jXXqE-pcObCMunZA_ge4NCFtX6KJq4lD8H_lE_ZuDaBa7LEdC0cfAC_2eWEEg2Of3PiDU9tc4EmJ4az9k_1OPA",
-      "driveRevisionId": "AIroW37cSu7nj57SJ8uA8jXXqE-pcObCMunZA_ge4NCFtX6KJq4lD8H_lE_ZuDaBa7LEdC0cfAC_2eWEEg2Of3PiDU9tc4EmJ4az9k_1OPA",
+      "revisionId": "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
+      "driveRevisionId": "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
       "status": "verified",
       "verifiedMarkers": [
-        "Статус B1a: `implemented / final documentation gate pending`.",
-        "df2570b6cfea74296248297b7000b29876036e95",
-        "8ef2603b85aef1e7f1ff055cce7579259e3ee659",
+        "B1a accepted on sanitized fixtures only.",
+        "aec5edaca877cec5d769f4ce4efff674a9c92a7d",
+        "58d2bb0e9b7edebb3d3d830064406feffbff5181",
         "B1b",
-        "model/network calls = 0"
+        "network/model calls 0"
       ]
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "revisionId": "AIroW35eVrOsCHSJux6s5j-t-JgF0RDkttXKMgfgRYeCwgMEhov29RRtxs80LUk-jJ7wVvnRb6_GTrUS75nIu888QFqb2GkzvD_XkA0XGRU",
-      "driveRevisionId": "AIroW35eVrOsCHSJux6s5j-t-JgF0RDkttXKMgfgRYeCwgMEhov29RRtxs80LUk-jJ7wVvnRb6_GTrUS75nIu888QFqb2GkzvD_XkA0XGRU",
+      "revisionId": "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
+      "driveRevisionId": "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
       "status": "verified",
       "verifiedMarkers": [
-        "B1b разрешается только после полного принятия B1a",
-        "df2570b6cfea74296248297b7000b29876036e95",
-        "8ef2603b85aef1e7f1ff055cce7579259e3ee659",
-        "B1b",
-        "model/network calls = 0"
+        "No automatic retry, model call or B1b execution is authorized.",
+        "aec5edaca877cec5d769f4ce4efff674a9c92a7d",
+        "B1b attempt requires a new explicit confirmation",
+        "source before/after identity",
+        "full cleanup on failure"
       ]
     }
   ],
   "architectureAudit": {
-    "status": "alpha19_frozen_phase2cb_b1a_implemented_pre_merge_b1b_blocked",
+    "status": "alpha19_frozen_phase2cb_b1a_accepted_b1b_blocked",
     "phase2CAAccepted": true,
     "phase2CB0Accepted": true,
     "phase2CB1PlanAccepted": true,
     "phase2CB1aAllowed": true,
     "phase2CB1aImplemented": true,
-    "phase2CB1aAccepted": false,
+    "phase2CB1aAccepted": true,
     "phase2CB1bAllowed": false,
     "phase2CB1Allowed": false,
     "actualMigrationAllowed": false,
@@ -96,41 +96,40 @@
     "zeroNetworkCallsDuringPhase2CB1a": true,
     "automaticRetryAllowedDuringPhase2CB1a": false,
     "phase2CB1aPullRequest": 43,
-    "phase2CB1aCorrectedPrivateHead": "df2570b6cfea74296248297b7000b29876036e95",
-    "phase2CB1aPublicExactHead": "76a6da518301fcddbcaa9c3e06fdeb46805dbf6c",
-    "phase2CB1aSharedTree": "8ef2603b85aef1e7f1ff055cce7579259e3ee659",
-    "phase2CB1aVerifyRun": 30239528354,
-    "phase2CB1aPackageRun": 30239528365,
-    "phase2CB1aDriveReadback": true,
-    "nextGate": "phase2cb_b1a_final_docs_exact_tree_rerun_merge_and_provenance"
+    "phase2CB1aFinalPrivateHead": "c1237b9ba012d60dc720bf940082c7d8e88f4e1e",
+    "phase2CB1aFinalPublicHead": "667b218b8bf863c45ae074db65a314e77786f8d0",
+    "phase2CB1aFinalSharedTree": "58d2bb0e9b7edebb3d3d830064406feffbff5181",
+    "phase2CB1aMergeCommit": "aec5edaca877cec5d769f4ce4efff674a9c92a7d",
+    "phase2CB1aFinalVerifyRun": 30245125059,
+    "phase2CB1aFinalPackageRun": 30245125058,
+    "phase2CB1aPostMergeDriveReadback": true,
+    "nextGate": "explicit_user_confirmation_for_one_b1b_read_only_exact_source_dry_run"
   },
   "github": {
     "privateRepository": "ne-agalakov/mindmap-local",
     "publicCiMirror": "ne-agalakov/mindmap-local-ci",
     "phase2CB1a": {
       "privatePullRequest": 43,
-      "initialHead": "42644037d2b4d66d3e92cff4a591d5b3ea58078f",
-      "correctedPrivateHead": "df2570b6cfea74296248297b7000b29876036e95",
-      "publicExactHead": "76a6da518301fcddbcaa9c3e06fdeb46805dbf6c",
-      "sharedTree": "8ef2603b85aef1e7f1ff055cce7579259e3ee659",
-      "verifyRun": 30239528354,
-      "packageRun": 30239528365,
-      "githubSourceArtifactDigest": "9ccc881ad9f80c7a519a7d468dafb0797678b454631aaa63e8cc42854d19024a",
-      "downloadedSourceArtifactSha256": "9cccf89719947caeda2e8aa607321ed2dc6fff8e66fb501e6e32971b989acdf5",
-      "innerSourceSha256": "2aa6ce72815af3c9a934fa64b9ed98442dac3aa3496a8a1beb6db87542296fb0",
-      "innerExporterSha256": "b66b4949d0109e4a0379957cef027601377ea37062b164a13bee469169e6b699",
-      "githubBrowserArtifactDigest": "8bff5ba4e1599a776466d9a3a3536169e304dd5755195740175735d0c3a918e2",
-      "downloadedBrowserArtifactSha256": "8bfffb51c89766147f83268fd881982f209270726c1a4372b15c0212161b22c6",
-      "browserLogSha256": "c8132cc36f5c508c3ffde7244d5e30888d707287af1aa7e6d6f96a99903dc202",
+      "finalPrivateHead": "c1237b9ba012d60dc720bf940082c7d8e88f4e1e",
+      "publicExactHead": "667b218b8bf863c45ae074db65a314e77786f8d0",
+      "sharedTree": "58d2bb0e9b7edebb3d3d830064406feffbff5181",
+      "mergeCommit": "aec5edaca877cec5d769f4ce4efff674a9c92a7d",
+      "verifyRun": 30245125059,
+      "packageRun": 30245125058,
+      "sourceArtifactSha256": "db61f1e92639e3320062977f5d4f949442ba9ffbeac0e8678a10ee473251477d",
+      "innerSourceSha256": "264503b2394d0d58a842e26030d4a555892bd7ec73d8c96ff569b85b699d963b",
+      "innerExporterSha256": "9ba8213c8146467d87f0ed5c1512c62722feb1ebaf4b989e60da7ba2908241ef",
+      "browserArtifactSha256": "482fc377d64de16e6927998e3f8ad087a383ed118f802f7cf4d605b4c4f77ac2",
+      "browserLogSha256": "f5ab869cab617275d3d5d44762ab6c5bf0337240e00fadb6fb976564f905db87",
       "portablePlanHash": "16f82826ae2846136ba2d4f561c0116f17433ce4ab6aa5c3c2c2ab8a4681c52d",
       "targetSnapshotHash": "6399e23e713214da1574113739e25ea86a220cec8990963c955aeea0a4e73fbf",
-      "documentationGate": "drive-readback-passed-final-repository-docs-tree-pending",
-      "accepted": false,
+      "documentationGate": "post-merge-drive-readback-passed-provenance-pr-pending",
+      "accepted": true,
       "b1bAllowed": false,
       "driveRevisions": {
-        "instruction": "AIroW36K3Iq8m6dAwSPcI4bropFE55ZTLVgSokZFkI5D1eGMWY-8HJtPorCQSTN0sOD2p0h7QKcTctQCrDMGPon05gtLxQa2sgoiV7JRsag",
-        "status": "AIroW37cSu7nj57SJ8uA8jXXqE-pcObCMunZA_ge4NCFtX6KJq4lD8H_lE_ZuDaBa7LEdC0cfAC_2eWEEg2Of3PiDU9tc4EmJ4az9k_1OPA",
-        "recovery": "AIroW35eVrOsCHSJux6s5j-t-JgF0RDkttXKMgfgRYeCwgMEhov29RRtxs80LUk-jJ7wVvnRb6_GTrUS75nIu888QFqb2GkzvD_XkA0XGRU"
+        "instruction": "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
+        "status": "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
+        "recovery": "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk"
       }
     }
   }

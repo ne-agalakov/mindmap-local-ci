@@ -1,34 +1,36 @@
-# Known gaps after Phase 2C-B1a corrected exact-tree gate
+# Known gaps after Phase 2C-B1a acceptance
 
-Green tests prove only the listed sanitized executor/harness behavior. They do not prove exact-source migration or product semantics.
+B1a is accepted only for sanitized executor/harness behavior. Green CI and artifact evidence do not prove exact-source migration or product semantics.
 
-## Closed in B1a code gate
+## Closed
 
-- sanitized SQLite opened physically read-only on Linux/macOS;
-- source before/after identity remained equal;
+- B1a private/public final tree equality `58d2bb0e9b7edebb3d3d830064406feffbff5181`;
+- final Linux/macOS/full/actual-Chrome/package gates;
+- downloaded source/exporter/browser artifact inspection;
+- physical read-only sanitized SQLite;
+- source before/after identity;
 - deterministic two-clean-run plan and target hashes;
-- native IndexedDB temporary target in actual Chrome;
-- injected failure left no partial target or idempotency receipt;
+- actual Chrome IndexedDB temporary targets;
+- injected rollback with no partial target or receipt;
 - typed stops and no automatic retry;
-- REQ-OBS trace, live status, inactivity/possibly-hung state and diagnostics action in the sanitized harness;
-- zero network/model calls and installed network guards;
-- corrected private/public tree equality `8ef2603b85aef1e7f1ff055cce7579259e3ee659`;
-- Linux/macOS/full/Chrome/package gates and downloaded-artifact inspection;
-- two delivery defects diagnosed and corrected before merge.
+- sanitized REQ-OBS trace/live state/diagnostics;
+- zero network/model calls;
+- merge PR #43 and post-merge canonical Drive readback;
+- initial Chrome-runner and macOS checkout delivery defects diagnosed and corrected before acceptance.
 
 ## Still open
 
-- final documentation-tree exact rerun and PR #43 merge/provenance;
 - B1b exact-source read-only dry run;
-- exact source byte-stability during B1b;
-- exact 96/30/0/133 count validation against the accepted source;
+- exact source path/package identity before access;
+- exact source byte/hash stability during B1b;
+- exact 96 thoughts / 30 nodes / 0 links / 133 decisions count validation;
 - deterministic target equality from the exact source;
-- exact-source injected rollback;
+- exact-source injected rollback and full target cleanup;
 - actual target-Mac migration, backup and rollback;
-- same-fixture cross-environment graph equality beyond the B1a portable plan proof;
+- same-fixture cross-environment equality beyond the portable B1a plan proof;
 - production runtime/UI integration;
 - persisted production REQ-OBS-001;
 - service-level exactly-once AI execution;
 - semantic quality, multi-order stability and real-data safety.
 
-B1b, actual migration, models, runtime/UI and real thoughts remain prohibited.
+B1b, actual migration, models, runtime/UI and real thoughts remain prohibited until their own explicit gates.

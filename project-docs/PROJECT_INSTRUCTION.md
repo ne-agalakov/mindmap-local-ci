@@ -12,11 +12,13 @@ MindMap — local-first AI-система. Цикл продукта: мысль
 
 v0.5.2-test.3 сохранила 96/96 мыслей, но семантически провалилась: иерархия схлопнулась, появились повторы, ложные связи и противоречия, проекты не выделились. Эту структуру нельзя использовать как личную.
 
-Alpha.19 заморожена как legacy-прототип. Реальные мысли в неё не загружать. Приняты Phase 0, 1A, 2A, 2B, 2C-A и 2C-B0. B1 execution plan принят merge `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`.
+Alpha.19 заморожена как legacy-прототип. Реальные мысли в неё не загружать. Приняты Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0 и B1 execution plan.
 
-Phase 2C-B1a реализована только на sanitized fixtures. Initial head `42644037d2b4d66d3e92cff4a591d5b3ea58078f` содержал два доказанных delivery-дефекта: неверный `throw new Error, ...` в Chrome runner и неверный `actions/checkout4` в macOS workflow. Они исправлены private head `df2570b6cfea74296248297b7000b29876036e95`. Public exact head `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c`, shared tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`. Verify `30239528354` и package `30239528365` прошли Linux/macOS/full/real-Chrome/package gates; скачанные artifacts проверены.
+Phase 2C-B1a принята merge-коммитом `aec5edaca877cec5d769f4ce4efff674a9c92a7d` только для sanitized executor/harness. Final private head `c1237b9ba012d60dc720bf940082c7d8e88f4e1e`, public exact head `667b218b8bf863c45ae074db65a314e77786f8d0`, shared tree `58d2bb0e9b7edebb3d3d830064406feffbff5181`. Final verify `30245125059` и package `30245125058` прошли; downloaded artifacts проверены; canonical Drive post-merge readback выполнен.
 
-B1a пока не принята: требуется финальный repository-docs tree, повторный exact-tree CI/artifact review, merge PR #43 и post-merge provenance. B1b, exact source и actual migration заблокированы.
+Первоначальная B1a delivery содержала два доказанных дефекта: неверный синтаксис Chrome runner и неверный `actions/checkout4`. Exact-tree gate остановил принятие; исправлены только эти два файла, остальные 17 B1a-файлов совпали побайтно.
+
+B1b, exact source и actual migration не разрешены автоматически.
 
 ## Модель данных
 
@@ -42,7 +44,7 @@ B1a пока не принята: требуется финальный reposito
 
 Диагностика, миграция и восстановление выполняются без AI, если модель не нужна принципиально. Перед AI-вызовом сохраняй причину, этап, модель, run ID, попытку, вход, ожидаемый результат и возможность восстановления. После ошибки, перезагрузки, зависания или обновления версии повторный AI-вызов запрещён без подтверждения Артёма. Сначала офлайн-диагностика.
 
-B1a доказала только sanitized executor/harness: read-only sanitized SQLite, два одинаковых clean run, native IndexedDB temporary targets, injected rollback, typed stops, zero network/model calls и REQ-OBS trace. Exact private source не открывался; actual migration не выполнялась; real migration target не создавался. Автоматический повтор запрещён.
+B1a доказала только sanitized executor/harness: physical read-only sanitized SQLite, два одинаковых clean run, actual Chrome IndexedDB temporary targets, injected rollback, typed stops, zero network/model calls и REQ-OBS trace. Exact private source не открывался; actual migration не выполнялась; real migration target не создавался. Автоматический повтор запрещён.
 
 ## REQ-OBS-001
 
@@ -62,8 +64,8 @@ Google Drive — источник продуктовых документов и
 
 ## Текущая стоп-линия
 
-Разрешены только финальная документационная фиксация B1a, exact-tree rerun, artifact inspection, merge PR #43 и post-merge provenance.
+B1a принята. Следующий возможный этап — только подготовка отдельного B1b authorization package: exact source path/hash, harness commit/package hash, temporary target pattern, read-only/offline/no-retry/rollback contract и границы доказательства.
 
-Запрещены: поиск или открытие exact SQLite source; B1b dry run; actual migration; real migration target; Candidate 5/6; Qwen/DeepSeek; legacy write/repair; production runtime/UI; реальные мысли; автоматический повтор после ошибки.
+Запрещены без нового явного подтверждения Артёма: поиск или открытие exact SQLite source; B1b dry run; actual migration; real migration target; Candidate 5/6; Qwen/DeepSeek; legacy write/repair; production runtime/UI; реальные мысли; автоматический повтор после ошибки.
 
-Следующий шаг после принятия B1a — отдельно показать exact source path/hash, harness commit/package hash, temporary target pattern, read-only/offline/no-retry/rollback contract и получить новое явное подтверждение Артёма ровно на один B1b dry run. Это не разрешит actual migration.
+Даже отдельное подтверждение на один B1b read-only dry run не разрешает actual migration. Actual migration требует отдельного последующего gate.
