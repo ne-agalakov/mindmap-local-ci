@@ -46,6 +46,7 @@ test("B1b one-shot package is provenance-bound, executable and excludes source/p
   const output = run("bash", ["scripts/package-phase2cb-b1b.sh"], root, {
     PATH: `${join(root, "bin")}:${process.env.PATH}`,
     GITHUB_SHA: "0000000000000000000000000000000000000000",
+    GITHUB_REPOSITORY: "ne-agalakov/mindmap-local-ci",
   }).split("\n");
   const archivePath = output.at(-2);
   const shaPath = output.at(-1);
