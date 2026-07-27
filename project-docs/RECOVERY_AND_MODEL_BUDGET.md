@@ -89,3 +89,8 @@ Complete B0 acceptance. B1 may start only after a separate post-merge authorizat
 
 The canonical instruction, status and recovery documents were updated under revision guards and read back at `2026-07-26T14:35:01Z`. Revision IDs are stored in `project-docs/DRIVE_SYNC.json`. This documentation action opened no source, created no target and made no model call.
 
+## Phase 2C-B0 — принятая recovery boundary
+
+B0 принят merge-коммитом `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`. Финальный exact tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb` прошёл verify `30208230376` и package `30208230352`; downloaded source/browser artifacts независимо проверены.
+
+Принятие B0 не разрешает повторный AI-вызов, exact private source access или создание target. Следующий допустимый шаг — только отдельное проектирование B1 read-only source → isolated temporary target. До явного gate Ollama/Qwen/DeepSeek, migration и legacy write запрещены.

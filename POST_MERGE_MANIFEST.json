@@ -1,0 +1,79 @@
+{
+  "createdAt": "2026-07-26T17:05:55Z",
+  "baseTree": "10b0cd7fea77fdff04cf2e072be9604d2a5c05cb",
+  "parentCommit": "dbf2484c78e4eedcbb2efb3f0b61394b79a6d216",
+  "files": [
+    {
+      "path": "ARTIFACT_REVISION.json",
+      "bytes": 6735,
+      "sha256": "f2b926b36128bbdf2efdf80a811d4f6b4b5c303e7b2a11eae6177f84b6386f73",
+      "mode": "100644"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7272,
+      "sha256": "247a1ace55dc9189327d9f8dfe841aefee4ca0c14e521eea531d266029ba1a9e",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/PROJECT_STATUS.md",
+      "bytes": 8803,
+      "sha256": "836857caf1190fd02f862e0d28ffe48734a6fd1dd042d1fd0341cdda8b5d7158",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/PROJECT_INSTRUCTION.md",
+      "bytes": 11215,
+      "sha256": "085084bcdca8338a3eeaff469f36945d6936c7275fb9e023728883d67838d5ab",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/RECOVERY_AND_MODEL_BUDGET.md",
+      "bytes": 5740,
+      "sha256": "6c95111b8359c70f40c575999ae88a1b019060091598da4885f95d05cefcf33a",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/GITHUB_PROVENANCE.md",
+      "bytes": 8359,
+      "sha256": "6899edcd2727fce57b7b313b0ab0b2062971d24d2df994e09669fdbc695a5d01",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/DRIVE_SYNC.json",
+      "bytes": 9204,
+      "sha256": "4eaf96edeec73946852c4198bc38df5948480152a4dacf3fe9116353cef1e0ac",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/architecture/DECISION_LOG.md",
+      "bytes": 8314,
+      "sha256": "e57d89b8b234240ba884208f8b314a26120a62d0d7728ec10938a45e94e269a9",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/architecture/KNOWN_GAPS.md",
+      "bytes": 2372,
+      "sha256": "a2f1b61a89c6f57d54083a6690967040d60c53ed7c2c9cc92e926c564d1912a5",
+      "mode": "100644"
+    },
+    {
+      "path": "docs/architecture/WORK_STOP.md",
+      "bytes": 1164,
+      "sha256": "1c865da78059c1d1f43cfc1691d777a3267a9295aa658c4be421bfb199a0c4c5",
+      "mode": "100644"
+    },
+    {
+      "path": "project-docs/evidence/PHASE2CB_B0_ACCEPTANCE_PROVENANCE.md",
+      "bytes": 1990,
+      "sha256": "a4ecb14d3794027c540399e331f0525055d75c6e903479ea17cc102b1e0cf9b0",
+      "mode": "100644"
+    },
+    {
+      "path": "scripts/check-release-docs.sh",
+      "bytes": 5822,
+      "sha256": "ac05a8b1bafc8865c9fbe20d378393aeee616ff948c914037b9f1eba0662961f",
+      "mode": "100755"
+    }
+  ]
+}

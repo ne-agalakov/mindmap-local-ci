@@ -145,3 +145,19 @@ On `2026-07-26T14:35:01Z`, the three canonical Google Docs were updated under re
 
 This closes documentation synchronization for the final PR tree. Exact final-head public CI/artifact review, merge and post-merge provenance remain required.
 
+## Phase 2C-B0 final acceptance provenance
+
+- private PR: #40;
+- final private head: `2e0719c68813d61171b70a1ab98081febdb6ea01`;
+- public exact-tree head: `cbbd0bb629eea56082e7da54f439c50ca96e56cc`;
+- shared tree: `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb`;
+- verify: `30208230376`;
+- package: `30208230352`;
+- merge commit: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
+- source artifact: `e13780b4a53b9ebbbd3d2d356e70e42812eb0fcb7a6e71687c012019c88a4069`;
+- inner source: `1ac13430d4e28456f4f29aec0061a4789b45449a415da6caa1a4886acbfd974b`;
+- inner exporter: `c86a24da9ba268992046045ba250c2ac27c8316205f19453e687f20fbf192941`;
+- browser proof artifact: `beec9c5a333960cf05befb418bc50d8124ba6e3bbd5cee93b7469f386ff971c3`;
+- post-merge Drive readback: verified at `2026-07-26T17:05:55Z`.
+
+B0 is accepted. B1, private-source access, target creation, migration and models remain blocked pending a separate plan and explicit gate.

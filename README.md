@@ -126,3 +126,20 @@ Still prohibited:
 ## Next verified step
 
 Review and accept the Phase 2C-B0 deterministic mapping/typed-stop contract. Only after that merge provenance may B1 open the exact accepted source read-only and write a fresh isolated temporary target. Actual migration remains a later explicit user-confirmed gate.
+
+## Phase 2C-B0 — accepted
+
+PR #40 was merged as `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216` after the exact private head `2e0719c68813d61171b70a1ab98081febdb6ea01` was reproduced in the public CI mirror as `cbbd0bb629eea56082e7da54f439c50ca96e56cc` with the identical tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb`.
+
+Final evidence:
+
+- public verify `30208230376` — passed Linux full, actual Chrome storage harnesses and macOS launcher tests;
+- public package `30208230352` — passed tests and source/exporter packaging;
+- downloaded source artifact `e13780b4a53b9ebbbd3d2d356e70e42812eb0fcb7a6e71687c012019c88a4069`;
+- inner source `1ac13430d4e28456f4f29aec0061a4789b45449a415da6caa1a4886acbfd974b`;
+- inner exporter `c86a24da9ba268992046045ba250c2ac27c8316205f19453e687f20fbf192941`;
+- browser proof artifact `beec9c5a333960cf05befb418bc50d8124ba6e3bbd5cee93b7469f386ff971c3`;
+- database, secret, personal-data and concrete local-path findings: 0;
+- private source opened, target created, migration executed and model calls: 0.
+
+B0 acceptance covers only deterministic mapping and typed stops on sanitized fixtures. B1 remains blocked until a separate exact-source read-only → isolated temporary-target plan and explicit gate are accepted. Actual migration is not authorized.

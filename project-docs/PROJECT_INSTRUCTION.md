@@ -77,3 +77,7 @@ Google Drive — источник продуктовых документов; G
 ## Ближайший шаг
 
 Завершить acceptance Phase 2C-B0: repository metadata и три canonical Google Docs уже синхронизированы и прочитаны обратно; теперь повторить exact final-head public CI/artifact inspection и слить PR #40 с exact provenance. До отдельного post-merge решения не открывать exact private source и не начинать B1.
+
+## Принятая граница Phase 2C-B0
+
+B0 принят merge-коммитом `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216` после exact-tree CI, downloaded-artifact inspection и post-merge Drive readback. Это разрешает только подготовку отдельного B1-плана. B1 не запускается автоматически: private source read, target creation, migration и model calls остаются запрещены до отдельного явного gate.

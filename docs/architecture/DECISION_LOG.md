@@ -149,3 +149,17 @@ Consequences:
 - a final CI/artifact rerun is mandatory after the documentation commit;
 - no B1 or migration action is authorized by documentation synchronization.
 
+## ADR-010 — Accept Phase 2C-B0 and keep B1 behind a separate gate
+
+Date: 2026-07-26
+
+Decision: accept the pure deterministic `phase2cb-mapping-v1` and typed-stop contract after exact final-tree public CI, independent downloaded-artifact inspection, merge `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216` and canonical Drive post-merge readback.
+
+Evidence: private `2e0719c68813d61171b70a1ab98081febdb6ea01`, public `cbbd0bb629eea56082e7da54f439c50ca96e56cc`, tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb`, verify `30208230376`, package `30208230352`, source artifact `e13780b4a53b9ebbbd3d2d356e70e42812eb0fcb7a6e71687c012019c88a4069`, browser proof `beec9c5a333960cf05befb418bc50d8124ba6e3bbd5cee93b7469f386ff971c3`.
+
+Consequences:
+
+- B0 is accepted on sanitized fixtures only;
+- B1 may be planned but not executed automatically;
+- private source read, target creation, actual migration, runtime/UI and model execution require later separate gates;
+- zero source/target/model actions during B0 acceptance is preserved.

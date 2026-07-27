@@ -144,3 +144,22 @@ Canonical Google Docs updated and reverse-read on `2026-07-26T14:35:01Z`:
 
 All three exact B0 headings were found after write. This closes the pre-merge Drive synchronization gate, not B0 acceptance.
 
+## Phase 2C-B0 — принята
+
+PR #40 слит merge-коммитом `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`. Финальный private head `2e0719c68813d61171b70a1ab98081febdb6ea01` и public counterpart `cbbd0bb629eea56082e7da54f439c50ca96e56cc` имеют exact tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb`.
+
+Финальные gate:
+
+- verify `30208230376` — success;
+- package `30208230352` — success;
+- outer source artifact `e13780b4a53b9ebbbd3d2d356e70e42812eb0fcb7a6e71687c012019c88a4069`;
+- inner source `1ac13430d4e28456f4f29aec0061a4789b45449a415da6caa1a4886acbfd974b`;
+- inner exporter `c86a24da9ba268992046045ba250c2ac27c8316205f19453e687f20fbf192941`;
+- browser proof `beec9c5a333960cf05befb418bc50d8124ba6e3bbd5cee93b7469f386ff971c3`;
+- post-merge Drive readback — verified.
+
+Приняты только deterministic mapping/typed-stop contracts B0 на sanitized fixtures. Private SQLite source не открывался; target не создавался; migration и model calls — 0.
+
+## Следующий проверяемый шаг после B0
+
+Подготовить отдельный B1-план exact-source read-only → fresh isolated temporary target. До его отдельного review/approval B1 не запускается. Actual migration, runtime/UI, Candidate 5/6, Qwen/DeepSeek и реальные мысли остаются запрещены.
