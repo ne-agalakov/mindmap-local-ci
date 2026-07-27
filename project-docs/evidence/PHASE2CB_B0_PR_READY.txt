@@ -1,0 +1,1 @@
+Draft PR may be opened from `phase2cb/mapping-contract` to `main`. Exact-head CI and artifact review remain required before acceptance.

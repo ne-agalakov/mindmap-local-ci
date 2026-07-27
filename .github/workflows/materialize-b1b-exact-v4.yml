@@ -1,0 +1,145 @@
+name: materialize-b1b-exact-tree-v4
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/materialize-b1b-exact-v4.yml"
+      - "carrier/b1b-v2-*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact tree and publish workflow-neutral branch
+        id: materialize
+        shell: bash
+        run: |
+          set +e
+          base_commit="fcfe8b72e5df1f0af2aa65feaffcb017994e788b"
+          expected_full_tree="e046f513cbadcde4ba63ed3b60c28b125f0d57f9"
+          output_branch="phase2cb-b1b-package-exact"
+          expected_overlay_sha="567b70c70b157accd491d8a72119652d80512c2cf4d808737ad992315b301a56"
+          tmp="$(mktemp -d)"
+          status=0
+          full_tree=""
+          published_tree=""
+          published_commit=""
+          actual_overlay_sha=""
+          trap 'rm -rf "$tmp"' EXIT
+
+          cat > "$tmp/chunks.sha256" <<'SUMS'
+          bae323e32f033410a09924a62c274408db49e4b98ad94e68c56f4b004200ee0e  carrier/b1b-v2-00
+          cc40488a0e7953fae75cc986da33c35b5d863e6bd4ec526035499e49978609c8  carrier/b1b-v2-01
+          c71a051d010cb417d33e8a1a1f9b1b6d09ee9ab9f9113c1c97b6b740ac033531  carrier/b1b-v2-02
+          ee06fb3db435d74b282fc643eb878c18997f0519512fbf3fd43e314f4d3bb634  carrier/b1b-v2-03
+          5bd93c2576295252ed779f64967bcf93d5930ffd706a6fbe7dae50ad9819e18e  carrier/b1b-v2-04
+          a285b8c793236602fd431911df32b67a6746d3795142618674d51f5634c36c40  carrier/b1b-v2-05
+          5913e317f269359631a7bd98579df8adb89ec7884a507b2ec663f9a8f1f2ce63  carrier/b1b-v2-06
+          8dc3479c967a0936caa9ff8b0426f2128711febfb90770cf83e73c412680b9bb  carrier/b1b-v2-07
+          2309591e33d681d8fc86f69229dbe201bcac2067e5f42f8751f0026560c68322  carrier/b1b-v2-08
+          f4986cc410de4dd768f9f568a00d6e37abb956ae04de0a62bbf32aae10f14097  carrier/b1b-v2-09
+          SUMS
+
+          {
+            echo "Phase 2C-B1b workflow-neutral publication diagnostic"
+            echo "carrier_commit=${GITHUB_SHA}"
+            echo "base_commit=${base_commit}"
+            echo "expected_overlay_sha=${expected_overlay_sha}"
+            echo "expected_full_tree=${expected_full_tree}"
+          } > "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+
+          while read -r expected file; do
+            actual="$(tr -d '[:space:]' < "$file" | sha256sum | awk '{print $1}')"
+            echo "$file expected=$expected actual=$actual" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            if [[ "$actual" != "$expected" ]]; then status=10; fi
+          done < "$tmp/chunks.sha256"
+
+          if [[ "$status" -eq 0 ]]; then
+            for index in 00 01 02 03 04 05 06 07 08 09; do
+              tr -d '[:space:]' < "carrier/b1b-v2-${index}"
+            done | base64 -d > "$tmp/overlay.tar.gz"
+            decode_status=$?
+            actual_overlay_sha="$(sha256sum "$tmp/overlay.tar.gz" 2>/dev/null | awk '{print $1}')"
+            echo "decode_status=${decode_status}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            echo "actual_overlay_sha=${actual_overlay_sha}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            if [[ "$decode_status" -ne 0 ]]; then status=20; fi
+            if [[ "$actual_overlay_sha" != "$expected_overlay_sha" ]]; then status=21; fi
+          fi
+
+          if [[ "$status" -eq 0 ]]; then
+            git worktree add --detach "$tmp/exact" "$base_commit" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt" 2>&1
+            if [[ "$?" -ne 0 ]]; then status=30; fi
+          fi
+
+          if [[ "$status" -eq 0 ]]; then
+            tar -xzf "$tmp/overlay.tar.gz" -C "$tmp/exact" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt" 2>&1
+            if [[ "$?" -ne 0 ]]; then status=31; fi
+          fi
+
+          if [[ "$status" -eq 0 ]]; then
+            cd "$tmp/exact"
+            git add -A
+            full_tree="$(git write-tree)"
+            echo "reconstructed_full_tree=${full_tree}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            echo "full_tree_equal=$([[ "$full_tree" == "$expected_full_tree" ]] && echo true || echo false)" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            if [[ "$full_tree" != "$expected_full_tree" ]]; then status=40; fi
+          fi
+
+          if [[ "$status" -eq 0 ]]; then
+            cd "$tmp/exact"
+            git restore --source="$base_commit" --staged --worktree -- .github/workflows/ci.yml .github/workflows/package-source.yml
+            git add -A
+            published_tree="$(git write-tree)"
+            git config user.name "MindMap CI"
+            git config user.email "ci@example.invalid"
+            git commit -m "CI mirror: Phase 2C-B1b package code before workflow sync" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt" 2>&1
+            published_commit="$(git rev-parse HEAD)"
+            git push origin "HEAD:refs/heads/${output_branch}" --force >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt" 2>&1
+            push_status=$?
+            echo "published_tree=${published_tree}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            echo "published_commit=${published_commit}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            echo "push_status=${push_status}" >> "$GITHUB_WORKSPACE/b1b-materialization-v4-diagnostic.txt"
+            if [[ "$push_status" -ne 0 ]]; then status=50; fi
+          fi
+
+          cat > "$GITHUB_WORKSPACE/b1b-materialization-v4-receipt.json" <<JSON
+          {
+            "format": "mindmap-phase2cb-b1b-public-materialization-v4",
+            "statusCode": $status,
+            "privateCommit": "7933e0afcba9bb1f3efcc7b95eb42aa6d67b3164",
+            "privateTree": "$expected_full_tree",
+            "reconstructedFullTree": "$full_tree",
+            "fullTreesEqual": $([[ -n "$full_tree" && "$full_tree" == "$expected_full_tree" ]] && echo true || echo false),
+            "workflowNeutralPublishedCommit": "$published_commit",
+            "workflowNeutralPublishedTree": "$published_tree",
+            "expectedOverlaySha256": "$expected_overlay_sha",
+            "actualOverlaySha256": "$actual_overlay_sha",
+            "workflowFilesPendingConnectorSync": true,
+            "exactSourceIncluded": false,
+            "exactSourceOpened": false,
+            "migrationExecuted": false,
+            "modelCalls": 0
+          }
+          JSON
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload materialization diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b1b-materialization-v4-${{ github.sha }}
+          path: |
+            b1b-materialization-v4-diagnostic.txt
+            b1b-materialization-v4-receipt.json
+          if-no-files-found: error
+      - name: Fail when publication gate failed
+        if: steps.materialize.outputs.status != '0'
+        run: exit 1

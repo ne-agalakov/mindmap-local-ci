@@ -1,6 +1,6 @@
 # MindMap — решения и статус
 
-Дата актуализации: 2026-07-26.
+Дата актуализации: 2026-07-27.
 
 ## Назначение
 
@@ -8,92 +8,72 @@
 
 Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
 
-## Принятые этапы
+## Принятые основания
 
 - Phase 0 exact source: `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
 - Phase 1A pure state-core: `e7b7593932614f8dfa843298f35eff0230c1e827`;
 - Phase 2A storage contract: `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B native IndexedDB run storage: `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A graph/payload storage: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+- Phase 2B native IndexedDB storage: `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
+- Phase 2C-A graph/payload storage: `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
+- Phase 2C-B0 deterministic mapping: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
+- B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
+- Phase 2C-B1a sanitized executor/harness: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
 
-Legacy source remains private and immutable:
+Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts. B1a этот source не открывала.
 
-- size `5 070 848` bytes;
-- SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- 96 synthetic, 0 personal thoughts;
-- integrity `ok`;
-- write/migration/network/model calls — 0.
+## Phase 2C-B1a — принята
 
-## Phase 2C-A — принята
-
-PR #38 squash-merged from exact reviewed head:
+PR #43 squash-merged как `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
 
 ```text
-reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
-merge:         292634312ad04fa6e6cfc5a5ded311ac1020094d
+final private head: c1237b9ba012d60dc720bf940082c7d8e88f4e1e
+public exact head:  667b218b8bf863c45ae074db65a314e77786f8d0
+shared tree:        58d2bb0e9b7edebb3d3d830064406feffbff5181
 ```
 
-Приняты canonical graph/payload contracts и native IndexedDB graph storage:
+Final gates:
 
-- payloads, thoughts, typed hierarchy;
-- placement либо explicit `unresolved`;
-- proposed/confirmed/rejected links;
-- embeddings bound to exact text;
-- damaged references separately;
-- atomic event/materialized-state/receipt transaction;
-- deterministic replay and reopen-stable hash;
-- stale/idempotency guards;
-- workspace isolation, abort rollback and corruption refusal;
-- fresh unified run+graph database;
-- run-only database refusal.
+- verify `30245125059` — passed;
+- package `30245125058` — passed;
+- source artifact `db61f1e92639e3320062977f5d4f949442ba9ffbeac0e8678a10ee473251477d`;
+- inner source `264503b2394d0d58a842e26030d4a555892bd7ec73d8c96ff569b85b699d963b`;
+- inner exporter `9ba8213c8146467d87f0ed5c1512c62722feb1ebaf4b989e60da7ba2908241ef`;
+- browser proof `482fc377d64de16e6927998e3f8ad087a383ed118f802f7cf4d605b4c4f77ac2`;
+- browser log `f5ab869cab617275d3d5d44762ab6c5bf0337240e00fadb6fb976564f905db87`.
 
-### Финальная проверка
+Доказано на sanitized fixtures:
 
-Exact public counterpart:
+- physical read-only SQLite;
+- source bytes unchanged;
+- repeat plan/target hash equality;
+- actual Chrome IndexedDB isolated temporary targets;
+- injected rollback без partial target/receipt;
+- typed stops и no automatic retry;
+- REQ-OBS trace/live state/diagnostics;
+- network/model calls = 0.
 
-```text
-public head: ee5401a4a2ca7763467562417b9c5c4aece01214
-shared tree: e81ae1b309a806f0078b5a8a2057f51d4c0e403d
-```
+Доказанная первопричина первоначального отказа: invalid Chrome-runner syntax и invalid macOS checkout action. Exact-tree gate остановил принятие до исправления; остальные 17 B1a-файлов совпали побайтно.
 
-- verify `30198811851` — success;
-- package `30198811852` — success;
-- Linux/macOS/full tests/actual Chrome/package — passed;
-- outer artifact `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- inner source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- inner exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser proof `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- privacy/credential/data findings — 0.
+## Google Drive post-merge readback
 
-Drive после merge обновлён и прочитан обратно:
+- instruction revision `AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc`;
+- status revision `AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c`;
+- recovery revision `AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk`.
 
-- instruction `AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E`;
-- status `AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0`;
-- recovery `AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU`.
+Точные acceptance-маркеры найдены после записи во всех трёх документах.
 
-### Исправленные причины финального gate
+## Граница доказательства
 
-1. Release-doc marker был регистрозависим: ожидал `same-fixture`, README начинал предложение с `Same-fixture`. Исправлен сам gate; storage-код не падал.
-2. Первый внешний privacy regex сопоставил два документационных шаблона пути, а не реальные пути. Формулировки уточнены; повторный scan дал ноль concrete local user-home findings.
+B1a accepted on sanitized fixtures only. Exact source opened false; actual migration false; real migration target false; network/model calls 0.
 
-## Границы доказательства
+Не доказаны и не разрешены:
 
-Не доказаны:
-
-- same-fixture cross-environment snapshot equality;
-- Phase 2C-B migration dry run;
-- source byte-stability и deterministic migrated target;
+- B1b exact-source dry run;
 - actual target-Mac migration;
-- production runtime/UI и REQ-OBS-001;
+- production runtime/UI integration;
 - service-level exactly-once model execution;
-- semantic quality, multi-order stability и personal-data safety.
-
-## Стоп-линия
-
-Разрешены только planning/implementation Phase 2C-B в отдельном issue/branch/PR и тесты на exact read-only source package + isolated temporary target.
-
-Запрещены Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration и реальные мысли.
+- semantic quality, multi-order stability и real-data readiness.
 
 ## Следующий проверяемый шаг
 
-Открыть Phase 2C-B от accepted `main`. Сначала зафиксировать versioned deterministic mapping и typed stops; затем доказать isolated dry run, source byte-stability, repeatability, deterministic target hash и full rollback. Успех dry run не разрешает actual migration автоматически.
+Подготовить отдельный B1b authorization package и показать Артёму exact source path/hash, harness/package identity, fresh isolated target pattern, read-only/offline/no-retry/rollback contract и stop conditions. B1b запускается только после нового явного подтверждения ровно на один dry run. Actual migration остаётся отдельным последующим gate.

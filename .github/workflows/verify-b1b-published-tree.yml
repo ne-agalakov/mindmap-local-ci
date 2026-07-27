@@ -1,0 +1,49 @@
+name: verify-b1b-published-tree
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/verify-b1b-published-tree.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact published tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_tree="e046f513cbadcde4ba63ed3b60c28b125f0d57f9"
+          branch="phase2cb-b1b-package-exact"
+          git fetch origin "refs/heads/${branch}:refs/remotes/origin/${branch}"
+          commit="$(git rev-parse "refs/remotes/origin/${branch}")"
+          actual_tree="$(git rev-parse "${commit}^{tree}")"
+          test "$actual_tree" = "$expected_tree"
+          cat > published-b1b-tree-receipt.json <<JSON
+          {
+            "format": "mindmap-phase2cb-b1b-published-tree-v1",
+            "branch": "$branch",
+            "publicCommit": "$commit",
+            "publicTree": "$actual_tree",
+            "privateCommit": "7933e0afcba9bb1f3efcc7b95eb42aa6d67b3164",
+            "privateTree": "$expected_tree",
+            "treesEqual": true,
+            "exactSourceIncluded": false,
+            "exactSourceOpened": false,
+            "migrationExecuted": false,
+            "modelCalls": 0
+          }
+          JSON
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published-b1b-tree-${{ github.sha }}
+          path: published-b1b-tree-receipt.json
+          if-no-files-found: error
