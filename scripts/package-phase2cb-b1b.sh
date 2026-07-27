@@ -5,7 +5,14 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 REPOSITORY="${GITHUB_REPOSITORY:-ne-agalakov/mindmap-local}"
-COMMIT="${GITHUB_SHA:-$(git rev-parse HEAD)}"
+COMMIT="$(git rev-parse HEAD)"
+if [[ -n "${MINDMAP_PACKAGE_COMMIT_SHA:-}" ]]; then
+  REQUESTED_COMMIT="$(git rev-parse "${MINDMAP_PACKAGE_COMMIT_SHA}^{commit}")"
+  if [[ "$REQUESTED_COMMIT" != "$COMMIT" ]]; then
+    printf 'Refusing to package commit %s from checkout %s.\n' "$REQUESTED_COMMIT" "$COMMIT" >&2
+    exit 1
+  fi
+fi
 TREE="$(git rev-parse "${COMMIT}^{tree}")"
 SHORT="${COMMIT:0:12}"
 OUTPUT_DIR="$ROOT/release-artifacts"
