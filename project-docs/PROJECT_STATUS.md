@@ -19,7 +19,7 @@ Alpha.19 остаётся замороженным legacy-прототипом �
 - B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
 - Phase 2C-B1a sanitized executor/harness: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
 
-Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts. B1a этот source не открывала.
+Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts.
 
 ## Phase 2C-B1a — принята
 
@@ -31,44 +31,61 @@ public exact head:  667b218b8bf863c45ae074db65a314e77786f8d0
 shared tree:        58d2bb0e9b7edebb3d3d830064406feffbff5181
 ```
 
-Final gates:
+Доказано на sanitized fixtures: physical read-only SQLite, source byte stability, repeat plan/target hash equality, actual Chrome IndexedDB temporary targets, injected rollback, typed stops, no automatic retry, REQ-OBS и ноль network/model calls.
 
-- verify `30245125059` — passed;
-- package `30245125058` — passed;
-- source artifact `db61f1e92639e3320062977f5d4f949442ba9ffbeac0e8678a10ee473251477d`;
-- inner source `264503b2394d0d58a842e26030d4a555892bd7ec73d8c96ff569b85b699d963b`;
-- inner exporter `9ba8213c8146467d87f0ed5c1512c62722feb1ebaf4b989e60da7ba2908241ef`;
-- browser proof `482fc377d64de16e6927998e3f8ad087a383ed118f802f7cf4d605b4c4f77ac2`;
-- browser log `f5ab869cab617275d3d5d44762ab6c5bf0337240e00fadb6fb976564f905db87`.
+## Phase 2C-B1b — package gate выполнен, локальный запуск не выполнен
 
-Доказано на sanitized fixtures:
+Артём 27 июля 2026 года явно разрешил ровно один exact-source read-only B1b dry run. Разрешение не включает actual migration и пока не израсходовано.
 
-- physical read-only SQLite;
-- source bytes unchanged;
-- repeat plan/target hash equality;
-- actual Chrome IndexedDB isolated temporary targets;
-- injected rollback без partial target/receipt;
-- typed stops и no automatic retry;
-- REQ-OBS trace/live state/diagnostics;
-- network/model calls = 0.
+Code-head до финального документационного коммита:
 
-Доказанная первопричина первоначального отказа: invalid Chrome-runner syntax и invalid macOS checkout action. Exact-tree gate остановил принятие до исправления; остальные 17 B1a-файлов совпали побайтно.
+```text
+private implementation head: d477203bbdf226e3252f741b31c9d45acf1b1499
+public exact-tree head:       47876e8b35a8b7c93903f82022a28eab64f02d53
+shared implementation tree:   ad431eaed0945039371011df1be0c989a634b050
+```
 
-## Google Drive post-merge readback
+Проверочные run:
 
-- instruction revision `AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc`;
-- status revision `AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c`;
-- recovery revision `AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk`.
+- verify `30281649255` — success;
+- package-source `30281649234` — success;
+- Linux lint/full suite — passed;
+- macOS launchers/tests — passed;
+- actual Chrome run-storage, graph-storage, B1a и B1b rehearsal — passed.
 
-Точные acceptance-маркеры найдены после записи во всех трёх документах.
+Проверенные артефакты code-head:
+
+- outer package artifact `f245504d04948671343c4552d7a1da24edc2cf72f99a6980e3fcdcd64263b172`;
+- one-shot ZIP `f00e402fdd0e14ff559046d4a9911be97464d5e44d653cafa84a58fb3109b144`;
+- B1b browser proof `6891d5ee2cb1cade845ae77e7d9a52aba9736c7e7ae1070f0010188ad52e562e`.
+
+Внешняя проверка package подтвердила семь ожидаемых файлов, launcher `0755`, portable SHA-256, отсутствие `.sqlite`, diagnostic payload, dependencies, secrets и private strings. Встроенные repository, commit и tree согласованы.
+
+## Журнал решений, ошибок и первопричин B1b
+
+1. Package script использовал outer-PR `GITHUB_SHA`; в fixture это мог быть недоступный merge commit. Исправление: commit/tree выводятся из фактического checkout HEAD, явное несовпадение блокируется.
+2. Metadata могла сочетать private repository с public-mirror commit. Исправление: repository/commit provenance формируется согласованно, fixture использует явный override.
+3. Vite harness ссылался на `/src/page.ts`, хотя entry находится в `/page.ts`. Исправление и отдельная regression добавлены.
+4. Ни один из этих дефектов не касался exact SQLite, migration semantics или модели: exact source не открывался, targets не создавались, network/model calls = 0.
+
+## Требования и инварианты текущего gate
+
+- принимается только source размером `5 070 848` bytes и SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
+- SQLite открывается только read-only/query-only после freeze manifest;
+- создаются только fresh isolated temporary targets с pattern `mindmap-state-core-v1-phase2cb-b1-<run-id>-{first|second|rollback}`;
+- выполняются два чистых прохода и один injected rollback;
+- source hash до/после обязан совпасть;
+- automatic retry запрещён;
+- external network и model calls запрещены;
+- actual migration и production namespace запрещены;
+- exact source и raw payload никогда не входят в Git или artifact.
 
 ## Граница доказательства
 
-B1a accepted on sanitized fixtures only. Exact source opened false; actual migration false; real migration target false; network/model calls 0.
+Подготовка package и sanitized rehearsal доказаны. Не доказаны и не выполнены:
 
-Не доказаны и не разрешены:
-
-- B1b exact-source dry run;
+- локальный exact-source B1b dry run на целевом Mac;
+- source read/result against the exact private SQLite;
 - actual target-Mac migration;
 - production runtime/UI integration;
 - service-level exactly-once model execution;
@@ -76,4 +93,4 @@ B1a accepted on sanitized fixtures only. Exact source opened false; actual migra
 
 ## Следующий проверяемый шаг
 
-Подготовить отдельный B1b authorization package и показать Артёму exact source path/hash, harness/package identity, fresh isolated target pattern, read-only/offline/no-retry/rollback contract и stop conditions. B1b запускается только после нового явного подтверждения ровно на один dry run. Actual migration остаётся отдельным последующим gate.
+Завершить exact-tree CI и внешний artifact review финального documentation head. После этого запустить проверенный package ровно один раз на целевом Mac, выбрать только exact SQLite и скачать sanitized evidence. При ошибке повтор не выполнять. Сначала определить первопричину по evidence. Actual migration остаётся отдельным последующим gate.
