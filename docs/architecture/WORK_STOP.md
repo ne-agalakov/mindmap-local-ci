@@ -1,28 +1,26 @@
-# Work boundary after Phase 2C-B0 acceptance
+# Work boundary after Phase 2C-B1a corrected exact-tree gate
 
-Accepted foundations:
-
-- Phase 0 exact source;
-- Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
-- Phase 2C-B0 `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`.
+Accepted foundations: Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0 and the B1 execution plan. B1a code is implemented on sanitized fixtures but not yet accepted.
 
 ## Allowed now
 
-Only preparation and review of a separate B1 exact-source read-only → fresh isolated temporary-target plan. Planning must preserve exact source hash, no source writes, deterministic target identity, rollback, typed stops and zero model calls.
+Only:
+
+1. final repository-document synchronization for B1a;
+2. exact private/public tree rerun and downloaded-artifact inspection;
+3. merge PR #43 if the final gate remains green;
+4. separate post-merge provenance and Drive readback.
 
 ## Still prohibited
 
-- opening the private source or creating the B1 target before the separate gate;
-- actual target-Mac migration;
-- Candidate 5 continuation;
-- Qwen or DeepSeek;
-- Candidate 6;
+- locating or opening the exact private SQLite source;
+- B1b execution;
+- real migration target creation or actual target-Mac migration;
+- automatic retry after failure/reload/version change;
+- Candidate 5/6, Qwen, DeepSeek or external model calls;
 - legacy database write/repair;
 - production runtime/UI integration;
 - real thought import;
-- claims of REQ-OBS-001, exactly-once model execution, semantic success or product readiness.
+- claims of semantic success or product readiness.
 
-B0 acceptance does not authorize B1 execution. Legacy source SHA-256 remains `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`.
+Corrected B1a private head `df2570b6cfea74296248297b7000b29876036e95`, public exact head `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c`, shared tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`. B1a acceptance requires merge and post-merge provenance; it does not automatically authorize B1b.

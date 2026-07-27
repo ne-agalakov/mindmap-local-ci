@@ -161,3 +161,24 @@ This closes documentation synchronization for the final PR tree. Exact final-hea
 - post-merge Drive readback: verified at `2026-07-26T17:05:55Z`.
 
 B0 is accepted. B1, private-source access, target creation, migration and models remain blocked pending a separate plan and explicit gate.
+
+## Phase 2C-B1a corrected exact-tree pre-merge provenance
+
+- private PR: #43;
+- initial head: `42644037d2b4d66d3e92cff4a591d5b3ea58078f`;
+- corrected private head: `df2570b6cfea74296248297b7000b29876036e95`;
+- public exact head: `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c`;
+- shared tree: `8ef2603b85aef1e7f1ff055cce7579259e3ee659`;
+- verify: `30239528354`;
+- package: `30239528365`;
+- GitHub source artifact digest: `9ccc881ad9f80c7a519a7d468dafb0797678b454631aaa63e8cc42854d19024a`;
+- downloaded source artifact SHA-256: `9cccf89719947caeda2e8aa607321ed2dc6fff8e66fb501e6e32971b989acdf5`;
+- inner source: `2aa6ce72815af3c9a934fa64b9ed98442dac3aa3496a8a1beb6db87542296fb0`;
+- inner exporter: `b66b4949d0109e4a0379957cef027601377ea37062b164a13bee469169e6b699`;
+- GitHub browser artifact digest: `8bff5ba4e1599a776466d9a3a3536169e304dd5755195740175735d0c3a918e2`;
+- downloaded browser artifact SHA-256: `8bfffb51c89766147f83268fd881982f209270726c1a4372b15c0212161b22c6`;
+- browser log: `c8132cc36f5c508c3ffde7244d5e30888d707287af1aa7e6d6f96a99903dc202`.
+
+Root cause: initial delivery had invalid Chrome-runner syntax and invalid `actions/checkout4`. Exact-tree comparison isolated only these two divergent files; corrected blobs produced the same tree independently in private and public repositories. Artifact inspection found no DB, credentials, personal payload or concrete local path.
+
+This is pre-merge evidence. B1a is not accepted until final docs tree CI/artifact review, merge and post-merge provenance. B1b remains blocked.

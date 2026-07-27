@@ -163,3 +163,11 @@ Consequences:
 - B1 may be planned but not executed automatically;
 - private source read, target creation, actual migration, runtime/UI and model execution require later separate gates;
 - zero source/target/model actions during B0 acceptance is preserved.
+
+## ADR-011 — Correct B1a delivery defects before acceptance
+
+**Decision.** Keep the B1a executor/test design, but reject the initial exact tree because two delivery files differed from the code-equivalent tested overlay. Correct only `.github/workflows/ci.yml` and `scripts/run-browser-phase2cb-b1a-harness.mjs`, then require corrected private/public tree equality and full rerun.
+
+**Evidence.** Initial head `42644037d2b4d66d3e92cff4a591d5b3ea58078f` contained invalid `actions/checkout4` and invalid `throw new Error, ...`. Seventeen other B1a files matched byte-for-byte. Corrected head `df2570b6cfea74296248297b7000b29876036e95` and public `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c` share tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`; verify `30239528354` and package `30239528365` passed.
+
+**Consequence.** B1a remains implemented but unaccepted until docs/merge provenance. B1b and exact-source access remain blocked.
