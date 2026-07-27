@@ -163,3 +163,13 @@ PR #40 слит merge-коммитом `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216
 ## Следующий проверяемый шаг после B0
 
 Подготовить отдельный B1-план exact-source read-only → fresh isolated temporary target. До его отдельного review/approval B1 не запускается. Actual migration, runtime/UI, Candidate 5/6, Qwen/DeepSeek и реальные мысли остаются запрещены.
+
+## Phase 2C-B1a — реализована, финальный documentation gate ожидается
+
+Исправленный private head `df2570b6cfea74296248297b7000b29876036e95`, public exact head `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c`, общий tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`. Verify `30239528354` и package `30239528365` прошли. Скачанные source/exporter/browser artifacts проверены.
+
+Доказанная первопричина задержки: первоначальный commit содержал синтаксически неверный `throw new Error, ...` в Chrome runner и несуществующий `actions/checkout4` в macOS workflow. Exact-tree gate остановил принятие, два файла исправлены, остальные 17 B1a-файлов подтверждены побайтно.
+
+Доказано на sanitized fixtures: физический read-only SQLite, неизменность source, два одинаковых plan/target hash, native IndexedDB temporary targets, injected rollback без частичного состояния/receipt, typed stops, запрет automatic retry, REQ-OBS trace, zero network/model calls. Exact private source не открывался; actual migration не выполнялась.
+
+Статус: implemented / not accepted. Следующий шаг — final repository docs commit → corrected exact-tree verify/package/artifact review → merge PR #43 → post-merge provenance. B1b остаётся заблокированной.

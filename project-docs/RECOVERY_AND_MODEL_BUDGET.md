@@ -94,3 +94,11 @@ The canonical instruction, status and recovery documents were updated under revi
 B0 принят merge-коммитом `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`. Финальный exact tree `10b0cd7fea77fdff04cf2e072be9604d2a5c05cb` прошёл verify `30208230376` и package `30208230352`; downloaded source/browser artifacts независимо проверены.
 
 Принятие B0 не разрешает повторный AI-вызов, exact private source access или создание target. Следующий допустимый шаг — только отдельное проектирование B1 read-only source → isolated temporary target. До явного gate Ollama/Qwen/DeepSeek, migration и legacy write запрещены.
+
+## Phase 2C-B1a — pre-merge recovery boundary
+
+Corrected tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659` доказал sanitized read-only source, deterministic two-run equality, native temporary targets, injected rollback, no partial receipt/state, heartbeat/possibly-hung trace and diagnostics download. Portable plan hash `16f82826ae2846136ba2d4f561c0116f17433ce4ab6aa5c3c2c2ab8a4681c52d`; target snapshot hash `6399e23e713214da1574113739e25ea86a220cec8990963c955aeea0a4e73fbf`.
+
+Exact source opened: false. Actual migration performed: false. Real migration target created: false. Sanitized temporary targets used: true. Network/model calls: 0. Automatic retry: forbidden.
+
+B1b нельзя запускать до принятия и post-merge provenance B1a и нового явного подтверждения Артёма на один exact-source read-only dry run.

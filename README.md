@@ -143,3 +143,19 @@ Final evidence:
 - private source opened, target created, migration executed and model calls: 0.
 
 B0 acceptance covers only deterministic mapping and typed stops on sanitized fixtures. B1 remains blocked until a separate exact-source read-only → isolated temporary-target plan and explicit gate are accepted. Actual migration is not authorized.
+
+## Phase 2C-B1a — implemented, final documentation gate pending
+
+B1a is implemented on sanitized fixtures only. The corrected private head `df2570b6cfea74296248297b7000b29876036e95` and public exact head `76a6da518301fcddbcaa9c3e06fdeb46805dbf6c` share tree `8ef2603b85aef1e7f1ff055cce7579259e3ee659`.
+
+The exact-tree gate found and corrected two delivery defects before merge: invalid Chrome-runner syntax and an invalid macOS checkout action. The other 17 B1a files were byte-identical to the already tested implementation.
+
+Passed on the corrected exact tree:
+
+- verify `30239528354`: Linux lint/full suite, actual Chrome run/graph storage, actual Chrome B1a IndexedDB and macOS launchers;
+- package `30239528365`: source/exporter packaging;
+- downloaded source/exporter/browser artifact inventory, credential, database, personal-data and local-path inspection;
+- deterministic repeated plan/target hashes and injected rollback;
+- source unchanged, exact source unopened, actual migration false, network/model calls zero.
+
+B1a is not accepted until the final repository-document tree is re-run as an exact public mirror, artifacts are re-inspected, PR #43 is merged and post-merge provenance is recorded. B1b and actual migration remain blocked.
