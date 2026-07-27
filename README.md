@@ -29,17 +29,7 @@ shared Git tree:    58d2bb0e9b7edebb3d3d830064406feffbff5181
 squash merge:       aec5edaca877cec5d769f4ce4efff674a9c92a7d
 ```
 
-Final gates:
-
-- verify `30245125059` — Linux lint/full suite, actual Chrome run storage, graph storage and B1a IndexedDB, plus macOS launcher tests;
-- package `30245125058` — tests and source/exporter packaging;
-- source artifact `db61f1e92639e3320062977f5d4f949442ba9ffbeac0e8678a10ee473251477d`;
-- inner source `264503b2394d0d58a842e26030d4a555892bd7ec73d8c96ff569b85b699d963b`;
-- inner exporter `9ba8213c8146467d87f0ed5c1512c62722feb1ebaf4b989e60da7ba2908241ef`;
-- browser proof `482fc377d64de16e6927998e3f8ad087a383ed118f802f7cf4d605b4c4f77ac2`;
-- browser log `f5ab869cab617275d3d5d44762ab6c5bf0337240e00fadb6fb976564f905db87`.
-
-Proven behavior on sanitized fixtures:
+Proven on sanitized fixtures:
 
 - physical read-only SQLite source;
 - source bytes unchanged;
@@ -50,24 +40,46 @@ Proven behavior on sanitized fixtures:
 - REQ-OBS trace, inactivity/possibly-hung state and diagnostics;
 - zero network and model calls.
 
-The initial implementation head was rejected because exact-tree comparison found invalid Chrome-runner syntax and an invalid macOS checkout action. Only those two files were corrected; the remaining 17 B1a files were byte-identical.
+## Phase 2C-B1b — package gate complete, local run pending
+
+Artyom authorized exactly one exact-source read-only B1b dry run on 2026-07-27. The verified package has been prepared, but the exact private SQLite source has not been opened and the authorized run has not been consumed.
+
+Code-head identity before the final documentation commit:
+
+```text
+private implementation head: d477203bbdf226e3252f741b31c9d45acf1b1499
+public exact-tree head:       47876e8b35a8b7c93903f82022a28eab64f02d53
+shared implementation tree:   ad431eaed0945039371011df1be0c989a634b050
+```
+
+Exact-tree CI passed Linux lint/full tests, macOS launchers/tests, actual-Chrome run-storage, graph-storage, B1a and B1b rehearsal harnesses, and packaging. The downloaded one-shot ZIP was independently inspected: seven expected files, launcher mode `0755`, portable checksum, no SQLite, diagnostics, dependencies, secrets or private payload strings.
+
+Three delivery regressions were proven and fixed before handoff:
+
+1. packaging trusted an outer pull-request `GITHUB_SHA` that could name an unavailable merge commit;
+2. package metadata could pair a private repository name with a public-mirror commit;
+3. the B1b Vite harness referenced `/src/page.ts` instead of its actual `/page.ts` entry.
+
+All three have regression coverage.
 
 ## Preserved boundary
 
-B1a acceptance does **not** authorize B1b.
+The B1b package authorizes only one read-only dry run against the exact accepted SQLite source and fresh isolated temporary IndexedDB targets.
 
 Still prohibited:
 
-- locating or opening the exact private SQLite source;
-- B1b execution;
-- creating a real migration target or performing actual target-Mac migration;
+- actual target-Mac migration or production namespace use;
+- any source write, repair or replacement;
 - automatic retry after failure, reload or version change;
 - Candidate 5/6, Qwen, DeepSeek or other model execution;
-- legacy database write/repair;
 - production runtime/UI integration;
 - semantic claims and real personal thoughts.
 
-A later B1b attempt requires a new explicit user confirmation for exactly one read-only exact-source dry run against a fresh isolated temporary target. Actual migration remains a separate later gate.
+A failed one-shot dry run does not authorize a second attempt. Sanitized evidence must be inspected first.
+
+## Next verified step
+
+Complete the final documentation-head exact-tree CI and downloaded-artifact inspection. Then run the verified one-shot package once on the target Mac, select only the exact SQLite source (`5,070,848` bytes; SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`) and inspect the sanitized evidence. Actual migration remains a separate later gate.
 
 ## Commands
 
@@ -80,8 +92,11 @@ npm run test:graph-storage
 npm run test:migration-contract
 npm run test:browser-storage
 npm run test:browser-graph-storage
+npm run test:browser-phase2cb-b1a
+npm run test:browser-phase2cb-b1b
 npm test
 npm run package:source
+npm run package:phase2cb-b1b
 ```
 
-See `project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md` and `project-docs/GITHUB_PROVENANCE.md` for the exact acceptance proof and boundaries.
+See `project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md` and `project-docs/evidence/PHASE2CB_B1B_PACKAGE_READINESS.md` for exact proof and boundaries.
