@@ -7,3 +7,7 @@ export * from "./phase2cb-b1a-targets.ts";
 export * from "./phase2cb-b1a-fixture.ts";
 export * from "./phase2cb-b1a-runtime.ts";
 export * from "./phase2cb-b1a-single-run.ts";
+export * from "./phase2cb-b1b-contracts.ts";
+export * from "./phase2cb-b1b-executor.ts";
+export * from "./phase2cb-b1b-source.ts";
+export * from "./phase2cb-b1b-single-run.ts";
