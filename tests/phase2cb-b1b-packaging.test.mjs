@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmodSync, cpSync, mkdtempSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdtempSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import test from "node:test";
@@ -89,4 +89,13 @@ test("B1b one-shot package is provenance-bound, executable and excludes source/p
   assert.equal(files.some((file) => /\.sqlite$|diagnostic|mindmap-diagnostics|node_modules|\.env/i.test(file)), false);
   const combined = files.map((file) => readFileSync(join(extracted, file), "utf8")).join("\n");
   assert.doesNotMatch(combined, /synthetic-001.*Original|private local MindMap data/);
+});
+
+test("B1b browser harness entry resolves from the harness root", () => {
+  const harnessRoot = join(process.cwd(), "tools/browser-phase2cb-b1b-harness");
+  const html = readFileSync(join(harnessRoot, "index.html"), "utf8");
+  const source = html.match(/<script[^>]+src="([^"]+)"/u)?.[1];
+  assert.equal(source, "/page.ts");
+  assert.equal(existsSync(join(harnessRoot, source.slice(1))), true);
+  assert.doesNotMatch(html, /\/src\/page\.ts/u);
 });
