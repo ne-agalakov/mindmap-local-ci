@@ -63,6 +63,16 @@ jobs:
           status=${PIPESTATUS[0]}
           echo "status=${status}" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Run actual Chrome Phase 2C-B1b rehearsal harness
+        id: browser_phase2cb_b1b
+        if: steps.full_tests.outputs.status == '0' && steps.browser_storage.outputs.status == '0' && steps.browser_graph_storage.outputs.status == '0' && steps.browser_phase2cb_b1a.outputs.status == '0'
+        shell: bash
+        run: |
+          set +e
+          npm run test:browser-phase2cb-b1b 2>&1 | tee browser-phase2cb-b1b-output.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Upload test diagnostics
         if: steps.full_tests.outputs.status != '0'
         uses: actions/upload-artifact@v4
@@ -91,8 +101,15 @@ jobs:
           name: browser-phase2cb-b1a-proof-${{ github.sha }}
           path: browser-phase2cb-b1a-output.log
           if-no-files-found: error
+      - name: Upload Phase 2C-B1b browser proof
+        if: always() && steps.browser_phase2cb_b1b.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-phase2cb-b1b-proof-${{ github.sha }}
+          path: browser-phase2cb-b1b-output.log
+          if-no-files-found: error
       - name: Fail when tests failed
-        if: steps.full_tests.outputs.status != '0' || steps.browser_storage.outputs.status != '0' || steps.browser_graph_storage.outputs.status != '0' || steps.browser_phase2cb_b1a.outputs.status != '0'
+        if: steps.full_tests.outputs.status != '0' || steps.browser_storage.outputs.status != '0' || steps.browser_graph_storage.outputs.status != '0' || steps.browser_phase2cb_b1a.outputs.status != '0' || steps.browser_phase2cb_b1b.outputs.status != '0'
         run: exit 1
 
   macos-launchers:
@@ -104,7 +121,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - run: bash -n start-mindmap.command start-mindmap-deepseek.command start-legacy-exporter.command
+      - run: bash -n start-mindmap.command start-mindmap-deepseek.command start-legacy-exporter.command start-phase2cb-b1b.command
       - run: npm ci
       - run: npm run test:macos
         env:
