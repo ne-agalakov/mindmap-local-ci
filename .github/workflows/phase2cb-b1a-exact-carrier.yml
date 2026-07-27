@@ -3,6 +3,8 @@ name: materialize-phase2cb-b1a-exact-tree
 on:
   push:
     branches: [phase2cb-b1a-exact-carrier]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
