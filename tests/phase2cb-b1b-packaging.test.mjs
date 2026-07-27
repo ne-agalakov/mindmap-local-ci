@@ -43,7 +43,10 @@ test("B1b one-shot package is provenance-bound, executable and excludes source/p
   run("git", ["commit", "-m", "fixture"], root);
   const commit = run("git", ["rev-parse", "HEAD"], root);
   const tree = run("git", ["rev-parse", "HEAD^{tree}"], root);
-  const output = run("bash", ["scripts/package-phase2cb-b1b.sh"], root, { PATH: `${join(root, "bin")}:${process.env.PATH}` }).split("\n");
+  const output = run("bash", ["scripts/package-phase2cb-b1b.sh"], root, {
+    PATH: `${join(root, "bin")}:${process.env.PATH}`,
+    GITHUB_SHA: "0000000000000000000000000000000000000000",
+  }).split("\n");
   const archivePath = output.at(-2);
   const shaPath = output.at(-1);
   const archiveName = basename(archivePath);
