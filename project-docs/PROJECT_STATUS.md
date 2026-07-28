@@ -18,7 +18,7 @@ Alpha.19 остаётся замороженным legacy-прототипом �
 - Phase 2C-B0 deterministic mapping: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
 - Phase 2C-B1a sanitized executor/harness: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
-- Phase 2C-B1b exact-source read-only dry run: принят 2026-07-28; PR #46 ожидает финальный documentation-head merge gate.
+- Phase 2C-B1b exact-source read-only dry run: принят и слит как `4fd14e515d2c4234f70effa475381f47bbb50e8b` 28 июля 2026 года.
 
 Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts.
 
@@ -144,8 +144,21 @@ B1b принят строго как exact-source read-only dry-run gate. Док
 3. Vite harness ссылался на `/src/page.ts`, хотя entry находится в `/page.ts`. Исправление и отдельная regression добавлены.
 4. Exact-source run подтвердил, что эти delivery-фиксы не скрывали ошибку migration semantics: source contract, repeatability, rollback cleanup и zero-call boundary прошли на точной базе.
 
+## Финальное принятие и merge provenance
+
+```text
+reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
+public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
+shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
+squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
+```
+
+Final public verify `30357519192` и package-source `30357516712` прошли Linux, macOS, full tests, actual Chrome и packaging. Downloaded outer artifact SHA-256 `7ca49574e1bba78c10d87cae8e9907d8ce0641f711c7ee957a4533bcd99f9747`; one-shot package SHA-256 `9eb330e45f6544471e4e65eceda0e2fc60c74a585f238fffab7b7e9434a75d8f`; B1b browser proof SHA-256 `224e38f3bcc160e256024e6308c4fe685f001a9d2f7cdf1b80bbdb74b9c43171`.
+
+Google Drive status, project instruction и recovery protocol обновлены и прошли обратное чтение до merge. Issue #45 закрыта merge-коммитом как completed.
+
 ## Следующий проверяемый шаг
 
-Синхронизировать финальный acceptance documentation tree в public CI mirror, доказать exact tree equality, повторить Linux/macOS/full/actual-Chrome/package gates, скачать и проверить финальные artifacts, затем слить PR #46.
+Разрешено только офлайн-проектирование отдельного actual-migration gate: backup identity, production target namespace, atomic promotion, rollback, interruption/reload recovery, REQ-OBS-001 и отдельный verified package.
 
-После merge разрешено только офлайн-проектирование отдельного actual-migration gate: backup identity, production target namespace, atomic promotion, rollback, interruption/reload recovery, REQ-OBS и явное подтверждение Артёма непосредственно перед выполнением. Actual migration пока запрещена.
+Actual migration, production write, повтор B1b, model calls и реальные личные данные пока запрещены. Выполнение actual migration потребует нового явного подтверждения Артёма непосредственно перед запуском финального проверенного пакета.
