@@ -14,7 +14,8 @@ Accepted foundations:
 - Phase 2B native IndexedDB run storage — `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
 - Phase 2C-A graph/payload storage — `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0 deterministic mapping/typed-stop contract — `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
-- Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+- Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
+- Phase 2C-B1b exact-source read-only dry run — accepted on 2026-07-28; implementation PR #46 awaits final documentation-head merge gate.
 
 ## Phase 2C-B1a — accepted
 
@@ -40,46 +41,51 @@ Proven on sanitized fixtures:
 - REQ-OBS trace, inactivity/possibly-hung state and diagnostics;
 - zero network and model calls.
 
-## Phase 2C-B1b — package gate complete, local run pending
+## Phase 2C-B1b — exact-source dry run accepted
 
-Artyom authorized exactly one exact-source read-only B1b dry run on 2026-07-27. The verified package has been prepared, but the exact private SQLite source has not been opened and the authorized run has not been consumed.
+The one authorized exact-source B1b read-only dry run was executed once on the target Mac on 2026-07-28. The attempt is consumed and must not be repeated.
 
-Code-head identity before the final documentation commit:
+Accepted package identity:
 
 ```text
-private implementation head: d477203bbdf226e3252f741b31c9d45acf1b1499
-public exact-tree head:       47876e8b35a8b7c93903f82022a28eab64f02d53
-shared implementation tree:   ad431eaed0945039371011df1be0c989a634b050
+repository: ne-agalakov/mindmap-local-ci
+commit:     982cadbc62c42659aa567b803574e3e04066babc
+tree:       9b2d2588ba678f5c2bc5737687049be75c2ece96
+run ID:     b1b-20260728115431-22839
 ```
 
-Exact-tree CI passed Linux lint/full tests, macOS launchers/tests, actual-Chrome run-storage, graph-storage, B1a and B1b rehearsal harnesses, and packaging. The downloaded one-shot ZIP was independently inspected: seven expected files, launcher mode `0755`, portable checksum, no SQLite, diagnostics, dependencies, secrets or private payload strings.
+Confirmed from sanitized evidence:
 
-Three delivery regressions were proven and fixed before handoff:
+- exact SQLite matched `5,070,848` bytes and SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
+- `readonly`, `query_only`, `quick_check = ok`, `integrity_check = ok`;
+- exact counts `96/30/0/133/96/3/0` for thoughts/nodes/links/decisions/embeddings/runs/personal thoughts;
+- one honest unresolved thought and zero damaged references;
+- source size, SHA-256 and modification timestamp unchanged before and after all runs;
+- two clean fresh native IndexedDB targets produced equal portable plan hash and equal target snapshot hash;
+- injected rollback stopped with `transaction_failure`, committed no graph and left no target or receipt;
+- every temporary target was deleted after evidence capture;
+- external network calls = 0, model calls = 0, actual migration = false;
+- sanitized evidence contains no source bytes, raw thought text, node labels, source path or model payloads.
 
-1. packaging trusted an outer pull-request `GITHUB_SHA` that could name an unavailable merge commit;
-2. package metadata could pair a private repository name with a public-mirror commit;
-3. the B1b Vite harness referenced `/src/page.ts` instead of its actual `/page.ts` entry.
-
-All three have regression coverage.
+The per-target `mappingContentHash` differs by design because each plan contains a distinct isolated target database name. The target-independent portable plan hash and persisted target snapshot hash both matched and are the accepted repeatability gates.
 
 ## Preserved boundary
 
-The B1b package authorizes only one read-only dry run against the exact accepted SQLite source and fresh isolated temporary IndexedDB targets.
+B1b acceptance proves the exact-source read-only dry-run path only.
 
 Still prohibited:
 
 - actual target-Mac migration or production namespace use;
-- any source write, repair or replacement;
+- source write, repair, replacement or deletion;
+- a second B1b attempt;
 - automatic retry after failure, reload or version change;
 - Candidate 5/6, Qwen, DeepSeek or other model execution;
 - production runtime/UI integration;
-- semantic claims and real personal thoughts.
-
-A failed one-shot dry run does not authorize a second attempt. Sanitized evidence must be inspected first.
+- semantic-quality claims and real personal thoughts.
 
 ## Next verified step
 
-Complete the final documentation-head exact-tree CI and downloaded-artifact inspection. Then run the verified one-shot package once on the target Mac, select only the exact SQLite source (`5,070,848` bytes; SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`) and inspect the sanitized evidence. Actual migration remains a separate later gate.
+Mirror the final B1b acceptance documentation tree to the public CI repository, prove exact tree equality, rerun Linux/macOS/full/actual-Chrome/package gates, inspect the downloaded artifacts, then merge PR #46. After that, only offline design of a separately authorized actual-migration gate is permitted. Actual migration itself requires a new explicit confirmation immediately before execution.
 
 ## Commands
 
@@ -99,4 +105,4 @@ npm run package:source
 npm run package:phase2cb-b1b
 ```
 
-See `project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md` and `project-docs/evidence/PHASE2CB_B1B_PACKAGE_READINESS.md` for exact proof and boundaries.
+See `project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md`, `project-docs/evidence/PHASE2CB_B1B_PACKAGE_READINESS.md` and `project-docs/evidence/PHASE2CB_B1B_ACCEPTANCE.md` for the exact proof and boundaries.
