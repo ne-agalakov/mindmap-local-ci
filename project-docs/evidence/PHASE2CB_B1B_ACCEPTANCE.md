@@ -1,7 +1,7 @@
 # Phase 2C-B1b exact-source dry-run acceptance
 
 Date: 2026-07-28
-Status: accepted read-only dry run; actual migration remains prohibited
+Status: accepted and merged; actual migration remains prohibited
 
 ## Accepted package and authorization
 
@@ -113,6 +113,27 @@ Phase 2C-B1b is accepted for the exact-source read-only dry-run objective:
 - REQ-OBS trace was present;
 - network/model calls remained zero;
 - actual migration did not occur.
+
+## Final CI, artifact and merge provenance
+
+```text
+reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
+public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
+shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
+squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
+```
+
+Final public verify `30357519192` and package-source `30357516712` passed Linux, macOS, full tests, actual Chrome and packaging. Downloaded artifact review confirmed:
+
+```text
+outer artifact sha256: 7ca49574e1bba78c10d87cae8e9907d8ce0641f711c7ee957a4533bcd99f9747
+source ZIP sha256:     2521bac2ed4e8d92a03c7742b896e3015010b8a56a1abf6e519acb55d48f2290
+exporter ZIP sha256:   e05168131cad1c46a6038b989eaef50d5f8de5626933a3e1318487f352b6d1a1
+B1b ZIP sha256:        9eb330e45f6544471e4e65eceda0e2fc60c74a585f238fffab7b7e9434a75d8f
+browser proof sha256:  224e38f3bcc160e256024e6308c4fe685f001a9d2f7cdf1b80bbdb74b9c43171
+```
+
+Portable checksums, exact package provenance and launcher mode `0755` were verified. No exact SQLite, exact evidence, dependencies, secrets or personal payloads were present. Google Drive status, project instruction and recovery protocol were updated and reverse-read before merge. PR #46 was merged with expected-head protection; Issue #45 closed as completed.
 
 ## Preserved boundary and next gate
 
