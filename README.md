@@ -15,7 +15,7 @@ Accepted foundations:
 - Phase 2C-A graph/payload storage — `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0 deterministic mapping/typed-stop contract — `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
-- Phase 2C-B1b exact-source read-only dry run — accepted on 2026-07-28; implementation PR #46 awaits final documentation-head merge gate.
+- Phase 2C-B1b exact-source read-only dry run — accepted and merged as `4fd14e515d2c4234f70effa475381f47bbb50e8b` on 2026-07-28.
 
 ## Phase 2C-B1a — accepted
 
@@ -69,6 +69,15 @@ Confirmed from sanitized evidence:
 
 The per-target `mappingContentHash` differs by design because each plan contains a distinct isolated target database name. The target-independent portable plan hash and persisted target snapshot hash both matched and are the accepted repeatability gates.
 
+Final acceptance provenance:
+
+```text
+reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
+public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
+shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
+squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
+```
+
 ## Preserved boundary
 
 B1b acceptance proves the exact-source read-only dry-run path only.
@@ -85,7 +94,7 @@ Still prohibited:
 
 ## Next verified step
 
-Mirror the final B1b acceptance documentation tree to the public CI repository, prove exact tree equality, rerun Linux/macOS/full/actual-Chrome/package gates, inspect the downloaded artifacts, then merge PR #46. After that, only offline design of a separately authorized actual-migration gate is permitted. Actual migration itself requires a new explicit confirmation immediately before execution.
+Only offline design of a separate actual-migration gate is now permitted: backup identity, production target namespace, atomic promotion, rollback, interruption/reload recovery and REQ-OBS-001. Actual migration itself requires a new explicit user confirmation immediately before execution of a separately verified package.
 
 ## Commands
 
