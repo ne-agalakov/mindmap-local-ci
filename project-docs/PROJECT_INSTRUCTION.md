@@ -12,11 +12,16 @@ MindMap — local-first AI-система. Цикл: мысль → понима
 
 Alpha.19 заморожена как legacy-прототип. Реальные мысли в неё не загружать.
 
-Приняты Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1 plan, B1a и B1b. B1b merge: `4fd14e515d2c4234f70effa475381f47bbb50e8b`; post-merge docs: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
+Приняты Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1 plan, B1a, B1b и C0.
 
-Единственный B1b exact-source read-only dry run выполнен и израсходован. Source `5 070 848` bytes / SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918` остался неизменным. Counts `96/30/0/133/96/3/0`, один unresolved, ноль damaged references. Два clean target дали одинаковые portable plan/target snapshot hashes; injected rollback не оставил target/receipt; network/model calls = 0; actual migration = false.
+- B1b merge: `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
+- C0 merge: `31657e218cd5891e9e915f698febf8ac72942ed3`;
+- C0 private/public heads: `af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5` / `9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6`;
+- shared tree: `a8523316e16273f633fac8caac95e96a5fec1080`.
 
-Активный этап — Phase 2C-C0. Архитектура, failure matrix, release metadata и reviewed artifact gate готовы; финальный documentation-tree rerun и merge PR #49 ещё требуются.
+Единственный B1b exact-source read-only dry run выполнен и израсходован. Source `5 070 848` bytes / SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918` остался неизменным. Counts `96/30/0/133/96/3/0`, один unresolved, ноль damaged references; network/model calls = 0; actual migration = false.
+
+Ранее записанная Drive identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4` была неподтверждённой документационной ошибкой и удалена. Она не является принятым коммитом.
 
 ## Модель данных
 
@@ -26,41 +31,43 @@ Alpha.19 заморожена как legacy-прототип. Реальные �
 
 Ноль подходящих направлений, проектов, связей, дублей или противоречий — нормальный результат. Нельзя заполнять схему выдуманными сущностями.
 
-Различай корректную ссылку, честную неопределённость unresolved и повреждённую/устаревшую ссылку. Unresolved хранится во «Входящих» и не считается ошибкой. AI рекомендует, но не принимает важные решения. Внешние действия требуют подтверждения.
+Различай корректную ссылку, honest unresolved и damaged/stale reference. Unresolved хранится во «Входящих» и не считается ошибкой. AI рекомендует, но не принимает важные решения. Внешние действия требуют подтверждения.
 
 ## Хранение и actual migration
 
 Legacy source остаётся private, immutable и read-only. Диагностика, backup, migration и recovery выполняются без AI.
 
-Actual migration не выполняется in-place и не пишет в фиксированную mutable production-базу. Она создаёт отдельную immutable generation database с prefix `mindmap-state-core-v1-generation-`. Control registry `mindmap-state-core-control-v1` хранит только управляющие записи и атомарно переключает active pointer после полного reopen, validation и seal generation.
+Actual migration не выполняется in-place и не пишет в фиксированную mutable production-базу. Она создаёт отдельную immutable generation database с prefix `mindmap-state-core-v1-generation-`. Control registry `mindmap-state-core-control-v1` атомарно переключает active pointer после полного reopen, validation и seal generation.
 
 Rollback восстанавливает previous pointer отдельной recorded transaction и не изменяет payload. Скрытый fallback запрещён. Legacy source, private backup, active/sealed/previous generations migration package не удаляет.
 
-Поскольку IndexedDB не имеет atomic database rename, runtime resolver через control registry обязан быть доказан на sanitized fixtures до exact-source execution.
-
 Безопасный порядок:
 
-1. C0 — ADR, contract, failure matrix, release gate.
-2. C1 — pure registry/generation contracts и state machine на sanitized fixtures.
-3. C2 — native IndexedDB registry, promotion, rollback, crash/reload proof.
-4. C3 — packaged runtime resolver на sanitized fixtures.
-5. C4 — отдельный exact-source one-shot package.
-6. Новое явное подтверждение Артёма непосредственно перед запуском.
-7. Actual migration и activation.
+1. C1 — pure registry/generation contracts и attempt state machine на sanitized fixtures.
+2. C2 — native IndexedDB registry, promotion, rollback, crash/reload proof.
+3. C3 — packaged runtime resolver на sanitized fixtures.
+4. C4 — отдельный exact-source one-shot package.
+5. Новое явное подтверждение Артёма непосредственно перед запуском.
+6. Actual migration и activation.
 
 Actual execution требует one-shot authorization, привязанной к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID. Она расходуется до source open. Любой failure запрещает автоматический retry и требует offline root-cause proof, regression и нового package gate.
 
-## C0 reviewed gate
+## Phase 2C-C1 — разрешённая граница
 
-```text
-private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
-public head:  189e86ae8a92912d399196bed15d8ece849a58e9
-shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
-verify:       30424595380
-package:      30424595384
-```
+C1 содержит только pure TypeScript domain contracts/state machine и sanitized fixtures. Запрещены зависимости от IndexedDB, browser APIs, filesystem, exact SQLite, backup files, network, model services, wall clock и randomness.
 
-Linux/macOS/full/actual-Chrome/package gates и downloaded-artifact review прошли. Исправлены три release-gate дефекта: ослабленный B1a README marker, неверная source-package provenance и неверная exporter-package provenance. Оба packager теперь regression-test actual checkout repository/commit.
+C1 обязан определить:
+
+- immutable manifest/authorization/generation/registry identities;
+- closed attempt states and transitions;
+- typed commands, events, stops and rejections;
+- expected registry revision and previous-pointer guards;
+- generation lifecycle до `promotion_ready`, без выполнения promotion;
+- explicit recovery states без автоматического resume/retry;
+- deterministic replay, canonical hashing and idempotency;
+- proof that zero network/model/source/production-storage paths exist.
+
+C1 не доказывает native persistence, cross-database crash behavior, packaged resolver или actual migration. Это C2–C4.
 
 ## Восстановление и AI-расход
 
@@ -86,8 +93,6 @@ Google Drive — источник продуктовых документов; G
 
 ## Текущая стоп-линия
 
-Разрешены только финальный exact mirror C0-документации, CI/artifact review и merge PR #49.
+Разрешён только C1 pure contracts/state machine на sanitized fixtures и его документационный/CI/artifact gate.
 
-Запрещены: повтор B1b; открытие exact SQLite; создание real backup/control registry/production generation; actual migration/promotion; source write/repair/delete; model calls; exact-data runtime use; реальные личные мысли.
-
-После C0 merge разрешён только отдельный C1 на sanitized fixtures. Actual migration требует прохождения C1–C4 и нового явного подтверждения непосредственно перед exact final package.
+Запрещены: повтор B1b; открытие exact SQLite; создание real backup/control registry/production generation; IndexedDB implementation до C2; actual migration/promotion; source write/repair/delete; model/network calls; exact-data runtime use; реальные личные мысли.

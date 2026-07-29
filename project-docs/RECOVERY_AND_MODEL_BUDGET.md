@@ -32,16 +32,19 @@ target snapshot:     6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979
 
 B1b не повторять. Exact source и оба sanitized JSON evidence хранить неизменными.
 
-## Phase 2C-C0 — immutable-generation recovery architecture
+## Phase 2C-C0 — accepted recovery architecture
 
-Actual migration не выполняется in-place и не пишет в фиксированную mutable production database.
+C0 принят merge-коммитом `31657e218cd5891e9e915f698febf8ac72942ed3`.
 
 ```text
+private head: af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5
+public head:  9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6
+shared tree:  a8523316e16273f633fac8caac95e96a5fec1080
 control registry:  mindmap-state-core-control-v1
 generation prefix: mindmap-state-core-v1-generation-
 ```
 
-Каждый import создаёт новую inactive generation. До activation она проходит import, close/reopen, exact validation и seal. Control registry атомарно меняет active pointer одной transaction с expected revision и activation receipt. Abort сохраняет прежний pointer.
+Actual migration не выполняется in-place и не пишет в фиксированную mutable production database. Каждый import создаёт новую inactive generation. До activation она проходит import, close/reopen, exact validation и seal. Control registry атомарно меняет active pointer одной transaction с expected revision и activation receipt. Abort сохраняет прежний pointer.
 
 Rollback не изменяет generation payload. Он отдельной явной registry transaction восстанавливает previous pointer. При revision/identity conflict система останавливается и не угадывает. Скрытый fallback запрещён.
 
@@ -58,12 +61,14 @@ Legacy source, private backup, sealed generation, active generation и previous 
 - backup bytes/path не попадают в Git, Drive или sanitized evidence;
 - generation creation запрещена до `backup_verified`.
 
+Этот contract принят, но на C0 backup не создавался.
+
 ## Attempt and reload recovery
 
 One-shot authorization привязана к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID. Она расходуется до source open.
 
 ```text
-planned → authorization_consumed → source_verified → backup_verified
+planned → authorization_consumed → backup_verified → source_verified
 → generation_created → importing → imported → verified → sealed
 → promotion_ready → promotion_committed → resolver_verified → completed
 ```
@@ -72,19 +77,20 @@ Reload, Terminal/browser close, exception или stale heartbeat не продо
 
 До promotion incomplete generation остаётся inactive. После committed promotion ошибка resolver переводит attempt в `rollback_required`; rollback требует отдельного явного действия. Runtime resolver обязан быть доказан на sanitized fixtures до exact-source execution.
 
-## Reviewed C0 gate
+## Финальный C0 gate
 
 ```text
-private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
-public head:  189e86ae8a92912d399196bed15d8ece849a58e9
-shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
-verify:       30424595380
-package:      30424595384
+verify:       30425727226
+package:      30425727235
+duplicate verify:  30427050113
+duplicate package: 30427050043
+outer artifact: f2de7f3961c5b720a35e2cbc8987e3a5216304bf8bc8513432c4d8ddb800ff1f
+browser proof:  1e0c1aa3f2fd5004699ce6162b20f19e99933ed574ea1e142b7265d9507e1d45
 ```
 
-Downloaded artifact review подтвердил truthful source/exporter/B1b repository/commit provenance, portable checksums, executable user launchers и отсутствие exact database/evidence bytes, secrets, dependencies и personal payloads.
+Downloaded artifact review подтвердил truthful source/exporter/B1b repository/commit/tree provenance, portable checksums, executable user launchers и отсутствие exact database/evidence bytes, secrets, dependencies и personal payloads.
 
-Исправлены и regression-tested: ослабленный B1a README invariant, source-package repository mismatch и exporter-package repository mismatch.
+Исправлены и regression-tested: ослабленный B1a README invariant, source-package repository mismatch и exporter-package repository mismatch. Неподтверждённая Drive identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4` удалена после GitHub API verification и не считается merge.
 
 ## Failure boundary
 
@@ -96,10 +102,10 @@ Typed stops обязательны для authorization/package/source/backup mi
 
 REQ-OBS-001 применяется к authorization freeze, source verification, backup, generation creation, import, verification, seal, promotion, resolver verification, rollback, cleanup и evidence capture.
 
-## Текущая стоп-линия
+## Phase 2C-C1 recovery boundary
 
-Artifact revision 11 и финальные Drive revisions синхронизированы. Разрешены только final documentation exact-tree rerun, downloaded-artifact review и merge PR #49.
+C1 разрешён только как pure in-memory contract/state-machine proof на sanitized fixtures. Он не открывает source/backup files, не создаёт IndexedDB databases, не активирует generations, не выполняет recovery writes, не вызывает модели и не использует personal data.
 
-Exact source на C0 не открывался; B1b не повторялась; backup/registry/generation не создавались; migration/promotion не выполнялись; network/model calls = 0; personal data = 0.
+Native persistence/crash recovery относится к C2; packaged resolver — к C3; exact-source migration — к C4 и будущему отдельному подтверждению.
 
-После C0 merge разрешён только C1 pure contracts на sanitized fixtures. Actual migration требует C1–C4 и отдельного явного подтверждения Артёма непосредственно перед exact final package.
+No recovery action is required on the target Mac. Exact SQLite и B1b evidence сохранить неизменными. Actual migration остаётся запрещённой.
