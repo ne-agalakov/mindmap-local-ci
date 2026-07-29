@@ -1,6 +1,6 @@
 # MindMap — решения и статус
 
-Дата актуализации: 2026-07-28.
+Дата актуализации: 2026-07-29.
 
 ## Назначение
 
@@ -18,7 +18,8 @@ Alpha.19 остаётся замороженным legacy-прототипом �
 - Phase 2C-B0 deterministic mapping: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
 - Phase 2C-B1a sanitized executor/harness: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
-- Phase 2C-B1b exact-source read-only dry run: принят и слит как `4fd14e515d2c4234f70effa475381f47bbb50e8b` 28 июля 2026 года.
+- Phase 2C-B1b exact-source read-only dry run: принят и слит как `4fd14e515d2c4234f70effa475381f47bbb50e8b` 28 июля 2026 года;
+- post-merge documentation: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
 
 Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts.
 
@@ -105,7 +106,7 @@ Injected rollback:
 
 REQ-OBS trace содержит freeze manifest, preflight hash, read-only extraction, planning, target freshness/creation, transactional progress, verification, source re-hash, cleanup и terminal state. На всех этапах `model = без AI`.
 
-Границы:
+Границы B1b:
 
 - external network calls = 0;
 - model calls = 0;
@@ -114,18 +115,9 @@ REQ-OBS trace содержит freeze manifest, preflight hash, read-only extrac
 - automatic retry = false;
 - source bytes/raw thought text/node labels/source path/model payloads в evidence отсутствуют.
 
-## Решение о принятии
+## Решение о принятии B1b
 
-B1b принят строго как exact-source read-only dry-run gate. Доказаны:
-
-- точная идентичность и целостность source;
-- неизменность source;
-- два одинаковых детерминированных target результата;
-- cleanup после injected failure;
-- удаление всех временных target;
-- REQ-OBS trace;
-- ноль network/model calls;
-- отсутствие actual migration.
+B1b принят строго как exact-source read-only dry-run gate. Доказаны точная идентичность и целостность source, неизменность source, два одинаковых детерминированных target результата, cleanup после injected failure, удаление временных target, REQ-OBS, ноль network/model calls и отсутствие actual migration.
 
 Не доказаны и не разрешены:
 
@@ -144,21 +136,65 @@ B1b принят строго как exact-source read-only dry-run gate. Док
 3. Vite harness ссылался на `/src/page.ts`, хотя entry находится в `/page.ts`. Исправление и отдельная regression добавлены.
 4. Exact-source run подтвердил, что эти delivery-фиксы не скрывали ошибку migration semantics: source contract, repeatability, rollback cleanup и zero-call boundary прошли на точной базе.
 
-## Финальное принятие и merge provenance
+## Финальное принятие B1b и merge provenance
 
 ```text
 reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
 public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
 shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
 squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
+post-merge docs:       e6bd47011fad2dab5a8617f5f754739de1915fd9
 ```
 
 Final public verify `30357519192` и package-source `30357516712` прошли Linux, macOS, full tests, actual Chrome и packaging. Downloaded outer artifact SHA-256 `7ca49574e1bba78c10d87cae8e9907d8ce0641f711c7ee957a4533bcd99f9747`; one-shot package SHA-256 `9eb330e45f6544471e4e65eceda0e2fc60c74a585f238fffab7b7e9434a75d8f`; B1b browser proof SHA-256 `224e38f3bcc160e256024e6308c4fe685f001a9d2f7cdf1b80bbdb74b9c43171`.
 
-Google Drive status, project instruction и recovery protocol обновлены и прошли обратное чтение до merge. Issue #45 закрыта merge-коммитом как completed.
+Google Drive status, project instruction и recovery protocol обновлены и прошли обратное чтение. Issue #45 закрыта как completed.
+
+## Phase 2C-C0 — активный design gate
+
+Issue #48 и draft PR #49 создают архитектуру actual migration без выполнения.
+
+Созданы:
+
+- `project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md`;
+- `project-docs/evidence/PHASE2CC_C0_CONTRACT.md`;
+- `project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md`;
+- `project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md`;
+- `project-docs/evidence/PHASE2CC_C0_STATUS.md`.
+
+### Архитектурное решение
+
+Actual migration не пишет в фиксированную mutable production-базу и не выполняется in-place. Она создаёт отдельную immutable generation database. После полного reopen/verification/seal только control registry атомарно переключает active pointer.
+
+```text
+control registry:  mindmap-state-core-control-v1
+generation prefix: mindmap-state-core-v1-generation-
+```
+
+IndexedDB не поддерживает atomic database rename, поэтому runtime resolver обязан быть реализован и доказан на sanitized fixtures до exact-source execution. Это меняет безопасный порядок:
+
+```text
+C0 architecture/failure matrix
+C1 pure registry and generation contracts
+C2 native IndexedDB promotion/rollback/crash proof
+C3 packaged runtime resolver on sanitized fixtures
+C4 exact-source one-shot package
+new explicit confirmation
+actual migration and activation
+```
+
+### C0 boundary
+
+- exact SQLite reopened: false;
+- B1b repeated: false;
+- backup created: false;
+- registry/generation IndexedDB created: false;
+- actual migration/promotion: false;
+- network/model calls: 0;
+- personal data used: false.
 
 ## Следующий проверяемый шаг
 
-Разрешено только офлайн-проектирование отдельного actual-migration gate: backup identity, production target namespace, atomic promotion, rollback, interruption/reload recovery, REQ-OBS-001 и отдельный verified package.
+Провести внутреннюю проверку C0-документов, exact-tree public CI, downloaded-artifact inspection и Drive reverse-read, затем принять PR #49.
 
-Actual migration, production write, повтор B1b, model calls и реальные личные данные пока запрещены. Выполнение actual migration потребует нового явного подтверждения Артёма непосредственно перед запуском финального проверенного пакета.
+После принятия C0 разрешён только отдельный C1: pure registry/generation contracts и state machine на sanitized fixtures. Exact-source reopening, actual migration, production write, model calls и реальные личные данные остаются запрещены.
