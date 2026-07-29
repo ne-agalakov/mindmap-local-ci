@@ -10,12 +10,12 @@
 
 - size `5 070 848` bytes;
 - SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- export/inspection `readonly`;
+- export/inspection `readonly` + `query_only`;
+- quick_check/integrity_check `ok`;
 - bytes modified false;
-- integrity `ok`;
 - 96 synthetic, 0 personal thoughts.
 
-Raw source остаётся private и вне Git.
+Raw source остаётся private и вне Git/Drive artifacts.
 
 ## Принятые storage/recovery основания
 
@@ -24,69 +24,106 @@ Raw source остаётся private и вне Git.
 - Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
 - Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0 `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
-- Phase 2C-B1a `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+- Phase 2C-B1a `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
+- Phase 2C-B1b `4fd14e515d2c4234f70effa475381f47bbb50e8b`.
 
 Приняты transaction completion as commit, append-only replay, revision/idempotency guards, workspace isolation, abort rollback, corruption refusal, deterministic graph/payload mapping и explicit unresolved/damaged-reference distinction.
 
-## Phase 2C-B1a — accepted recovery boundary
+## Phase 2C-B1b — accepted exact-source recovery boundary
 
-B1a принята только как sanitized executor/harness.
+Единственная разрешённая B1b попытка выполнена и израсходована.
 
 ```text
-final private head: c1237b9ba012d60dc720bf940082c7d8e88f4e1e
-public exact head:  667b218b8bf863c45ae074db65a314e77786f8d0
-shared tree:        58d2bb0e9b7edebb3d3d830064406feffbff5181
-merge:              aec5edaca877cec5d769f4ce4efff674a9c92a7d
-verify:             30245125059
-package:            30245125058
+run:                 b1b-20260728115431-22839
+package commit:      982cadbc62c42659aa567b803574e3e04066babc
+package tree:        9b2d2588ba678f5c2bc5737687049be75c2ece96
+B1b merge:           4fd14e515d2c4234f70effa475381f47bbb50e8b
+post-merge docs:     e6bd47011fad2dab5a8617f5f754739de1915fd9
+portable plan hash:  d8a1289c6f1865db940f65e46aec569400b630aec3cc53bdfd897f223d2436a8
+target snapshot:     6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689
 ```
 
-Proven on sanitized fixtures:
+Подтверждено:
 
-- physical SQLite open in read-only mode;
-- source before/after identity;
-- deterministic two-clean-run plan and target hashes;
-- actual Chrome IndexedDB isolated temporary targets;
-- injected failure leaves no partial target or receipt;
-- typed stops and no automatic retry;
-- heartbeat, inactivity, possibly-hung state and downloadable diagnostics;
-- model mode «без AI»;
-- network/model calls = 0.
+- exact source size/SHA/timestamp unchanged before and after;
+- counts `96/30/0/133/96/3/0`;
+- one unresolved, zero damaged references;
+- two clean temporary targets produced equal portable-plan/target hashes;
+- injected transaction failure committed no graph and left no target/receipt;
+- all temporary targets deleted;
+- REQ-OBS trace and diagnostics present;
+- network/model calls = 0;
+- actual migration = false.
 
-Portable plan hash: `16f82826ae2846136ba2d4f561c0116f17433ce4ab6aa5c3c2c2ab8a4681c52d`.
+B1b не повторять. Exact source и оба sanitized JSON evidence хранить неизменными.
 
-Target snapshot hash: `6399e23e713214da1574113739e25ea86a220cec8990963c955aeea0a4e73fbf`.
+## Phase 2C-C0 — immutable-generation recovery architecture
 
-Exact source was not opened, actual migration was not performed, and no real migration target was created.
+Actual migration не выполняется in-place и не пишет в фиксированную mutable production database.
 
-## Google Drive post-merge readback
+```text
+control registry:  mindmap-state-core-control-v1
+generation prefix: mindmap-state-core-v1-generation-
+```
 
-- instruction `AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc`;
-- status `AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c`;
-- recovery `AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk`.
+Каждый import создаёт новую inactive generation. До activation она обязана пройти import, close/reopen, exact validation и seal. Control registry атомарно меняет active pointer одной transaction с expected revision и activation receipt. Transaction abort сохраняет прежний pointer.
 
-Acceptance-маркеры найдены после записи.
+Rollback не изменяет generation payload. Он отдельной явной registry transaction восстанавливает previous pointer по activation receipt. При revision/identity conflict система останавливается и не угадывает. Скрытый fallback запрещён.
+
+Legacy source, backup, sealed generation, active generation и previous active generation migration package не удаляет.
+
+## Backup contract
+
+Перед generation write требуется private immutable backup exact SQLite:
+
+- destination создаётся exclusive-create и не перезаписывается;
+- size/SHA-256 проверяются независимо;
+- quick_check и integrity_check обязаны быть `ok`;
+- existing path с другим содержимым блокирует attempt;
+- backup bytes/path не попадают в Git, Drive или sanitized evidence;
+- generation creation запрещена до `backup_verified`.
+
+## Attempt and reload recovery
+
+One-shot authorization привязана к repository, commit, tree, package archive SHA-256, source size/SHA, generation name и attempt ID. Она расходуется до source open.
+
+Forward states:
+
+```text
+planned → authorization_consumed → source_verified → backup_verified
+→ generation_created → importing → imported → verified → sealed
+→ promotion_ready → promotion_committed → resolver_verified → completed
+```
+
+Reload, Terminal/browser close, exception или stale heartbeat не продолжают write автоматически. Persisted non-terminal attempt показывает blocked recovery state и diagnostics. Любой stop запрещает retry. Новая попытка возможна только после offline root-cause proof, regression, нового exact package gate и нового подтверждения.
+
+До promotion incomplete generation остаётся inactive. После committed promotion ошибка resolver переводит attempt в `rollback_required`; rollback требует отдельного явного действия. Runtime resolver обязан быть доказан на sanitized fixtures до exact-source execution.
+
+## Failure boundary
+
+Обязательны typed stops для:
+
+- authorization/package/source/backup mismatch;
+- registry version/revision/active-pointer mismatch;
+- generation collision или invalid namespace;
+- transaction abort, idempotency conflict, partial import;
+- counts/reference/unresolved/hash/reopen mismatch;
+- seal/promotion/resolver/rollback failure;
+- evidence write failure;
+- non-zero network/model counters.
+
+Автоматический repair через AI запрещён.
 
 ## REQ-OBS-001
 
-Каждая длительная операция показывает name/type, elapsed time and volume, last progress/heartbeat, state, model или «без AI» и downloadable diagnostics. Timer freezes on pause/error/completion. Stale activity означает «возможно, процесс завис», но не доказывает зависание и не разрешает автоматический restart/retry.
+Каждая длительная операция показывает name/type, elapsed time/volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Timer freezes on pause/error/completion. Stale activity означает «возможно, процесс завис», но не доказывает зависание и не разрешает restart/retry.
 
-## B1b recovery contract — пока только будущий gate
+REQ-OBS-001 применяется к authorization freeze, source verification, backup, generation creation, import, verification, seal, promotion, resolver verification, rollback, cleanup и evidence capture.
 
-B1b можно запускать только после нового явного подтверждения Артёма ровно на один dry run. До подтверждения запрещено даже искать или открывать exact source.
+## Текущая стоп-линия
 
-Обязательные условия будущего B1b:
+C0 — только architecture/contracts/failure matrix/release metadata/CI/artifact/Drive synchronization.
 
-- exact accepted source path/hash и strict read-only open;
-- source bytes/hash before and after equal;
-- synthetic workspace, personal thoughts = 0;
-- fresh empty isolated temporary target;
-- deterministic versioned mapping and repeat-run target hash;
-- typed stop on source/schema/count/workspace/reference/ambiguity mismatch;
-- injected failure deletes target and leaves no partial receipt/state;
-- network/model/Ollama/Qwen/DeepSeek = 0;
-- no automatic retry after failure/reload/version change.
+На C0 exact source не открывался; B1b не повторялась; backup/registry/generation не создавались; migration/promotion не выполнялись; network/model calls = 0; personal data = 0.
 
-No automatic retry, model call or B1b execution is authorized.
-
-Даже успешный B1b dry run не разрешает actual target-Mac migration. Actual migration требует отдельного последующего подтверждения, backup/rollback plan и production REQ-OBS-001 proof.
+После принятия C0 разрешён только C1 pure contracts на sanitized fixtures. Actual migration требует C1–C4 и отдельного явного подтверждения Артёма непосредственно перед exact final package.
