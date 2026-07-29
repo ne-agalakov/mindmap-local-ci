@@ -77,6 +77,9 @@ mkdir -p "${out_dir}"
   zip -qr "${out_dir}/${archive_root}.zip" "${archive_root}"
 )
 
+# Write a portable checksum manifest. The filename must be relative so the
+# downloaded artifact can be verified from any directory, not only on the
+# original GitHub Actions runner path.
 (
   cd "${out_dir}"
   if command -v sha256sum >/dev/null; then
