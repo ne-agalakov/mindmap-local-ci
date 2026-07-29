@@ -33,6 +33,7 @@ jobs:
           MINDMAP_GIT_DIRTY: "false"
       - run: npm run package:source
       - run: npm run package:legacy-exporter
+      - run: npm run package:phase2cb-b1b
       - uses: actions/upload-artifact@v4
         with:
           name: mindmap-source-${{ env.SOURCE_SHA }}

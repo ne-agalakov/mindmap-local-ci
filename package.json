@@ -26,7 +26,15 @@
     "check:docs": "bash scripts/check-release-docs.sh",
     "test:macos": "node --test tests/macos-launcher.test.mjs tests/model-launch-configuration.test.mjs tests/ui-recovery.test.mjs",
     "package:source": "bash scripts/package-source.sh",
-    "package:legacy-exporter": "bash scripts/package-legacy-exporter.sh"
+    "package:legacy-exporter": "bash scripts/package-legacy-exporter.sh",
+    "test:migration-contract": "node --experimental-strip-types --test tests/phase2cb-mapping-contract.test.mjs tests/phase2cb-b1a-executor.test.mjs tests/phase2cb-b1a-indexeddb.test.mjs tests/phase2cb-b1a-sqlite-source.test.mjs tests/phase2cb-b1b-executor.test.mjs tests/phase2cb-b1b-exact-source.test.mjs tests/phase2cb-b1b-one-shot.test.mjs tests/phase2cb-b1b-packaging.test.mjs",
+    "test:phase2cb-b1a": "node --experimental-strip-types --test tests/phase2cb-b1a-executor.test.mjs tests/phase2cb-b1a-indexeddb.test.mjs tests/phase2cb-b1a-sqlite-source.test.mjs",
+    "build:phase2cb-b1a-harness": "vite build --config tools/browser-phase2cb-b1a-harness/vite.config.mjs",
+    "test:browser-phase2cb-b1a": "node scripts/run-browser-phase2cb-b1a-harness.mjs",
+    "test:phase2cb-b1b": "node --experimental-strip-types --test tests/phase2cb-b1b-executor.test.mjs tests/phase2cb-b1b-exact-source.test.mjs tests/phase2cb-b1b-one-shot.test.mjs tests/phase2cb-b1b-packaging.test.mjs",
+    "build:phase2cb-b1b-harness": "vite build --config tools/browser-phase2cb-b1b-harness/vite.config.mjs",
+    "test:browser-phase2cb-b1b": "node scripts/run-browser-phase2cb-b1b-harness.mjs",
+    "package:phase2cb-b1b": "bash scripts/package-phase2cb-b1b.sh"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

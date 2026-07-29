@@ -1,36 +1,43 @@
-# Known gaps after Phase 2C-A acceptance
+# Known gaps during Phase 2C-C0
 
-Green storage tests are not proof of migration, runtime or semantic readiness.
+B1b exact-source read-only dry run is accepted. It proved deterministic temporary-target behavior, not production migration or product semantics.
 
 ## Closed
 
-- exact legacy source is private, hash-verified and read-only;
-- pure state identity/transitions/replay are accepted;
-- transactional run storage is accepted;
-- canonical graph/payload contracts and native graph storage are accepted;
-- target-Mac real-Chrome storage scenarios passed;
-- exact public Linux/macOS/full/browser/package gates passed;
-- final downloaded artifacts passed external inventory/privacy/credential checks;
-- Drive post-merge update/readback and merge provenance are complete;
-- private Actions failure was explained by exhausted private minutes;
-- release-marker and generic-path scan regressions were diagnosed and recorded.
+- exact source identity, read-only/query-only integrity and byte stability;
+- exact counts `96/30/0/133/96/3/0`;
+- one unresolved and zero damaged references;
+- deterministic exact-source portable-plan and target-snapshot equality;
+- exact-source injected rollback and temporary-target cleanup;
+- zero network/model calls and no actual migration;
+- B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b` and post-merge docs;
+- C0 architectural choice: immutable generation plus atomic control-registry pointer;
+- documented failure matrix and staged C1–C4 plan;
+- artifact revision 10 and exact Google Drive revisions/readback synchronized;
+- release documentation gate advanced from B1a-only state to accepted B1b / active C0;
+- generic source package repository/commit provenance fixed and regression-tested;
+- compact exporter repository/commit provenance fixed and regression-tested.
 
-Phase 2C-A merge: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+## Still open before C0 acceptance
 
-## Still open
+- final private/public exact Git-tree equality after all provenance fixes;
+- final Linux/macOS/full/actual-Chrome/package gates on that exact tree;
+- downloaded source/exporter/B1b artifact inspection on the final tree;
+- final acceptance documentation with exact heads, tree, runs and hashes;
+- C0 merge provenance.
 
-- same-fixture cross-environment graph snapshot equality;
-- Phase 2C-B deterministic migration mapping;
-- exact-source isolated dry run;
-- source byte-stability;
-- deterministic target hash and repeat-run equality;
-- failed-migration rollback;
-- typed stops for mismatch, personal data, wrong schema/workspace, duplicate runs, ambiguity, invalid references and non-empty target;
-- target-Mac production storage;
-- actual migration backup/rollback and explicit confirmation;
-- production runtime integration and packaged browser E2E;
-- REQ-OBS-001 from persisted attempts/checkpoints;
-- service-level exactly-once model execution;
-- semantic revalidation, multi-order stability and real-data safety.
+## Still open after C0
 
-Actual migration, runtime/UI, model execution, Candidate 6 and real thoughts remain prohibited.
+- C1 pure registry/generation contracts and attempt state machine;
+- C2 native IndexedDB registry, seal, promotion, rollback and crash/reload proof;
+- C3 packaged runtime resolver and blocked recovery states on sanitized fixtures;
+- private immutable backup filesystem behavior;
+- C4 exact-source one-shot migration package;
+- actual target-Mac generation creation, activation and rollback;
+- persisted production REQ-OBS-001;
+- service-level exactly-once AI execution;
+- semantic quality, multi-order stability and real-data safety.
+
+## Prohibited boundary
+
+Exact source reopening, another B1b attempt, backup/registry/generation creation, actual migration, model calls and real thoughts remain prohibited until their separate gates.

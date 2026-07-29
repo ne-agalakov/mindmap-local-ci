@@ -1,80 +1,105 @@
 # MindMap — восстановление и бюджет локальной модели
 
-Статус: обязательный инженерный протокол. Актуально для v0.6-alpha.19 и нового state-core.
+Статус: обязательный инженерный протокол для v0.6-alpha.19 и нового state-core.
 
 ## Основное правило
 
-Локальная модель не компенсирует ошибки кода, миграции или восстановления. Повторный AI-запрос допустим только после доказательства отсутствия нужного ответа в сохранённых данных и отдельного подтверждения пользователя. Для deterministic-code и storage/migration ошибок сначала выполняется read-only диагностика.
+Локальная модель не компенсирует ошибки кода, миграции или восстановления. Для deterministic-code и storage/migration ошибок сначала выполняется read-only диагностика. Повторный AI-вызов или migration attempt допустим только после доказательства первопричины, regression, нового exact package gate и отдельного подтверждения пользователя.
 
 ## Принятый legacy-источник
 
-- size `5 070 848` bytes;
-- SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- evidence `51e3d9563b09c91427716eee559745fed35d729e9ffd71f180afa91c3fc7aa2b`;
-- export/inspection `readonly`;
-- bytes modified false;
-- write/migration/network/model calls 0;
-- integrity `ok`;
-- 96 synthetic, 0 personal thoughts.
+```text
+size:       5 070 848 bytes
+SHA-256:    356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918
+workspace:  synthetic
+personal:   0
+```
 
-Raw source remains private and outside Git.
+Export/inspection были `readonly` + `query_only`; quick_check/integrity_check `ok`; bytes modified false. Raw source остаётся private и вне Git/Drive artifacts.
 
-## Accepted storage foundations
+## B1b — accepted exact-source recovery boundary
 
-- Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+Единственная B1b-попытка выполнена и израсходована.
 
-## Accepted Phase 2C-A recovery invariants
+```text
+run:                 b1b-20260728115431-22839
+B1b merge:           4fd14e515d2c4234f70effa475381f47bbb50e8b
+portable plan hash:  d8a1289c6f1865db940f65e46aec569400b630aec3cc53bdfd897f223d2436a8
+target snapshot:     6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689
+```
 
-- atomic graph events/materialized state/receipt;
-- transaction completion as commit;
-- reopen idempotency;
-- synthetic/personal workspace isolation;
-- run+graph coexistence in a fresh database;
-- abort rollback;
-- run-only database refusal;
-- corruption detection and follow-up `integrity_mismatch`;
-- explicit proposed → confirmed link lifecycle.
+Подтверждено: exact source unchanged; counts `96/30/0/133/96/3/0`; one unresolved; zero damaged references; equal repeat hashes; injected rollback left no graph/target/receipt; temporary targets deleted; REQ-OBS present; network/model calls = 0; actual migration = false.
 
-Final reviewed head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` and public exact tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d` passed verify `30198811851` and package `30198811852`.
+B1b не повторять. Exact source и оба sanitized JSON evidence хранить неизменными.
 
-Downloaded evidence:
+## Phase 2C-C0 — immutable-generation recovery architecture
 
-- outer `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- browser log `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`.
+Actual migration не выполняется in-place и не пишет в фиксированную mutable production database.
 
-No database, secret, concrete local user-home path, runtime cache or personal thought/database payload was found. AI/model/migration calls = 0.
+```text
+control registry:  mindmap-state-core-control-v1
+generation prefix: mindmap-state-core-v1-generation-
+```
 
-The two browser fixtures differ. Close/reopen equality passed within each; same-fixture cross-environment equality remains open.
+Каждый import создаёт новую inactive generation. До activation она проходит import, close/reopen, exact validation и seal. Control registry атомарно меняет active pointer одной transaction с expected revision и activation receipt. Abort сохраняет прежний pointer.
 
-## Phase 2C-B dry-run protocol
+Rollback не изменяет generation payload. Он отдельной явной registry transaction восстанавливает previous pointer. При revision/identity conflict система останавливается и не угадывает. Скрытый fallback запрещён.
 
-Allowed only in a separate issue/branch/PR:
+Legacy source, private backup, sealed generation, active generation и previous active generation migration package не удаляет.
 
-- exact accepted source/hash and read-only open;
-- source byte-stability before/after;
-- synthetic workspace and zero personal thoughts;
-- fresh empty temporary target, never production/target-Mac;
-- deterministic versioned mapping and target hash;
-- repeat-run equality;
-- typed stops for mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity, invalid reference and non-empty target;
-- injected failure rolls back target fully;
-- network/model/Ollama/Qwen/DeepSeek = 0;
-- actual target-Mac migration remains prohibited.
+## Backup contract
+
+Перед generation write требуется private immutable backup exact SQLite:
+
+- destination создаётся exclusive-create и не перезаписывается;
+- size/SHA-256 проверяются независимо;
+- quick_check и integrity_check обязаны быть `ok`;
+- existing path с другим содержимым блокирует attempt;
+- backup bytes/path не попадают в Git, Drive или sanitized evidence;
+- generation creation запрещена до `backup_verified`.
+
+## Attempt and reload recovery
+
+One-shot authorization привязана к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID. Она расходуется до source open.
+
+```text
+planned → authorization_consumed → source_verified → backup_verified
+→ generation_created → importing → imported → verified → sealed
+→ promotion_ready → promotion_committed → resolver_verified → completed
+```
+
+Reload, Terminal/browser close, exception или stale heartbeat не продолжают write автоматически. Persisted non-terminal attempt показывает blocked recovery state и diagnostics. Любой stop запрещает retry.
+
+До promotion incomplete generation остаётся inactive. После committed promotion ошибка resolver переводит attempt в `rollback_required`; rollback требует отдельного явного действия. Runtime resolver обязан быть доказан на sanitized fixtures до exact-source execution.
+
+## Reviewed C0 gate
+
+```text
+private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
+public head:  189e86ae8a92912d399196bed15d8ece849a58e9
+shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
+verify:       30424595380
+package:      30424595384
+```
+
+Downloaded artifact review подтвердил truthful source/exporter/B1b repository/commit provenance, portable checksums, executable user launchers и отсутствие exact database/evidence bytes, secrets, dependencies и personal payloads.
+
+Исправлены и regression-tested: ослабленный B1a README invariant, source-package repository mismatch и exporter-package repository mismatch.
+
+## Failure boundary
+
+Typed stops обязательны для authorization/package/source/backup mismatch; registry version/revision/pointer mismatch; invalid/colliding generation; transaction abort; idempotency conflict; partial import; counts/reference/unresolved/hash/reopen mismatch; seal/promotion/resolver/rollback/evidence failure; non-zero network/model counters. Автоматический repair через AI запрещён.
 
 ## REQ-OBS-001
 
-Every long operation shows name/type, elapsed time and volume, last progress/heartbeat, state, model or «без AI», and downloadable diagnostics. Timer freezes on pause/error/completion. No automatic restart or AI retry.
+Каждая длительная операция показывает name/type, elapsed time/volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Stale activity означает «возможно, процесс завис», но не разрешает restart/retry.
 
-## Current stop line
+REQ-OBS-001 применяется к authorization freeze, source verification, backup, generation creation, import, verification, seal, promotion, resolver verification, rollback, cleanup и evidence capture.
 
-Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration and real thoughts are prohibited.
+## Текущая стоп-линия
 
-## Next gate
+Artifact revision 11 и финальные Drive revisions синхронизированы. Разрешены только final documentation exact-tree rerun, downloaded-artifact review и merge PR #49.
 
-Freeze Phase 2C-B deterministic mapping and typed-stop contract, then prove an isolated dry run. Dry-run success never authorizes actual migration automatically.
+Exact source на C0 не открывался; B1b не повторялась; backup/registry/generation не создавались; migration/promotion не выполнялись; network/model calls = 0; personal data = 0.
+
+После C0 merge разрешён только C1 pure contracts на sanitized fixtures. Actual migration требует C1–C4 и отдельного явного подтверждения Артёма непосредственно перед exact final package.

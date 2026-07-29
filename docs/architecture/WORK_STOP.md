@@ -1,43 +1,33 @@
-# Work boundary after Phase 2C-A acceptance
+# Work boundary during Phase 2C-C0 design
 
-Accepted foundations:
-
-- Phase 0 exact source;
-- Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
-
-## Still prohibited
-
-- Candidate 5 continuation;
-- Qwen or DeepSeek;
-- Candidate 6;
-- legacy database write/repair;
-- actual target-Mac import or production-storage change;
-- production runtime/UI integration;
-- changes to old sql.js/Ollama/model configuration;
-- real thought import;
-- claims of REQ-OBS-001, exactly-once model execution, semantic success or product readiness.
+Accepted foundations include B1b exact-source read-only dry run merge `4fd14e515d2c4234f70effa475381f47bbb50e8b`. Its one-shot authorization is consumed.
 
 ## Allowed now
 
-Only Phase 2C-B in a separate issue/branch/PR from accepted `main`:
+Only C0 architecture and acceptance work:
 
-- define versioned deterministic legacy→run/graph mapping;
-- use the exact accepted source package read-only;
-- verify source bytes/hash before and after;
-- create only a fresh isolated temporary target;
-- reject non-empty or production/target-Mac names;
-- persist through accepted Phase 2B/2C-A adapters;
-- produce deterministic target snapshot/content hash;
-- repeat and prove the same result;
-- inject failures and prove full rollback;
-- typed-stop mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity and invalid references;
-- prove zero network/model calls.
+1. ADR, migration/activation contract and failure matrix;
+2. immutable-generation/control-registry design;
+3. release metadata and Google Drive synchronization;
+4. source-packager provenance correction and regression;
+5. exact private/public Git-tree comparison;
+6. Linux/macOS/full/actual-Chrome/package regression gates;
+7. downloaded-artifact inspection;
+8. merge of the C0 documentation/infrastructure PR after all gates.
 
-## Acceptance boundary
+## Still prohibited
 
-Phase 2C-B success does not authorize actual target-Mac migration. Actual migration requires a later explicit confirmation gate with backup/rollback, exact hashes and REQ-OBS-001.
+- reopening the exact private SQLite source;
+- repeating B1b;
+- creating the real backup, control registry or production generation;
+- actual migration, activation or rollback on the target Mac;
+- automatic retry after failure/reload/version change;
+- Candidate 5/6, Qwen, DeepSeek or any model call;
+- legacy source write/repair/delete;
+- exact-data runtime integration;
+- real thought import;
+- claims of semantic success or product readiness.
 
-Legacy source SHA-256 remains `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`.
+## Next boundary
+
+After C0 acceptance, only C1 pure registry/generation contracts and state machine on sanitized fixtures are allowed. Native IndexedDB work belongs to C2; packaged runtime resolver work belongs to C3; exact-source execution belongs to C4 plus a new explicit user confirmation immediately before launch.

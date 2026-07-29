@@ -1,99 +1,97 @@
 # MindMap Local v0.6-alpha.19
 
-MindMap is a local-first personal AI system intended to turn a stream of thoughts into understanding, connections, priorities, decisions, actions, results and durable memory.
+MindMap is a local-first personal AI system for turning a stream of thoughts into understanding, connections, priorities, decisions, actions, results and durable memory.
 
 ## Current status
 
-Alpha.19 remains a frozen research prototype and must not receive real personal thought data.
+Alpha.19 is frozen as a read-only research prototype and must not receive real personal thought data.
 
 Accepted foundations:
 
-- Phase 0 exact legacy evidence: merge `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
-- Phase 1A pure state core: merge `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A transactional storage contract: merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B native IndexedDB run storage: merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A canonical graph/payload storage: merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+- Phase 0 exact legacy evidence — `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
+- Phase 1A pure state-core — `e7b7593932614f8dfa843298f35eff0230c1e827`;
+- Phase 2A transactional storage contract — `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
+- Phase 2B native IndexedDB run storage — `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
+- Phase 2C-A graph/payload storage — `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
+- Phase 2C-B0 deterministic mapping/typed-stop contract — `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
+- Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
+- Phase 2C-B1b exact-source read-only dry run — accepted and merged as `4fd14e515d2c4234f70effa475381f47bbb50e8b`.
 
-## Accepted Phase 2C-A
+## Phase 2C-B1a — accepted
 
-Phase 2C-A adds:
+B1a remains accepted only for its sanitized executor, rollback and observability boundary.
 
-- content-addressed payloads and thought records;
-- typed area → direction → project hierarchy;
-- exactly one placement or explicit `unresolved` per thought;
-- proposed/confirmed/rejected link lifecycle;
-- embeddings bound to exact text hash, model and dimensions;
-- damaged references separate from unresolved;
-- deterministic graph replay and canonical snapshot hashes;
-- atomic graph events + materialized graph + idempotency receipt;
-- stale-revision and idempotency-conflict rejection;
-- workspace isolation, abort rollback and corruption refusal;
-- coexistence with accepted run stores in a fresh unified database;
-- refusal to silently upgrade an existing run-only database.
+## Phase 2C-B1b — accepted boundary
 
-Exact provenance:
+The one authorized exact-source B1b read-only dry run was executed once and is consumed.
 
-```text
-final reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
-squash merge:        292634312ad04fa6e6cfc5a5ded311ac1020094d
-public CI head:      ee5401a4a2ca7763467562417b9c5c4aece01214
-shared Git tree:     e81ae1b309a806f0078b5a8a2057f51d4c0e403d
-```
+- exact source size/SHA-256 stayed unchanged;
+- exact counts `96/30/0/133/96/3/0` matched;
+- one unresolved thought and zero damaged references;
+- two clean targets produced equal portable-plan and target-snapshot hashes;
+- injected rollback left no target or receipt;
+- network/model calls were zero;
+- actual migration did not occur.
 
-Target-Mac real Chrome passed atomic commit, reopen, idempotency, isolation, run-adapter coexistence, abort rollback, run-only refusal, corruption refusal and link lifecycle.
+## Phase 2C-C0 — active design gate
 
-Public-mirror final gates:
+Issue #48 / PR #49 define actual-migration architecture without execution.
 
-- verify `30198811851` — Linux lint/full tests, actual Chrome run/graph storage, GitHub-hosted macOS: passed;
-- package-source `30198811852` — tests, source/exporter packaging and upload: passed.
-
-Downloaded final artifacts:
-
-- outer source: `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- inner source ZIP: `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- inner exporter ZIP: `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser proof: `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- browser log: `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`.
-
-External inspection found no database, `.env`, credentials, concrete local user-home path, runtime cache or personal thought/database payload. Google Drive was updated after merge and reverse-read.
-
-The target-Mac and GitHub harnesses used different deterministic fixtures. Their absolute hashes therefore are not one cross-environment state:
+ADR-0002 selects:
 
 ```text
-target-Mac fixture: ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1
-GitHub fixture:     bc59236e3ce7173c3f91176fb163f808a99de6f2343afcdc6eea8b12bdca5a54
+control registry:  mindmap-state-core-control-v1
+generation prefix: mindmap-state-core-v1-generation-
 ```
 
-Each fixture passed close/reopen equality. Same-fixture cross-environment hash equality remains uncovered.
+A verified and sealed immutable generation becomes active only through one atomic control-registry pointer transaction. Rollback restores the previous pointer through an explicit transaction and never edits payload. Runtime resolver integration on sanitized fixtures must pass before exact-source execution.
 
-## Commands
+Safe sequence:
 
-```bash
-npm run install:ci
-npm run test:state-core
-npm run test:storage-contract
-npm run test:indexeddb-storage
-npm run test:graph-storage
-npm run test:browser-storage
-npm run test:browser-graph-storage
-npm test
-npm run package:source
+```text
+C0 architecture and failure matrix
+C1 pure registry/generation contracts
+C2 native IndexedDB promotion/rollback/crash proof
+C3 packaged runtime resolver on sanitized fixtures
+C4 exact-source one-shot package
+new explicit user confirmation
+actual migration and activation
 ```
+
+## Reviewed C0 gate
+
+```text
+private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
+public head:  189e86ae8a92912d399196bed15d8ece849a58e9
+shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
+verify:       30424595380
+package:      30424595384
+```
+
+Linux/macOS/full/actual-Chrome/package gates passed. Downloaded source, exporter and B1b packages passed portable checksums, actual-checkout repository/commit provenance, launcher-mode and privacy review.
+
+Three release-gate defects were found and fixed before acceptance: a weakened historical README marker, source-package repository/commit mismatch and exporter-package repository/commit mismatch. Each is now regression-tested.
 
 ## Preserved boundary
 
-Phase 2C-B may now be planned and implemented only as a separate exact-source read-only → isolated temporary-target dry run.
-
 Still prohibited:
 
-- Candidate 5 continuation;
-- Qwen or DeepSeek execution;
-- Candidate 6;
-- legacy database write/repair;
-- actual target-Mac migration or production-storage change;
-- runtime/UI integration and REQ-OBS-001 claims;
-- semantic claims and real personal thoughts.
+- reopening the exact SQLite or repeating B1b;
+- creating the real backup, registry or production generation;
+- actual target-Mac migration or promotion;
+- source write, repair, replacement or deletion;
+- automatic retry after failure, reload or version change;
+- model execution;
+- semantic-quality claims and real personal thoughts.
 
-## Next verified step
+## Current verified step
 
-Open Phase 2C-B as a separate issue/branch/PR from accepted `main`. First freeze the deterministic migration mapping and typed stop contract. Then implement an isolated synthetic dry run proving source byte-stability, repeatability, deterministic target hash and full rollback. Actual migration remains a later explicit user-confirmed gate.
+Artifact revision 11 and final Google Drive readback are synchronized. Mirror and verify the final documentation tree, inspect its downloaded artifact, then merge PR #49. After merge, only C1 pure contracts on sanitized fixtures are allowed.
+
+See:
+
+- `project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md`;
+- `project-docs/evidence/PHASE2CC_C0_CONTRACT.md`;
+- `project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md`;
+- `project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md`;
+- `project-docs/evidence/PHASE2CC_C0_STATUS.md`.

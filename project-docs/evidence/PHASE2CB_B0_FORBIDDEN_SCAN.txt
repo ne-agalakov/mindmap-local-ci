@@ -1,0 +1,31 @@
+Phase 2C-B0 independent forbidden-dependency follow-up
+Date: 2026-07-26
+
+Original uploader observation:
+- `rg` was not installed on the target Mac.
+- The launcher's inline ripgrep guard therefore did not execute.
+- The launcher still completed because the missing command occurred inside a shell `if` condition.
+
+Independent exact-file follow-up:
+- files checked:
+  - migration/phase2cb-contracts.ts
+  - migration/phase2cb-mapping.ts
+  - migration/index.ts
+- forbidden patterns:
+  - node:sqlite
+  - indexedDB
+  - fetch(
+  - /api/
+  - Ollama
+  - Qwen
+  - DeepSeek
+  - app/page.tsx
+  - mindmap-local-semantic-v060
+- findings: 0
+
+Boundary:
+- no private SQLite source opened;
+- no migration target created;
+- no runtime/UI changed;
+- no network/model call performed;
+- B1 remains blocked.

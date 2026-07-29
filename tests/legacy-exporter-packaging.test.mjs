@@ -14,7 +14,7 @@ import { tmpdir } from "node:os";
 import { basename, join, relative } from "node:path";
 import test from "node:test";
 
-const run = (command, args, cwd) => execFileSync(command, args, {
+const run = (command, args, cwd, extraEnv = {}) => execFileSync(command, args, {
   cwd,
   encoding: "utf8",
   env: {
@@ -23,6 +23,7 @@ const run = (command, args, cwd) => execFileSync(command, args, {
     GIT_AUTHOR_EMAIL: "ci@example.invalid",
     GIT_COMMITTER_NAME: "MindMap CI",
     GIT_COMMITTER_EMAIL: "ci@example.invalid",
+    ...extraEnv,
   },
 }).trim();
 
@@ -46,6 +47,7 @@ test("compact exporter package is portable, provenance-bound, and contains only 
   writeFileSync(join(root, "package.json"), JSON.stringify({ version: "0.0.0-test" }, null, 2));
 
   run("git", ["init", "-b", "main"], root);
+  run("git", ["remote", "add", "origin", "git@github.com:fixture/mindmap-exporter-test.git"], root);
   run("git", ["add", "."], root);
   run("git", ["commit", "-m", "fixture"], root);
   const commitSha = run("git", ["rev-parse", "HEAD"], root);
@@ -83,7 +85,7 @@ test("compact exporter package is portable, provenance-bound, and contains only 
   ]);
 
   const revision = JSON.parse(readFileSync(join(packageRoot, "EXPORTER_REVISION.json"), "utf8"));
-  assert.equal(revision.repository, "ne-agalakov/mindmap-local");
+  assert.equal(revision.repository, "fixture/mindmap-exporter-test");
   assert.equal(revision.repositoryCommit, commitSha);
   assert.equal(revision.status, "phase0-read-only-exporter-accepted-evidence-preserved");
   assert.equal(revision.expectedOrigin, "http://127.0.0.1:5173");
@@ -126,4 +128,30 @@ test("compact exporter package is portable, provenance-bound, and contains only 
   }
 
   assert.equal(relative(root, archivePath).startsWith("release-artifacts/"), true);
+});
+
+test("compact exporter package accepts an explicit repository override", () => {
+  const root = mkdtempSync(join(tmpdir(), "mindmap-exporter-override-test-"));
+  mkdirSync(join(root, "scripts"), { recursive: true });
+  mkdirSync(join(root, "tools", "browser-legacy-exporter"), { recursive: true });
+  cpSync(join(process.cwd(), "scripts", "package-legacy-exporter.sh"), join(root, "scripts", "package-legacy-exporter.sh"));
+  chmodSync(join(root, "scripts", "package-legacy-exporter.sh"), 0o755);
+  cpSync(join(process.cwd(), "start-legacy-exporter.command"), join(root, "start-legacy-exporter.command"));
+  for (const name of ["README.md", "core.mjs", "index.html", "page.mjs", "server.mjs"]) {
+    cpSync(join(process.cwd(), "tools", "browser-legacy-exporter", name), join(root, "tools", "browser-legacy-exporter", name));
+  }
+  writeFileSync(join(root, "package.json"), JSON.stringify({ version: "0.0.0-test" }, null, 2));
+  run("git", ["init", "-b", "main"], root);
+  run("git", ["add", "."], root);
+  run("git", ["commit", "-m", "fixture"], root);
+
+  const archivePath = run("bash", ["scripts/package-legacy-exporter.sh"], root, {
+    MINDMAP_REPOSITORY_OVERRIDE: "fixture/exporter-override",
+  }).split("\n").at(-1);
+  const extracted = join(root, "verified-extraction");
+  mkdirSync(extracted);
+  run("unzip", ["-q", archivePath, "-d", extracted], root);
+  const archiveRoot = basename(archivePath).replace(/\.zip$/, "");
+  const revision = JSON.parse(readFileSync(join(extracted, archiveRoot, "EXPORTER_REVISION.json"), "utf8"));
+  assert.equal(revision.repository, "fixture/exporter-override");
 });
