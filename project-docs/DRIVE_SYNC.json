@@ -1,84 +1,84 @@
 {
   "version": "0.6.0-alpha.19",
-  "artifactRevision": 10,
-  "syncedAt": "2026-07-29T04:48:41Z",
+  "artifactRevision": 11,
+  "syncedAt": "2026-07-29T05:25:00Z",
   "syncStatus": "synced_native_google_docs_verified",
-  "readBackAt": "2026-07-29T04:48:41Z",
+  "readBackAt": "2026-07-29T05:25:00Z",
   "documents": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
       "format": "google-doc",
-      "revisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
-      "driveRevisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
+      "revisionId": "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
+      "driveRevisionId": "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C0-GENERATION-REGISTRY"
+      "verifiedMarker": "PHASE2CC-C0-FINAL-CURRENT-C09D9557"
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
       "format": "google-doc",
-      "revisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
-      "driveRevisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
+      "revisionId": "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
+      "driveRevisionId": "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C0-STATUS-GENERATION-REGISTRY"
+      "verifiedMarker": "PHASE2CC-C0-FINAL-GATE-C09D9557"
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
       "format": "google-doc",
-      "revisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
-      "driveRevisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
+      "revisionId": "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
+      "driveRevisionId": "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C0-RECOVERY-GENERATION-REGISTRY"
+      "verifiedMarker": "PHASE2CC-C0-FINAL-RECOVERY-C09D9557"
     }
   ],
   "readBackChecks": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "revisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
-      "driveRevisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
+      "revisionId": "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
+      "driveRevisionId": "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
       "status": "verified",
       "verifiedMarkers": [
-        "PHASE2CC-C0-GENERATION-REGISTRY",
-        "mindmap-state-core-control-v1",
-        "mindmap-state-core-v1-generation-",
-        "actual migration",
-        "network/model calls = 0"
+        "PHASE2CC-C0-FINAL-CURRENT-C09D9557",
+        "c09d95579292970a851cf0c1a43abce13a800d3a",
+        "C1 pure contracts",
+        "Exact SQLite",
+        "personal data"
       ]
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "revisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
-      "driveRevisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
+      "revisionId": "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
+      "driveRevisionId": "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
       "status": "verified",
       "verifiedMarkers": [
-        "PHASE2CC-C0-STATUS-GENERATION-REGISTRY",
-        "immutable generation",
-        "activation receipt",
-        "C0 boundary",
-        "Actual migration остаётся запрещённой"
+        "PHASE2CC-C0-FINAL-GATE-C09D9557",
+        "30424595380",
+        "30424595384",
+        "6e63c8d4bace4f5350713ca64dc983fde2f81808e64798c1089539a30985c720",
+        "network/model calls = 0"
       ]
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "revisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
-      "driveRevisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
+      "revisionId": "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
+      "driveRevisionId": "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
       "status": "verified",
       "verifiedMarkers": [
-        "PHASE2CC-C0-RECOVERY-GENERATION-REGISTRY",
-        "private immutable backup",
-        "blocked state",
-        "rollback transaction",
-        "model/network calls = 0"
+        "PHASE2CC-C0-FINAL-RECOVERY-C09D9557",
+        "exact private counterpart",
+        "B1b package remains consumed",
+        "actual migration",
+        "future authorization"
       ]
     }
   ],
   "architectureAudit": {
-    "status": "alpha19_frozen_b1b_accepted_phase2cc_c0_design_active",
+    "status": "alpha19_frozen_b1b_accepted_phase2cc_c0_final_gate_passed_merge_pending",
     "phase2CAAccepted": true,
     "phase2CB0Accepted": true,
     "phase2CB1PlanAccepted": true,
@@ -89,6 +89,7 @@
     "phase2CB1bPostMergeDocsCommit": "e6bd47011fad2dab5a8617f5f754739de1915fd9",
     "phase2CC0Allowed": true,
     "phase2CC0DesignImplemented": true,
+    "phase2CC0ReviewedGatePassed": true,
     "phase2CC0Accepted": false,
     "phase2CC1Allowed": false,
     "actualMigrationAllowed": false,
@@ -102,7 +103,12 @@
     "automaticRetryAllowedDuringPhase2CC0": false,
     "controlRegistryName": "mindmap-state-core-control-v1",
     "generationPrefix": "mindmap-state-core-v1-generation-",
-    "nextGate": "phase2cc_c0_exact_tree_ci_artifact_review_and_merge"
+    "reviewedPrivateHead": "1e13024eeef8cec8ec05f721bf9ce703f884bc91",
+    "reviewedPublicHead": "189e86ae8a92912d399196bed15d8ece849a58e9",
+    "reviewedSharedTree": "c09d95579292970a851cf0c1a43abce13a800d3a",
+    "reviewedVerifyRun": 30424595380,
+    "reviewedPackageRun": 30424595384,
+    "nextGate": "phase2cc_c0_final_documentation_tree_rerun_and_merge"
   },
   "github": {
     "privateRepository": "ne-agalakov/mindmap-local",
@@ -120,8 +126,13 @@
       "issue": 48,
       "privatePullRequest": 49,
       "publicMirrorPullRequest": 12,
-      "status": "design_and_release_metadata_sync_in_progress",
-      "accepted": false
+      "status": "reviewed_gate_passed_final_documentation_tree_pending",
+      "accepted": false,
+      "reviewedPrivateHead": "1e13024eeef8cec8ec05f721bf9ce703f884bc91",
+      "reviewedPublicHead": "189e86ae8a92912d399196bed15d8ece849a58e9",
+      "reviewedSharedTree": "c09d95579292970a851cf0c1a43abce13a800d3a",
+      "outerArtifactSha256": "6e63c8d4bace4f5350713ca64dc983fde2f81808e64798c1089539a30985c720",
+      "browserProofSha256": "9ec160607e1517f6a27e3c7ed36441dfd1a4ed2a9d4ffb634083d04014d51160"
     }
   }
 }
