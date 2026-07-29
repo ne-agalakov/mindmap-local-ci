@@ -58,11 +58,16 @@ archive_root="mindmap-legacy-exporter-v${version}-${short_sha}"
 archive_dir="${stage}/${archive_root}"
 mkdir -p "${archive_dir}/tools"
 
+# Extract only the standalone exporter. No old app, package dependencies, runtime
+# cache, database, diagnostics, or semantic code are included.
 git archive --format=tar HEAD \
   start-legacy-exporter.command \
   tools/browser-legacy-exporter \
   | tar -xf - -C "${archive_dir}"
 
+# GitHub's contents API records new files as non-executable. The user-facing Mac
+# launcher must be executable in the downloaded ZIP regardless of the repository
+# mode bit, so packaging establishes that mode explicitly and tests the archive.
 chmod 0755 "${archive_dir}/start-legacy-exporter.command"
 
 node --input-type=module - "${archive_dir}/EXPORTER_REVISION.json" "${commit_sha}" "${version}" "${repository}" <<'NODE'
