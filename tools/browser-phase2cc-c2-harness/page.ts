@@ -69,7 +69,7 @@ const startedAt = performance.now();
 let heartbeat = 0;
 let diagnostics = "";
 let networkCalls = 0;
-let modelCalls = 0;
+const modelCalls = 0;
 
 function syncHash(input: string): string {
   let a = 0x811c9dc5;
