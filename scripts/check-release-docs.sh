@@ -23,18 +23,24 @@ require_text "app/page.tsx" "<small>v0.6 alpha.${alpha_number}</small>"
 require_text "start-mindmap.command" "MindMap v${release_label}"
 require_text "README.md" "# MindMap Local v${release_label}"
 require_text "README.md" "Phase 2C-B1a — accepted"
-require_text "README.md" "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
-require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-B1a — принята"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "B1a принята"
-require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Phase 2C-B1a — accepted recovery boundary"
-require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-B1a merge and post-merge Drive provenance"
-require_text "docs/architecture/WORK_STOP.md" "Work boundary after Phase 2C-B1a acceptance"
-require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps after Phase 2C-B1a acceptance"
-require_text "docs/architecture/DECISION_LOG.md" "ADR-012"
-require_text "project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md" "58d2bb0e9b7edebb3d3d830064406feffbff5181"
-require_text "project-docs/evidence/PHASE2CB_B1A_ACCEPTANCE.md" "B1b is not authorized automatically"
-require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-phase2cb-b1a-accepted-b1b-blocked"
-require_text "ARTIFACT_REVISION.json" "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
+require_text "README.md" "Phase 2C-B1b — accepted boundary"
+require_text "README.md" "Phase 2C-C0 — active design gate"
+require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-C0 — активный design gate"
+require_text "project-docs/PROJECT_INSTRUCTION.md" "Активный этап — Phase 2C-C0"
+require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Phase 2C-C0 — immutable-generation recovery architecture"
+require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-C0 provenance rule"
+require_text "docs/architecture/WORK_STOP.md" "Work boundary during Phase 2C-C0 design"
+require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps during Phase 2C-C0"
+require_text "docs/architecture/DECISION_LOG.md" "ADR-014 — Immutable generations and atomic activation registry"
+require_text "docs/architecture/DECISION_LOG.md" "ADR-015 — Source artifact provenance must identify the actual checkout"
+require_text "project-docs/evidence/PHASE2CB_B1B_ACCEPTANCE.md" "6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689"
+require_text "project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md" "mindmap-state-core-control-v1"
+require_text "project-docs/evidence/PHASE2CC_C0_CONTRACT.md" "execution prohibited"
+require_text "project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md" "zero automatic retry"
+require_text "project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md" "C3 — sanitized runtime resolver integration"
+require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-design-active"
+require_text "ARTIFACT_REVISION.json" "4fd14e515d2c4234f70effa475381f47bbb50e8b"
+require_text "ARTIFACT_REVISION.json" "mindmap-state-core-v1-generation-"
 
 instruction_length="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; process.stdout.write(String(Array.from(readFileSync("project-docs/PROJECT_INSTRUCTION.md", "utf8")).length))')"
 if (( instruction_length > 8000 )); then
@@ -61,13 +67,13 @@ try {
 }
 
 const expectedRevisions = {
-  instruction: "AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc",
-  status: "AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c",
-  recovery: "AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk",
+  instruction: "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
+  status: "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
+  recovery: "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
 };
 
 if (drive.version !== expectedVersion) fail("Drive version mismatch.");
-if (drive.artifactRevision !== 9) fail("Drive artifact revision is not 9.");
+if (drive.artifactRevision !== 10) fail("Drive artifact revision is not 10.");
 if (drive.syncStatus !== "synced_native_google_docs_verified") fail("Drive sync is not verified.");
 if (drive.readBackAt !== drive.syncedAt) fail("Drive readback time mismatch.");
 
@@ -84,41 +90,58 @@ if (revisions["MindMap — восстановление и бюджет лока
 
 const audit = drive.architectureAudit ?? {};
 if (
-  audit.phase2CB1aImplemented !== true
-  || audit.phase2CB1aAccepted !== true
-  || audit.phase2CB1bAllowed !== false
-  || audit.phase2CB1Allowed !== false
+  audit.phase2CB1bAccepted !== true
+  || audit.phase2CB1bAttemptConsumed !== true
+  || audit.phase2CB1bMergeCommit !== "4fd14e515d2c4234f70effa475381f47bbb50e8b"
+  || audit.phase2CC0Allowed !== true
+  || audit.phase2CC0DesignImplemented !== true
+  || audit.phase2CC0Accepted !== false
+  || audit.phase2CC1Allowed !== false
   || audit.actualMigrationAllowed !== false
-  || audit.phase2CB1aPostMergeDriveReadback !== true
-  || audit.exactSourceOpenedDuringPhase2CB1a !== false
-  || audit.realMigrationTargetCreatedDuringPhase2CB1a !== false
-  || audit.migrationExecutedDuringPhase2CB1a !== false
-  || audit.zeroModelCallsDuringPhase2CB1a !== true
-  || audit.zeroNetworkCallsDuringPhase2CB1a !== true
-  || audit.automaticRetryAllowedDuringPhase2CB1a !== false
-) fail("DRIVE_SYNC.json does not preserve accepted B1a / blocked B1b boundary.");
+  || audit.exactSourceOpenedDuringPhase2CC0 !== false
+  || audit.backupCreatedDuringPhase2CC0 !== false
+  || audit.controlRegistryCreatedDuringPhase2CC0 !== false
+  || audit.productionGenerationCreatedDuringPhase2CC0 !== false
+  || audit.actualMigrationExecutedDuringPhase2CC0 !== false
+  || audit.zeroModelCallsDuringPhase2CC0 !== true
+  || audit.zeroNetworkCallsDuringPhase2CC0 !== true
+  || audit.automaticRetryAllowedDuringPhase2CC0 !== false
+  || audit.controlRegistryName !== "mindmap-state-core-control-v1"
+  || audit.generationPrefix !== "mindmap-state-core-v1-generation-"
+) fail("DRIVE_SYNC.json does not preserve accepted B1b / C0-design-only boundary.");
 
 const expectedDriveStatus = `synced_native_google_docs_verified_${drive.syncedAt}`;
 if (
   artifact.appVersion !== expectedVersion
-  || artifact.artifactRevision !== 9
-  || artifact.status !== "frozen-legacy-runtime-phase2cb-b1a-accepted-b1b-blocked"
+  || artifact.artifactRevision !== 10
+  || artifact.status !== "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-design-active"
   || artifact.driveSyncStatus !== expectedDriveStatus
-  || artifact.phase2CB1aImplemented !== true
-  || artifact.phase2CB1aAccepted !== true
-  || artifact.phase2CB1bAllowed !== false
-  || artifact.phase2CB1Allowed !== false
+  || artifact.repository !== "resolved-from-actual-checkout-at-package-time"
+  || artifact.repositoryCommit !== "resolved-at-build-or-package-time"
+  || artifact.phase2CB1bAccepted !== true
+  || artifact.phase2CB1bAttemptConsumed !== true
+  || artifact.phase2CB1bMergeCommit !== "4fd14e515d2c4234f70effa475381f47bbb50e8b"
+  || artifact.phase2CB1bActualMigrationPerformed !== false
+  || artifact.phase2CB1bAutomaticRetryAllowed !== false
+  || artifact.phase2CC0Allowed !== true
+  || artifact.phase2CC0DesignImplemented !== true
+  || artifact.phase2CC0Accepted !== false
+  || artifact.phase2CC1Allowed !== false
   || artifact.actualMigrationAllowed !== false
-  || artifact.phase2CB1aPostMergeDriveReadback !== true
-  || artifact.exactSourceOpenedDuringPhase2CB1a !== false
-  || artifact.realMigrationTargetCreatedDuringPhase2CB1a !== false
-  || artifact.migrationExecutedDuringPhase2CB1a !== false
-  || artifact.zeroModelCallsDuringPhase2CB1a !== true
-  || artifact.zeroNetworkCallsDuringPhase2CB1a !== true
-  || artifact.automaticRetryAllowedDuringPhase2CB1a !== false
-  || artifact.phase2CB1aMergeCommit !== "aec5edaca877cec5d769f4ce4efff674a9c92a7d"
-  || artifact.phase2CB1aFinalSharedTree !== "58d2bb0e9b7edebb3d3d830064406feffbff5181"
-) fail("ARTIFACT_REVISION.json does not preserve accepted B1a / blocked B1b provenance.");
+  || artifact.phase2CC0ExactSourceOpened !== false
+  || artifact.phase2CC0BackupCreated !== false
+  || artifact.phase2CC0ControlRegistryCreated !== false
+  || artifact.phase2CC0ProductionGenerationCreated !== false
+  || artifact.phase2CC0ActualMigrationPerformed !== false
+  || artifact.phase2CC0ZeroModelCalls !== true
+  || artifact.phase2CC0ZeroNetworkCalls !== true
+  || artifact.phase2CC0AutomaticRetryAllowed !== false
+  || artifact.phase2CC0ControlRegistryName !== "mindmap-state-core-control-v1"
+  || artifact.phase2CC0GenerationPrefix !== "mindmap-state-core-v1-generation-"
+  || artifact.driveRevisions?.instruction !== expectedRevisions.instruction
+  || artifact.driveRevisions?.status !== expectedRevisions.status
+  || artifact.driveRevisions?.recovery !== expectedRevisions.recovery
+) fail("ARTIFACT_REVISION.json does not preserve accepted B1b / C0-design-only provenance.");
 NODE
 
-echo "Release documentation gate passed for ${package_version} Phase 2C-B1a accepted / B1b blocked boundary."
+echo "Release documentation gate passed for ${package_version}: B1b accepted and consumed; Phase 2C-C0 design active; actual migration blocked."
