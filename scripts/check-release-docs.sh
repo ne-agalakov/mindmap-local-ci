@@ -33,6 +33,7 @@ require_text "docs/architecture/WORK_STOP.md" "Work boundary during Phase 2C-C0 
 require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps during Phase 2C-C0"
 require_text "docs/architecture/DECISION_LOG.md" "ADR-014 — Immutable generations and atomic activation registry"
 require_text "docs/architecture/DECISION_LOG.md" "ADR-015 — Source artifact provenance must identify the actual checkout"
+require_text "docs/architecture/DECISION_LOG.md" "ADR-016 — Exporter artifact provenance follows the same checkout rule"
 require_text "project-docs/evidence/PHASE2CB_B1B_ACCEPTANCE.md" "6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689"
 require_text "project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md" "mindmap-state-core-control-v1"
 require_text "project-docs/evidence/PHASE2CC_C0_CONTRACT.md" "execution prohibited"
