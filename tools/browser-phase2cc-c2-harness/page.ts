@@ -13,6 +13,7 @@ import {
   C2_SANITIZED_DATABASE_PREFIX,
   NativeIndexedDbGenerationRegistry,
   NativeIndexedDbGenerationSealStore,
+  sameCanonical,
 } from "../../generation-storage/index.ts";
 import type { GenerationAttemptAggregate, GenerationAttemptCommand } from "../../generation-core/attempt-types.ts";
 
@@ -272,7 +273,7 @@ async function main(): Promise<void> {
     primary = await runToReady("browser-primary");
     observe("seal", "verifying", 1, 7, "generation seal persisted and attested");
     const seal = await primary.stores.generation.loadSeal();
-    if (JSON.stringify(seal) !== JSON.stringify(SANITIZED_GENERATION_SEAL)) throw new Error("generation_seal_missing");
+    if (!sameCanonical(seal, SANITIZED_GENERATION_SEAL)) throw new Error("generation_seal_missing");
     const immutable = await primary.stores.generation.seal(SANITIZED_GENERATION_SEAL, "browser-primary-second-seal");
     const sealImmutable = !immutable.ok && immutable.rejection.code === "seal_immutable_conflict";
 
@@ -288,7 +289,7 @@ async function main(): Promise<void> {
     };
     const firstPromotion = must(await primary.stores.registry.commitPromotion(promotionRequest));
     const duplicatePromotion = must(await primary.stores.registry.commitPromotion(promotionRequest));
-    const idempotency = duplicatePromotion.idempotent && JSON.stringify(firstPromotion.value) === JSON.stringify(duplicatePromotion.value);
+    const idempotency = duplicatePromotion.idempotent && sameCanonical(firstPromotion.value, duplicatePromotion.value);
     const promotedSnapshot = await primary.stores.registry.exportSnapshot();
     const atomicPromotion = promotedSnapshot.registry.revision === SANITIZED_REGISTRY_SNAPSHOT.revision + 1
       && promotedSnapshot.activationReceipts.length === 1
@@ -299,7 +300,7 @@ async function main(): Promise<void> {
     const reopenedRegistry = new NativeIndexedDbGenerationRegistry({ indexedDB, databaseName: primary.stores.names.registry, hasher: syncHash });
     primary.stores.registry = reopenedRegistry;
     const reopenedSnapshot = await reopenedRegistry.exportSnapshot();
-    const deterministicReopen = JSON.stringify(reopenedSnapshot) === JSON.stringify(promotedSnapshot);
+    const deterministicReopen = sameCanonical(reopenedSnapshot, promotedSnapshot);
 
     observe("rollback", "saving", 4, 7, "explicit rollback after post-promotion interruption");
     let aggregate = await reopenedRegistry.loadAttempt(SANITIZED_GENERATION_MANIFEST.attemptId);
@@ -325,7 +326,7 @@ async function main(): Promise<void> {
       && rolledBackSnapshot.attempts[0]?.status === "rolled_back"
       && rolledBackSnapshot.registry.activePointers[0]?.generationId === SANITIZED_REGISTRY_SNAPSHOT.activePointers[0]?.generationId
       && rolledBackSnapshot.rollbackReceipts.length === 1
-      && JSON.stringify(await primary.stores.generation.loadSeal()) === JSON.stringify(SANITIZED_GENERATION_SEAL);
+      && sameCanonical(await primary.stores.generation.loadSeal(), SANITIZED_GENERATION_SEAL);
 
     observe("abort", "verifying", 5, 7, "injected promotion abort must leave no partial write");
     aborted = await runToReady("browser-abort", { afterPromotionWritesQueued(transaction) { transaction.abort(); } });
@@ -340,7 +341,7 @@ async function main(): Promise<void> {
       occurredAt: `2026-01-03T00:00:${String(aborted.nextSecond).padStart(2, "0")}.000Z`,
     });
     const abortAfter = await aborted.stores.registry.exportSnapshot();
-    const promotionAbortNoPartial = !abortResult.ok && abortResult.rejection.code === "transaction_aborted" && JSON.stringify(abortAfter) === JSON.stringify(abortBefore);
+    const promotionAbortNoPartial = !abortResult.ok && abortResult.rejection.code === "transaction_aborted" && sameCanonical(abortAfter, abortBefore);
 
     observe("blocked recovery", "verifying", 6, 7, "pre-promotion reload remains terminal and explicit");
     blockedStores = createStores("browser-blocked");
