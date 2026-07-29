@@ -132,3 +132,12 @@ The canonical Drive documents had prematurely recorded unverified identity `69a9
 Consequence: post-merge documentation may record a merge SHA only after the PR API returns `merged=true` and the returned merge commit is read back. A predicted, cached, PR-body or assistant-stated identity is not evidence.
 
 C0 acceptance authorizes only C1 pure contracts/state machine on sanitized fixtures. Exact-source reopening, native persistence, backup/registry/generation creation, actual migration, network/model calls and personal data remain prohibited.
+
+
+## ADR-018 — C1 acceptance requires a final documentation tree
+
+Date: 2026-07-29.
+
+Decision: Phase 2C-C1 implementation at private head `ac639e625b6d0ced665c748c2c58f6b3753c4ffc` / public head `0eeb9fea5792b7fbf33db0061abc2f271db3b17f` / tree `2a536a54779634647eff8ebf2476840c257b2813` is an acceptance candidate only. Initial CI and downloaded-artifact review prove the code tree, but C1 is accepted only after canonical Drive reverse-read, artifact revision 13, final exact private/public tree, rerun CI/artifact inspection and factual expected-head merge of PR #52.
+
+Consequence: no predicted merge SHA may be written as accepted provenance. C2, exact-source access and actual migration remain blocked until factual C1 merge and post-merge documentation closure.
