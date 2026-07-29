@@ -1,29 +1,33 @@
-# Work boundary after Phase 2C-B1a acceptance
+# Work boundary during Phase 2C-C0 design
 
-Accepted foundations: Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, the B1 execution plan and B1a sanitized executor/harness.
-
-B1a merge: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+Accepted foundations include B1b exact-source read-only dry run merge `4fd14e515d2c4234f70effa475381f47bbb50e8b`. Its one-shot authorization is consumed.
 
 ## Allowed now
 
-Only preparation and review of a separate B1b authorization package:
+Only C0 architecture and acceptance work:
 
-1. identify the exact accepted source path/hash without opening it;
-2. identify the exact harness commit/package and temporary target naming pattern;
-3. restate read-only, offline, no-retry, typed-stop and rollback contracts;
-4. list the one-run proof plan and proof boundaries;
-5. ask Артём for a new explicit confirmation before execution.
+1. ADR, migration/activation contract and failure matrix;
+2. immutable-generation/control-registry design;
+3. release metadata and Google Drive synchronization;
+4. source-packager provenance correction and regression;
+5. exact private/public Git-tree comparison;
+6. Linux/macOS/full/actual-Chrome/package regression gates;
+7. downloaded-artifact inspection;
+8. merge of the C0 documentation/infrastructure PR after all gates.
 
 ## Still prohibited
 
-- opening the exact private SQLite source before confirmation;
-- B1b execution;
-- creating a real migration target or actual target-Mac migration;
+- reopening the exact private SQLite source;
+- repeating B1b;
+- creating the real backup, control registry or production generation;
+- actual migration, activation or rollback on the target Mac;
 - automatic retry after failure/reload/version change;
-- Candidate 5/6, Qwen, DeepSeek or external model calls;
-- legacy database write/repair;
-- production runtime/UI integration;
+- Candidate 5/6, Qwen, DeepSeek or any model call;
+- legacy source write/repair/delete;
+- exact-data runtime integration;
 - real thought import;
 - claims of semantic success or product readiness.
 
-A future confirmation for one B1b read-only dry run does not authorize actual migration. Actual migration remains a separate later gate.
+## Next boundary
+
+After C0 acceptance, only C1 pure registry/generation contracts and state machine on sanitized fixtures are allowed. Native IndexedDB work belongs to C2; packaged runtime resolver work belongs to C3; exact-source execution belongs to C4 plus a new explicit user confirmation immediately before launch.
