@@ -1,82 +1,81 @@
-# ИНСТРУКЦИЯ ПРОЕКТА MINDMAP
+# MindMap — инструкция проекта
 
-## Цель и роль
+## Цель
 
-Ты работаешь над MindMap — local-first AI-системой. Цикл: мысль → понимание → связи → приоритет → решение → действие → результат → память.
+MindMap — local-first AI-система: мысль → понимание → связи → приоритет → решение → действие → результат → память. Карта представляет данные; продукт не является обычным заметочником или таск-менеджером.
 
-Первая версия — личный MVP с возможностью развития в продукт. MindMap — не заметочник и не таск-менеджер; карта лишь представляет данные. Критерий: превращает ли решение хаотичный поток мыслей в точные решения и результаты при минимуме ручной работы?
+Критерий: превращает ли решение хаотичный поток мыслей в точные решения и результаты при минимуме ручной работы?
 
-Работай как стратег, архитектор, исследователь, разработчик и критический партнёр. Безопасный шаг выполняй сам; спрашивай при изменении архитектуры или риска. Различай факт, гипотезу, реализацию и эксперимент. Не выдавай предположение за причину, fixture — за базу, сборку — за успех, уверенность AI — за подтверждение.
+Различай факт, гипотезу, реализацию и эксперимент. Не выдавай fixture за базу, сборку за успех или уверенность AI за подтверждение. Безопасный внутренний шаг выполняй самостоятельно; спрашивай при изменении архитектуры, риска или перед внешним действием.
 
 ## Текущее состояние
 
-v0.5.2-test.3 сохранила 96/96 мыслей, но семантически провалилась. Alpha.19 заморожена как legacy-прототип и не принимает реальные мысли.
+Alpha.19 заморожена как legacy research runtime; реальные мысли в неё не загружать.
 
-Приняты: Phase 0 `850a5fc60a154047eae1f6a5d4f63c7969ae8412`; Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`; Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`; Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`; Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+Приняты Phase 0, 1A, 2A, 2B, 2C-A, B0, B1a, B1b и C0. B1b exact-source one-shot выполнен и израсходован; exact SQLite сохраняется неизменным и повторно не открывается.
 
-Phase 2C-A final head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` прошёл target-Mac real-Chrome proof и exact public-mirror Linux/macOS/full/browser/package gates. Final public head `ee5401a4a2ca7763467562417b9c5c4aece01214`, shared tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d`. Артефакты проверены, базы/секреты/concrete local paths/personal thought payloads = 0. Drive после merge обновлён и прочитан обратно.
+C0 merge: `31657e218cd5891e9e915f698febf8ac72942ed3`. Архитектура actual migration: immutable generation database с prefix `mindmap-state-core-v1-generation-` и atomic active pointer в registry `mindmap-state-core-control-v1`. Rollback меняет pointer и не редактирует payload.
 
-Phase 2C-B теперь разрешена только как отдельный exact-source read-only → isolated temporary-target dry run. Candidate 5, Qwen/DeepSeek-run, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI и реальные мысли запрещены.
+C1 pure contracts/state machine реализованы на head `ac639e625b6d0ced665c748c2c58f6b3753c4ffc` и exact public head `0eeb9fea5792b7fbf33db0061abc2f271db3b17f`, tree `2a536a54779634647eff8ebf2476840c257b2813`. CI прошёл, но C1 ещё не принята до final documentation tree и factual merge PR #52.
 
-## Модель и данные
-
-Пользователь свободно записывает мысль. AI предлагает тип, размещение, связи, проект, статус и следующий шаг. Не каждая мысль — задача: различай идеи, вопросы, наблюдения, решения, цели, проекты, материалы, людей, области и действия.
+## Модель данных
 
 Иерархия: область → направление → проект → мысль. Корни — только области. Неверные вложения, циклы и повторяющиеся пути запрещены. У мысли одно основное размещение и необязательные связи. Сфера жизни — не проект; проект имеет ограниченный результат и состояние.
 
-Ноль подходящих направлений, проектов, связей, дублей или противоречий — нормальный результат. Нельзя выдумывать сущности. Различай корректную ссылку, честную неопределённость `unresolved` и повреждённую/устаревшую ссылку. `Unresolved` хранится во «Входящих» и не считается ошибкой.
+Ноль подходящих направлений, проектов, связей, дублей или противоречий — нормальный результат. Нельзя создавать сущности для заполнения схемы.
 
-AI рекомендует, но не принимает важные решения. AI-связь сначала «предложена». Внешние действия требуют подтверждения. Сохраняй причины, альтернативы, сомнения, решения и результаты.
+Различай корректную ссылку, honest `unresolved` и damaged/stale reference. `Unresolved` хранится во «Входящих» и не считается ошибкой.
 
-## Целевой конвейер
+AI рекомендует, но не принимает важные решения. Внешние действия требуют подтверждения.
 
-Этапы независимы: preflight; смысл и тип; embeddings; кластеризация; области/направления; проекты и placement либо `unresolved`; численные кандидаты; связи; дубли; противоречия; следующий шаг. У каждого этапа свои вход, выход, валидация, checkpoint и трасса.
+## Хранение и миграция
 
-## State-core и хранение
+Legacy source остаётся private, immutable и read-only. Диагностика, backup, migration и recovery выполняются без AI.
 
-Phase 1A фиксирует immutable identity, typed state machine, deterministic replay, compatibility guards, authorization, idempotency, stale revision, progress/save/pause/failure/block/abandonment, clean-run isolation и отдельные unresolved/damaged reference.
+Безопасный порядок:
 
-Phase 2A/2B фиксируют `mindmap-state-core-v1*`, atomic events/aggregate/artifacts/receipt, transaction completion, stale-writer guard, reopen idempotency, workspace isolation, abort и failed-upgrade rollback.
+1. C1 — pure contracts/state machine.
+2. C2 — native IndexedDB registry/promotion/rollback/crash proof.
+3. C3 — packaged runtime resolver на sanitized fixtures.
+4. C4 — отдельный exact-source one-shot package.
+5. Новое явное подтверждение Артёма непосредственно перед запуском.
+6. Actual migration и activation.
 
-Phase 2C-A фиксирует `mindmap-graph-v1`: payloads, thoughts, typed hierarchy, placement/unresolved, link lifecycle, embeddings и damaged references. Graph mutations атомарны и event-sequenced; proposed links не подтверждаются автоматически; corrupted state блокирует запись; run-only database не расширяется скрыто.
+Actual execution требует authorization, привязанной к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID. Она расходуется до source open. Failure запрещает retry; сначала offline root-cause proof, regression и новый package gate.
 
-Target-Mac и GitHub harness использовали разные fixtures, поэтому абсолютные snapshot hashes не сравниваются. Внутри каждого fixture close/reopen equality пройдена. Same-fixture cross-environment equality остаётся непокрытой.
+## Phase 2C-C1
 
-## Phase 2C-B — migration dry-run
+C1 содержит только pure TypeScript contracts и sanitized fixtures. Запрещены зависимости от IndexedDB, browser APIs, filesystem, exact SQLite, backup files, network, model services, wall clock и randomness.
 
-Только отдельная ветка/issue/PR от accepted main.
+C1 фиксирует:
 
-Обязательные условия:
+- immutable manifest/authorization/generation/registry identities;
+- closed attempt states and transitions;
+- typed commands, events, stops and rejections;
+- expected registry revision и previous-pointer guards;
+- deterministic replay, canonical hashing и idempotency;
+- terminal blocked recovery без автоматического resume/retry;
+- pure promotion/rollback plans без выполнения storage writes;
+- sanitized evidence и structural dependency gate.
 
-- exact accepted private source/hash, open read-only;
-- source bytes/hash до и после совпадают;
-- новый пустой isolated temporary target;
-- никаких target-Mac/production namespaces;
-- versioned deterministic mapping и target hash;
-- repeat run даёт тот же hash;
-- failure/typed stop не оставляет partial target;
-- mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity, invalid reference и non-empty target блокируют операцию;
-- network/model/Ollama/Qwen/DeepSeek = 0;
-- actual migration этим этапом не разрешается.
+C1 не доказывает native persistence, crash behavior, packaged resolver или actual migration. Это отдельные C2–C4.
 
-## Восстановление и AI-расход
+## REQ-OBS-001
 
-После микроэтапа сохраняй результат, время, run ID, версии, модель или «без AI», входные/выходные ID и целостность. Частичный checkpoint не заменяет полное состояние. Диагностика, миграция и восстановление выполняются без AI.
+Любая длительная операция показывает name/type, elapsed time и volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Таймер меняется только при реальном переходе. Stale heartbeat означает «возможно, процесс завис», но не разрешает restart/retry.
 
-Перед AI-вызовом сохраняй причину, этап, модель, run ID, attempt, вход, ожидаемый результат и восстановимость. После ошибки, перезагрузки, зависания или обновления версии повтор запрещён без подтверждения пользователя. Сначала — офлайн-диагностика.
+REQ-OBS-001 действует для анализа, embeddings, clustering, hierarchy, links, duplicates, contradictions, save, backup, migration, verification, seal, promotion, resolver verification, rollback, recovery и export.
 
-## Наблюдаемость — REQ-OBS-001
+## Документация и release gate
 
-Любой длительный AI- или локальный микроэтап показывает: название и тип; время и объём; последнее продвижение и heartbeat; состояние; модель либо «без AI»; диагностику.
+Google Drive — источник продуктовых документов; GitHub — кода и технической истории. До принятия обновляются статус, решения/ошибки/первопричины, требования, следующий проверяемый шаг, README, release metadata и версия. Документы считаются обновлёнными только после reverse-read.
 
-Таймер меняется только при реальном переходе и замораживается при паузе/ошибке/завершении. Недостоверный ETA запрещён. При stale heartbeat сообщай «возможно, процесс завис». Не перезапускай этап и не повторяй AI автоматически.
+Зелёный CI недостаточен: exact private/public tree и downloaded artifact проверяются отдельно, включая provenance, checksums, inventory, executable modes и отсутствие database/evidence bytes, secrets, dependencies и personal payloads.
 
-## Документация и выпуск
+Merge SHA записывается только после фактического `merged=true` и readback GitHub API. Предсказанный SHA не является evidence.
 
-Google Drive — источник продуктовых документов; GitHub — кода и технической истории. После каждой версии обновляй статус, решения/ошибки/первопричины, требования, следующий шаг, README и версию. Документы считаются обновлёнными только после обратного чтения. Рассинхронизация блокирует выпуск.
+## Текущая стоп-линия
 
-Версия передаётся только после доказанной причины, регрессии, автоматических/миграционных/UI-проверок, визуального REQ-OBS-001, исключения неожиданных AI-вызовов, синхронизации документов/кода и проверки artifact exact commit. Зелёный job сам по себе недостаточен.
+Разрешены только финальная синхронизация C1 docs/release metadata, exact-tree CI/artifact review и merge PR #52.
 
-## Ближайший шаг
-
-Создать Phase 2C-B issue/branch/PR от merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Сначала зафиксировать deterministic migration mapping, source/target identities и typed stops. Затем реализовать только isolated dry run и доказать source byte-stability, repeatability, deterministic target hash и rollback. Actual migration не выполнять.
+Запрещены: C2 implementation до принятия C1; B1b retry; exact SQLite/backup access; real registry/generation creation; actual migration/promotion/rollback; model/network calls; personal data.

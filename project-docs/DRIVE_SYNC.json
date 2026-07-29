@@ -1,101 +1,168 @@
 {
   "version": "0.6.0-alpha.19",
-  "artifactRevision": 5,
-  "syncedAt": "2026-07-26T10:55:28Z",
+  "artifactRevision": 13,
+  "syncedAt": "2026-07-29T09:02:00Z",
+  "syncStatus": "synced_native_google_docs_verified",
+  "readBackAt": "2026-07-29T09:02:00Z",
   "documents": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "format": "google-doc"
+      "format": "google-doc",
+      "revisionId": "AIroW34tzLmd8HTP9DN3NKmMSV7HCSbwHUe5cJGk4IWBFlh2so6uYEVZgV1_wjpy-txngVwmDthuCPru5ji_sC01ETSxjj_-ar4Y1nC6Psc",
+      "driveRevisionId": "AIroW34tzLmd8HTP9DN3NKmMSV7HCSbwHUe5cJGk4IWBFlh2so6uYEVZgV1_wjpy-txngVwmDthuCPru5ji_sC01ETSxjj_-ar4Y1nC6Psc",
+      "readBackStatus": "verified",
+      "verifiedMarker": "PHASE2CC-C1-FINAL-GATE-PENDING-AC639E62"
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "format": "google-doc"
+      "format": "google-doc",
+      "revisionId": "AIroW36QEfxjBIgX4eBpJDs417UedU1tntDvR1xAYGfNV7gineBxkpqBaGcxUshjJVDgReUTZ8zJID5UtoKSFv6XAKlGIg1iEBtFuSXQX6A",
+      "driveRevisionId": "AIroW36QEfxjBIgX4eBpJDs417UedU1tntDvR1xAYGfNV7gineBxkpqBaGcxUshjJVDgReUTZ8zJID5UtoKSFv6XAKlGIg1iEBtFuSXQX6A",
+      "readBackStatus": "verified",
+      "verifiedMarker": "PHASE2CC-C1-IMPLEMENTATION-VERIFIED-AC639E62"
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "format": "google-doc"
+      "format": "google-doc",
+      "revisionId": "AIroW3622GpJz2bexdL7ckeGOfb_y23IwvozDlSrHcFSSvG9TAiau8_3pEEMy1Pb0bUq7orYWGtPfFXUYBKbr6TX6XNgApvxoY-qLsVDNO0",
+      "driveRevisionId": "AIroW3622GpJz2bexdL7ckeGOfb_y23IwvozDlSrHcFSSvG9TAiau8_3pEEMy1Pb0bUq7orYWGtPfFXUYBKbr6TX6XNgApvxoY-qLsVDNO0",
+      "readBackStatus": "verified",
+      "verifiedMarker": "PHASE2CC-C1-NO-EXECUTION-AC639E62"
     }
   ],
-  "syncStatus": "synced_native_google_docs_verified",
-  "readBackAt": "2026-07-26T10:55:28Z",
   "readBackChecks": [
     {
+      "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "revisionId": "AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E",
+      "revisionId": "AIroW34tzLmd8HTP9DN3NKmMSV7HCSbwHUe5cJGk4IWBFlh2so6uYEVZgV1_wjpy-txngVwmDthuCPru5ji_sC01ETSxjj_-ar4Y1nC6Psc",
+      "driveRevisionId": "AIroW34tzLmd8HTP9DN3NKmMSV7HCSbwHUe5cJGk4IWBFlh2so6uYEVZgV1_wjpy-txngVwmDthuCPru5ji_sC01ETSxjj_-ar4Y1nC6Psc",
+      "status": "verified",
       "verifiedMarkers": [
-        "Phase 2C-A — принята и слита",
-        "29a317b58cbecaea13e4f21c02af2b945a6e6edc",
-        "292634312ad04fa6e6cfc5a5ded311ac1020094d",
-        "30198811851",
-        "Actual target-Mac migration"
+        "PHASE2CC-C1-FINAL-GATE-PENDING-AC639E62",
+        "ac639e625b6d0ced665c748c2c58f6b3753c4ffc",
+        "0eeb9fea5792b7fbf33db0061abc2f271db3b17f",
+        "2a536a54779634647eff8ebf2476840c257b2813",
+        "actual migration remains prohibited"
       ]
     },
     {
+      "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "revisionId": "AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0",
+      "revisionId": "AIroW36QEfxjBIgX4eBpJDs417UedU1tntDvR1xAYGfNV7gineBxkpqBaGcxUshjJVDgReUTZ8zJID5UtoKSFv6XAKlGIg1iEBtFuSXQX6A",
+      "driveRevisionId": "AIroW36QEfxjBIgX4eBpJDs417UedU1tntDvR1xAYGfNV7gineBxkpqBaGcxUshjJVDgReUTZ8zJID5UtoKSFv6XAKlGIg1iEBtFuSXQX6A",
+      "status": "verified",
       "verifiedMarkers": [
-        "Phase 2C-A — accepted merge provenance",
-        "292634312ad04fa6e6cfc5a5ded311ac1020094d",
-        "ee5401a4a2ca7763467562417b9c5c4aece01214",
-        "2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c",
-        "same-fixture cross-environment"
+        "PHASE2CC-C1-IMPLEMENTATION-VERIFIED-AC639E62",
+        "ac639e625b6d0ced665c748c2c58f6b3753c4ffc",
+        "0eeb9fea5792b7fbf33db0061abc2f271db3b17f",
+        "2a536a54779634647eff8ebf2476840c257b2813",
+        "actual migration remains prohibited"
       ]
     },
     {
+      "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "revisionId": "AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU",
+      "revisionId": "AIroW3622GpJz2bexdL7ckeGOfb_y23IwvozDlSrHcFSSvG9TAiau8_3pEEMy1Pb0bUq7orYWGtPfFXUYBKbr6TX6XNgApvxoY-qLsVDNO0",
+      "driveRevisionId": "AIroW3622GpJz2bexdL7ckeGOfb_y23IwvozDlSrHcFSSvG9TAiau8_3pEEMy1Pb0bUq7orYWGtPfFXUYBKbr6TX6XNgApvxoY-qLsVDNO0",
+      "status": "verified",
       "verifiedMarkers": [
-        "Phase 2C-A — accepted recovery/storage boundary",
-        "e81ae1b309a806f0078b5a8a2057f51d4c0e403d",
-        "Phase 2C-B",
-        "actual target-Mac migration",
-        "AI/model/Ollama/Qwen/DeepSeek"
+        "PHASE2CC-C1-NO-EXECUTION-AC639E62",
+        "ac639e625b6d0ced665c748c2c58f6b3753c4ffc",
+        "0eeb9fea5792b7fbf33db0061abc2f271db3b17f",
+        "2a536a54779634647eff8ebf2476840c257b2813",
+        "actual migration remains prohibited"
       ]
     }
   ],
   "architectureAudit": {
-    "status": "alpha19_frozen_phase2ca_accepted_phase2cb_dry_run_next",
-    "phase1AMergeCommit": "e7b7593932614f8dfa843298f35eff0230c1e827",
-    "phase2AMergeCommit": "aa5eaaae08a3da4d0ff00ea03aea12b793137a21",
-    "phase2BMergeCommit": "b4b35dcd7125c820f75f89387bc18ac3fa509cb0",
-    "phase2CAPullRequest": 38,
-    "phase2CACodeHead": "02df8758a7c42b33b22b397dae74445cd6a5f7ac",
-    "phase2CAFinalReviewedHead": "29a317b58cbecaea13e4f21c02af2b945a6e6edc",
-    "phase2CAMergeCommit": "292634312ad04fa6e6cfc5a5ded311ac1020094d",
-    "phase2CAPublicFinalHead": "ee5401a4a2ca7763467562417b9c5c4aece01214",
-    "phase2CAPublicFinalTree": "e81ae1b309a806f0078b5a8a2057f51d4c0e403d",
-    "phase2CAVerifyRun": 30198811851,
-    "phase2CAPackageRun": 30198811852,
-    "phase2CAArtifactOuterSha256": "2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c",
-    "phase2CAArtifactInnerSha256": "81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b",
-    "phase2CAExporterInnerSha256": "1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109",
-    "phase2CABrowserProofSha256": "5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755",
-    "phase2CAImplemented": true,
+    "status": "alpha19_frozen_b1b_accepted_c0_accepted_c1_implemented_final_gate_pending",
     "phase2CAAccepted": true,
-    "phase2CBAllowed": true,
+    "phase2CB0Accepted": true,
+    "phase2CB1PlanAccepted": true,
+    "phase2CB1aAccepted": true,
+    "phase2CB1bAccepted": true,
+    "phase2CB1bAttemptConsumed": true,
+    "phase2CB1bMergeCommit": "4fd14e515d2c4234f70effa475381f47bbb50e8b",
+    "phase2CB1bPostMergeDocsCommit": "e6bd47011fad2dab5a8617f5f754739de1915fd9",
+    "phase2CC0Allowed": true,
+    "phase2CC0DesignImplemented": true,
+    "phase2CC0ReviewedGatePassed": true,
+    "phase2CC0Accepted": true,
+    "phase2CC0MergeCommit": "31657e218cd5891e9e915f698febf8ac72942ed3",
+    "phase2CC1Allowed": true,
+    "phase2CC1Implemented": true,
     "actualMigrationAllowed": false,
-    "candidate6Allowed": false,
-    "deepseekRunAllowed": false,
-    "legacyDatabaseWriteAllowed": false,
-    "zeroModelCalls": true,
-    "nextGate": "phase2cb_deterministic_mapping_and_isolated_exact_source_dry_run"
+    "exactSourceOpenedDuringPhase2CC0": false,
+    "backupCreatedDuringPhase2CC0": false,
+    "controlRegistryCreatedDuringPhase2CC0": false,
+    "productionGenerationCreatedDuringPhase2CC0": false,
+    "actualMigrationExecutedDuringPhase2CC0": false,
+    "zeroModelCallsDuringPhase2CC0": true,
+    "zeroNetworkCallsDuringPhase2CC0": true,
+    "automaticRetryAllowedDuringPhase2CC0": false,
+    "controlRegistryName": "mindmap-state-core-control-v1",
+    "generationPrefix": "mindmap-state-core-v1-generation-",
+    "finalPrivateHead": "af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5",
+    "finalPublicHead": "9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6",
+    "finalSharedTree": "a8523316e16273f633fac8caac95e96a5fec1080",
+    "finalVerifyRun": 30425727226,
+    "finalPackageRun": 30425727235,
+    "nextGate": "phase2cc_c1_final_documentation_tree_ci_artifact_and_factual_merge",
+    "phase2CC1Accepted": false,
+    "phase2CC1InitialPrivateHead": "ac639e625b6d0ced665c748c2c58f6b3753c4ffc",
+    "phase2CC1InitialPublicHead": "0eeb9fea5792b7fbf33db0061abc2f271db3b17f",
+    "phase2CC1InitialSharedTree": "2a536a54779634647eff8ebf2476840c257b2813",
+    "phase2CC1InitialVerifyRun": 30442139981,
+    "phase2CC1InitialPackageRun": 30442139989,
+    "exactSourceOpenedDuringPhase2CC1": false,
+    "backupAccessedDuringPhase2CC1": false,
+    "nativeStorageUsedDuringPhase2CC1": false,
+    "actualMigrationExecutedDuringPhase2CC1": false,
+    "zeroModelCallsDuringPhase2CC1": true,
+    "zeroNetworkCallsDuringPhase2CC1": true,
+    "automaticRetryAllowedDuringPhase2CC1": false
   },
   "github": {
     "privateRepository": "ne-agalakov/mindmap-local",
     "publicCiMirror": "ne-agalakov/mindmap-local-ci",
-    "phase2CAMergeCommit": "292634312ad04fa6e6cfc5a5ded311ac1020094d",
-    "ci": {
-      "linuxFull": "passed-final-exact-tree",
-      "actualChromeRunStorage": "passed-final-exact-tree",
-      "actualChromeGraphStorage": "passed-final-exact-tree",
-      "macosTargeted": "passed-final-exact-tree",
-      "sourcePackaging": "passed-final-exact-tree",
-      "downloadedArtifactVerification": "passed-final-exact-tree",
-      "driveReadback": "passed-after-merge",
-      "zeroModelCalls": true
+    "phase2CB1b": {
+      "privatePullRequest": 46,
+      "mergeCommit": "4fd14e515d2c4234f70effa475381f47bbb50e8b",
+      "postMergeDocsCommit": "e6bd47011fad2dab5a8617f5f754739de1915fd9",
+      "attemptConsumed": true,
+      "sourceSha256": "356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918",
+      "portablePlanHash": "d8a1289c6f1865db940f65e46aec569400b630aec3cc53bdfd897f223d2436a8",
+      "targetSnapshotHash": "6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689"
+    },
+    "phase2CC0": {
+      "issue": 48,
+      "privatePullRequest": 49,
+      "publicMirrorPullRequest": 12,
+      "status": "accepted_post_merge_docs_closure_in_progress",
+      "accepted": true,
+      "mergeCommit": "31657e218cd5891e9e915f698febf8ac72942ed3",
+      "finalPrivateHead": "af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5",
+      "finalPublicHead": "9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6",
+      "finalSharedTree": "a8523316e16273f633fac8caac95e96a5fec1080",
+      "outerArtifactSha256": "f2de7f3961c5b720a35e2cbc8987e3a5216304bf8bc8513432c4d8ddb800ff1f",
+      "browserProofSha256": "1e0c1aa3f2fd5004699ce6162b20f19e99933ed574ea1e142b7265d9507e1d45"
+    },
+    "phase2CC1": {
+      "issue": 51,
+      "privatePullRequest": 52,
+      "publicMirrorPullRequest": 14,
+      "status": "implementation_verified_final_documentation_gate_pending",
+      "accepted": false,
+      "initialPrivateHead": "ac639e625b6d0ced665c748c2c58f6b3753c4ffc",
+      "initialPublicHead": "0eeb9fea5792b7fbf33db0061abc2f271db3b17f",
+      "initialSharedTree": "2a536a54779634647eff8ebf2476840c257b2813",
+      "verifyRun": 30442139981,
+      "packageRun": 30442139989,
+      "outerArtifactSha256": "48919301a47dd46a93c1daaef89813bada64884d695c830b7d8cd8b54c560fae",
+      "browserProofSha256": "fd77e95f0f9ee15a9e6226018fee2b6b53980d295931b6d27007a1c56ca12167"
     }
   }
 }

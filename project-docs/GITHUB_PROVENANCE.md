@@ -1,120 +1,61 @@
 # GitHub provenance and source-artifact verification
 
-Status: mandatory release protocol for MindMap beginning with Alpha.19 candidate 5.
-
 ## Technical source of truth
 
-The technical version is identified by `repository + commit SHA`.
+Technical identity is `repository + commit SHA + Git tree`. A label, local directory or green workflow alone is not evidence.
 
-- Repository: `ne-agalakov/mindmap-local`.
-- Candidate 5 source baseline: `f01508059abc1bd99f9a05527f16bb52e6a667ee`.
-- Initial verification and packaging gates: `2c498d84007c8ba5c011cec881ba732de5721bc4`.
-- Exact-commit packaging and portability merge: `82fc0691274b4b32070723e3da31b48ddcd39398`.
+Primary: `ne-agalakov/mindmap-local`. Public history-free CI mirror: `ne-agalakov/mindmap-local-ci`.
 
-A local directory, version label, downloaded ZIP, or successful build without a
-commit SHA is not a source of truth.
+## Mandatory artifact invariant
 
-## PR #4 incident
+Before merge/handoff, the exact artifact is downloaded and checked outside the runner:
 
-PR #4 first made `package-source` run against the exact same-repository pull
-request head. The workflow and the full verification workflow were green.
+- portable checksum manifests;
+- repository/commit/tree match the actual checkout;
+- required inventory and executable modes;
+- no exact databases/evidence, `.env`, credentials, caches, generated dependencies or personal payloads;
+- failure blocks merge and requires a regression.
 
-A mandatory reverse check then downloaded the generated artifact and found a
-separate deterministic packaging defect: the `.sha256` manifest contained an
-absolute GitHub runner path under `/home/runner/...`. The archive bytes were not
-corrupt, but standard checksum verification failed after the files were moved to
-a normal download directory.
+## Accepted foundations
 
-Root cause: `scripts/package-source.sh` passed an absolute output path to
-`sha256sum`.
+B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b`; C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3`; C0 post-merge docs `091d2e6cac82455f504299d9c81ab78ee8f193fd`.
 
-## Correction
-
-The packaging script now:
-
-1. changes into `release-artifacts` before writing the checksum manifest;
-2. writes only the archive basename;
-3. supports Linux `sha256sum` and macOS `shasum -a 256`;
-4. refuses a dirty Git worktree;
-5. injects the exact repository and commit SHA into `ARTIFACT_REVISION.json`;
-6. packages the exact pull-request head and every commit pushed to `main`.
-
-`tests/source-packaging.test.mjs` is an integration regression. It creates a
-temporary clean Git repository, runs the real package script, verifies that the
-manifest contains no path separator or runner path, and independently
-recomputes the archive SHA-256.
-
-## Downloaded artifact proof
-
-The corrected artifact for commit
-`58621f6fd84adae68f1dd5f416c4a9d7500e6623` was downloaded from GitHub Actions
-and inspected outside the runner.
-
-- GitHub Actions artifact digest:
-  `ec7057326f3bde662fe4adfee5db40f08581b23146569f5f6f5bc6a60840d627`.
-- Inner source ZIP SHA-256:
-  `bce19a8c25d933b5ad8ddfe7e2046b9107af376a21c52af781370099a78eced0`.
-- The unmodified relative manifest verified successfully from another directory.
-- `ARTIFACT_REVISION.json` named the exact repository and commit.
-- The archive contained no user database, diagnostics, logs, `.env*`, `.git`,
-  `.next`, `node_modules`, runtime cache, or nested release artifacts.
-
-The final reviewed PR head
-`e20bcf71a12a3f5c1f45732414430a8e6de73832` passed Linux full CI, macOS targeted
-CI, and source packaging. PR #4 merged as
-`82fc0691274b4b32070723e3da31b48ddcd39398`. GitHub comparison reported no file
-differences between the reviewed head and merge commit; the additional commit is
-merge metadata only.
-
-## Mandatory release invariant
-
-A green workflow is necessary but insufficient. Before merge or handoff, the
-exact generated artifact must be downloaded and checked without editing:
-
-- checksum verification succeeds from a different directory;
-- the manifest contains only a relative archive filename;
-- the embedded repository and commit match the reviewed source;
-- forbidden user and runtime files are absent;
-- any failure blocks merge and requires a regression test.
-
-These checks do not call Ollama, Qwen, or DeepSeek and do not start or continue a
-semantic run.
-
-## Remaining product boundary
-
-GitHub provenance and source-artifact portability are closed for this stage.
-Candidate 5 remains a test candidate until its persisted model-mismatch block,
-disabled incompatible continuation, and separate clean DeepSeek-run action are
-visually checked on the target Mac. Semantic stability across the 96-thought
-orders remains unproven. Real personal thoughts remain prohibited.
-
-## Phase 2C-A exact-tree public mirror and merge provenance
-
-Private Actions jobs could not start because private minutes were exhausted. A separate public repository received a history-free audited snapshot only.
-
-Final equivalence:
+## Phase 2C-C1 implementation proof
 
 ```text
-private reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
-public final head:     ee5401a4a2ca7763467562417b9c5c4aece01214
-shared Git tree:       e81ae1b309a806f0078b5a8a2057f51d4c0e403d
+private PR:   #52
+public PR:    #14
+private head: ac639e625b6d0ced665c748c2c58f6b3753c4ffc
+public head:  0eeb9fea5792b7fbf33db0061abc2f271db3b17f
+shared tree:  2a536a54779634647eff8ebf2476840c257b2813
+verify:       30442139981
+package:      30442139989
 ```
 
-Final public runs:
+Public exact-tree Linux/macOS/full/actual-Chrome/package gates passed. Private Actions failed before steps because private runner capacity/minutes were unavailable; this is infrastructure evidence, not a test failure.
 
-- verify `30198811851` — success;
-- package `30198811852` — success.
+Downloaded artifact review:
 
-Downloaded outside the runner:
+```text
+outer artifact: 48919301a47dd46a93c1daaef89813bada64884d695c830b7d8cd8b54c560fae
+browser proof:  fd77e95f0f9ee15a9e6226018fee2b6b53980d295931b6d27007a1c56ca12167
+source ZIP:     76a769a14310347ba144b7ac71ab05f682384889ce24ca2f9623817333f6bd5a2
+exporter ZIP:   e54b4ab03944d7aca63b310b9595963d9a8b28e1c8ac0618d087b47601d1c723
+B1b ZIP:        346381787d9174a231aa8507f80d567932464ee6a25a0c77f0726932e0412013
+```
 
-- outer source `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- inner source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- inner exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser proof `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- browser log `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`.
+Portable checksums passed. Source/exporter/B1b metadata identify the public checkout; B1b records tree `2a536a54779634647eff8ebf2476840c257b2813`. Launchers are executable. No SQLite/database bytes, exact evidence, secrets, generated dependencies or personal payloads were found. Browser proof remained sanitized with exact source opened false, actual migration false, network/model calls 0 and no automatic retry.
 
-The embedded source/exporter commit matched `ee5401a4a2ca7763467562417b9c5c4aece01214`. Required files and relative checksum manifests passed. No database, `.env`, credentials, concrete local user-home path, runtime cache or personal thought/database payload was found.
+C1 tests passed 9/9 and structurally exclude browser, IndexedDB, filesystem, network, model, exact-source, clock and randomness dependencies.
 
-PR #38 was squash-merged with expected head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` as `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Google Drive was updated after merge and reverse-read.
+## Drive reverse-read for final C1 candidate
 
-Same-fixture cross-environment hash equality remains uncovered. Phase 2C-B is limited to an isolated dry run; actual migration remains prohibited.
+- instruction revision `AIroW34tzLmd8HTP9DN3NKmMSV7HCSbwHUe5cJGk4IWBFlh2so6uYEVZgV1_wjpy-txngVwmDthuCPru5ji_sC01ETSxjj_-ar4Y1nC6Psc`, marker `PHASE2CC-C1-FINAL-GATE-PENDING-AC639E62`;
+- status revision `AIroW36QEfxjBIgX4eBpJDs417UedU1tntDvR1xAYGfNV7gineBxkpqBaGcxUshjJVDgReUTZ8zJID5UtoKSFv6XAKlGIg1iEBtFuSXQX6A`, marker `PHASE2CC-C1-IMPLEMENTATION-VERIFIED-AC639E62`;
+- recovery revision `AIroW3622GpJz2bexdL7ckeGOfb_y23IwvozDlSrHcFSSvG9TAiau8_3pEEMy1Pb0bUq7orYWGtPfFXUYBKbr6TX6XNgApvxoY-qLsVDNO0`, marker `PHASE2CC-C1-NO-EXECUTION-AC639E62`.
+
+## Current boundary
+
+C1 is implemented and initially verified, but not accepted until this documentation tree receives a new exact-tree CI/artifact gate and PR #52 is factually merged. No merge SHA is predicted.
+
+C2–C4, exact-source access, backup/registry/generation creation, actual migration, model/network calls and personal data remain prohibited.

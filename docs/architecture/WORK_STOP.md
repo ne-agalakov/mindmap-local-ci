@@ -1,43 +1,22 @@
-# Work boundary after Phase 2C-A acceptance
+# Work boundary during Phase 2C-C1 final gate
 
-Accepted foundations:
+C1 implementation tree `2a536a54779634647eff8ebf2476840c257b2813` passed initial exact-tree CI. C1 is not accepted until final docs/release metadata are rerun and PR #52 is factually merged.
 
-- Phase 0 exact source;
-- Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+## Allowed
 
-## Still prohibited
+- synchronize C1 documentation and artifact revision 13;
+- mirror the final private/public tree;
+- rerun Linux/macOS/full/Chrome/package gates;
+- inspect downloaded artifacts;
+- merge PR #52 with expected-head protection;
+- record factual post-merge provenance.
 
-- Candidate 5 continuation;
-- Qwen or DeepSeek;
-- Candidate 6;
-- legacy database write/repair;
-- actual target-Mac import or production-storage change;
-- production runtime/UI integration;
-- changes to old sql.js/Ollama/model configuration;
-- real thought import;
-- claims of REQ-OBS-001, exactly-once model execution, semantic success or product readiness.
+## Prohibited
 
-## Allowed now
-
-Only Phase 2C-B in a separate issue/branch/PR from accepted `main`:
-
-- define versioned deterministic legacy→run/graph mapping;
-- use the exact accepted source package read-only;
-- verify source bytes/hash before and after;
-- create only a fresh isolated temporary target;
-- reject non-empty or production/target-Mac names;
-- persist through accepted Phase 2B/2C-A adapters;
-- produce deterministic target snapshot/content hash;
-- repeat and prove the same result;
-- inject failures and prove full rollback;
-- typed-stop mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity and invalid references;
-- prove zero network/model calls.
-
-## Acceptance boundary
-
-Phase 2C-B success does not authorize actual target-Mac migration. Actual migration requires a later explicit confirmation gate with backup/rollback, exact hashes and REQ-OBS-001.
-
-Legacy source SHA-256 remains `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`.
+- C2 native IndexedDB implementation before C1 acceptance;
+- exact SQLite or backup access;
+- B1b retry;
+- real registry/generation creation;
+- actual migration, promotion or rollback;
+- model/network calls;
+- personal thoughts.
