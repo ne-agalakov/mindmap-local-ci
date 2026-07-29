@@ -7,7 +7,12 @@ import type {
   GenerationAttemptEvent,
 } from "./attempt-types.ts";
 import { hashCanonical, type CanonicalHasher } from "./canonical-json.ts";
-import { baseFor, commandFingerprint, reject, validateExecutionContext } from "./command-common.ts";
+import {
+  baseFor,
+  commandFingerprint,
+  reject,
+  validateExecutionContext,
+} from "./command-common.ts";
 import { handlePrePromotionCommand } from "./command-prepromotion.ts";
 import { handlePostPromotionCommand } from "./command-postpromotion.ts";
 
