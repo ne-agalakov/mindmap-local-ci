@@ -4,19 +4,22 @@
 
 The technical version is identified by `repository + commit SHA`. A local directory, version label, green build or downloaded ZIP without exact commit provenance is not a source of truth.
 
-Repository: `ne-agalakov/mindmap-local`.
+Primary repository: `ne-agalakov/mindmap-local`.
+
+Public history-free CI mirror: `ne-agalakov/mindmap-local-ci`.
 
 ## Mandatory artifact invariant
 
 A green workflow is necessary but insufficient. Before merge or handoff, the exact generated artifact is downloaded and checked outside the runner without editing:
 
 - portable checksum manifests verify from another directory;
-- embedded repository/commit matches the reviewed source;
+- embedded repository and commit belong to the actual checkout that produced the artifact;
 - required inventory and executable modes are correct;
-- user databases, `.env`, credentials, logs, caches, generated dependencies and personal payloads are absent;
+- user databases, exact evidence, `.env`, credentials, logs, caches, generated dependencies and personal payloads are absent;
+- documentation examples of hashes or paths are distinguished from actual private files;
 - any failure blocks merge and requires a regression scenario.
 
-This invariant was introduced after a green artifact contained an absolute runner path in its checksum manifest. The packaging regression now enforces relative manifests and independently recomputes SHA-256.
+This invariant originated after a green artifact contained an absolute runner path. A later B1b package regression additionally proved that repository/commit provenance must be internally consistent in public-mirror builds.
 
 ## Accepted technical foundations
 
@@ -27,78 +30,90 @@ This invariant was introduced after a green artifact contained an absolute runne
 - Phase 2C-A: `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
-- Phase 2C-B1a: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+- Phase 2C-B1a: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
+- Phase 2C-B1b: `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
+- B1b post-merge docs: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
 
-Private Actions minutes were exhausted during later phases. History-free public snapshots were used only after exact Git-tree equality was proven. Carrier workflows and their jobs were never treated as final evidence; only materialized exact-tree commits and their downloaded artifacts were accepted.
+## Phase 2C-B1b exact-source acceptance
 
-## Phase 2C-B1a initial rejection and root cause
-
-Initial implementation head: `42644037d2b4d66d3e92cff4a591d5b3ea58078f`.
-
-Exact-tree comparison proved two delivery defects:
-
-1. invalid Chrome runner syntax `throw new Error, ...`;
-2. invalid macOS action `actions/checkout4`.
-
-The remaining 17 B1a files were byte-identical to the tested implementation. Only the two defective delivery files were corrected before acceptance.
-
-Corrected code head: `df2570b6cfea74296248297b7000b29876036e95`.
-
-## Phase 2C-B1a final exact-tree evidence
+The one authorized exact-source dry run was executed once and consumed.
 
 ```text
-private final head: c1237b9ba012d60dc720bf940082c7d8e88f4e1e
-public exact head:  667b218b8bf863c45ae074db65a314e77786f8d0
-shared Git tree:    58d2bb0e9b7edebb3d3d830064406feffbff5181
+run ID:             b1b-20260728115431-22839
+package repository: ne-agalakov/mindmap-local-ci
+package commit:     982cadbc62c42659aa567b803574e3e04066babc
+package tree:       9b2d2588ba678f5c2bc5737687049be75c2ece96
+source size:        5,070,848 bytes
+source SHA-256:     356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918
+portable plan hash: d8a1289c6f1865db940f65e46aec569400b630aec3cc53bdfd897f223d2436a8
+target snapshot:    6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689
 ```
 
-Final public runs:
+Confirmed from sanitized evidence:
 
-- verify `30245125059` — Linux npm ci/lint/full suite, actual Chrome run storage, graph storage and B1a IndexedDB, release-document gate, macOS npm ci and launcher regressions;
-- package `30245125058` — full tests and source/exporter packaging.
+- source opened read-only/query-only and remained byte-identical;
+- quick_check/integrity_check passed;
+- counts `96/30/0/133/96/3/0`, one unresolved and zero damaged references;
+- two clean native IndexedDB targets produced equal portable-plan and target hashes;
+- injected rollback left no graph, target or receipt;
+- temporary targets were deleted;
+- network/model calls were zero;
+- actual migration was false.
 
-Downloaded outside the runner:
+Final acceptance gate:
 
-- source artifact `db61f1e92639e3320062977f5d4f949442ba9ffbeac0e8678a10ee473251477d`;
-- inner source `264503b2394d0d58a842e26030d4a555892bd7ec73d8c96ff569b85b699d963b`;
-- inner exporter `9ba8213c8146467d87f0ed5c1512c62722feb1ebaf4b989e60da7ba2908241ef`;
-- browser artifact `482fc377d64de16e6927998e3f8ad087a383ed118f802f7cf4d605b4c4f77ac2`;
-- browser log `f5ab869cab617275d3d5d44762ab6c5bf0337240e00fadb6fb976564f905db87`.
+```text
+reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
+public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
+shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
+verify:                30357519192
+package:               30357516712
+squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
+post-merge docs:       e6bd47011fad2dab5a8617f5f754739de1915fd9
+```
 
-Portable manifests, embedded exact public commit, required files, source/exporter inventory and B1a browser result were checked outside the runner. No SQLite/database file, `.env`, credential/private key, runtime cache, generated dependency tree, carrier file or personal thought payload was found. Literal documentation examples of runner/user paths were not misclassified as real paths.
+B1b acceptance does not authorize another B1b run or actual migration.
 
-Browser proof:
+## Phase 2C-C0 provenance rule
 
-- native IndexedDB true;
-- repeated plan hashes equal;
-- repeated target hashes equal;
-- rollback target empty;
-- source unchanged;
-- REQ-OBS trace/live state/diagnostics true;
-- exact source opened false;
-- actual migration false;
-- network/model calls 0.
+C0 is architecture and release-metadata synchronization only. It introduces no migration executor or target.
 
-Portable plan hash: `16f82826ae2846136ba2d4f561c0116f17433ce4ab6aa5c3c2c2ab8a4681c52d`.
+Private branch: `phase2cc/c0-actual-migration-design`, PR #49.
 
-Target snapshot hash: `6399e23e713214da1574113739e25ea86a220cec8990963c955aeea0a4e73fbf`.
+Public exact-tree branch: `phase2cc-c0-design-exact`, PR #12.
 
-## Phase 2C-B1a merge and post-merge Drive provenance
+The first C0 public CI run was rejected because README removed the exact accepted B1a release-gate heading. Root cause: documentation simplification weakened a machine-checked historical invariant. The heading was restored; no runtime or migration code was involved.
 
-PR #43 was marked ready only after the final exact-tree artifact review and was squash-merged with expected head `c1237b9ba012d60dc720bf940082c7d8e88f4e1e` as:
+C0 also found a real provenance defect in the generic source packager: it always embedded the private repository name, even when a history-free public mirror commit produced the artifact. C0 must fix the packager and its regression test so repository and commit always identify the same checkout before the C0 tree can be accepted.
 
-`aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+## C0 architecture boundary
 
-Canonical Google Docs were then updated under revision guards and reverse-read:
+ADR-0002 selects immutable generation databases and an atomic control registry:
 
-- instruction `AIroW35Y1U0r_r73mOrdrwqiiIOSGsKbah6EXtyEdM28wfo8egtsiBsD4Q7EsKr-QYPnXd-gsFEUqO3zDx_PYYnk2Q8D_i_ZQYAdo164AXc`;
-- status `AIroW34oLCkzUN9QtOSaR-ptpPWPh03tV5RVUAHyxOwfyzbSH58we1dihjmRUsrfLq0ucd3w5FGbmSYZBjrmNZ0rAJJ1S_K9mpKNwBlQe6c`;
-- recovery `AIroW35wmk74YOmnEwaipn2u_530U4qTtSsbRFFwsWmmhc4rvNmhnYFc7rdz-9F1XRDcG_C1VdWIhe0q_dFxBfsOZH3i5BXOrmyenwcuudk`.
+```text
+control registry:  mindmap-state-core-control-v1
+generation prefix: mindmap-state-core-v1-generation-
+```
 
-Exact acceptance markers were found after write.
+C0 proves only the documented contract, failure matrix and staged release plan. Exact source reopening, backup creation, registry/generation creation, actual migration, promotion, model calls and personal data remain prohibited.
 
-## Accepted boundary
+## Google Drive C0 readback
 
-B1a is accepted only for sanitized executor/harness behavior. It does not authorize B1b, exact-source access, a real migration target, actual migration, runtime/UI, model execution or real thoughts.
+Canonical Google Docs were updated under revision guards and reverse-read:
 
-A later B1b attempt requires a new explicit user confirmation for exactly one read-only exact-source dry run against a fresh isolated temporary target. Actual migration remains a later independent gate.
+- instruction revision `AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU`, marker `PHASE2CC-C0-GENERATION-REGISTRY`;
+- status revision `AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA`, marker `PHASE2CC-C0-STATUS-GENERATION-REGISTRY`;
+- recovery revision `AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y`, marker `PHASE2CC-C0-RECOVERY-GENERATION-REGISTRY`.
+
+## Current acceptance boundary
+
+C0 is not accepted until:
+
+- repository release metadata and Drive revisions are synchronized;
+- source-packager provenance is corrected and regression-tested;
+- private/public exact tree equality is re-established;
+- final Linux/macOS/full/actual-Chrome/package gates pass;
+- the exact downloaded artifact is inspected outside the runner;
+- PR #49 is merged with expected-head protection.
+
+After C0 acceptance, only C1 pure registry/generation contracts on sanitized fixtures are allowed.
