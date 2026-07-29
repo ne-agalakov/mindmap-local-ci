@@ -17,6 +17,10 @@ Accepted foundations:
 - Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
 - Phase 2C-B1b exact-source read-only dry run — accepted and merged as `4fd14e515d2c4234f70effa475381f47bbb50e8b` on 2026-07-28.
 
+## Phase 2C-B1a — accepted
+
+B1a remains accepted only for its sanitized executor, rollback and observability boundary. Its merge provenance remains `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+
 ## Phase 2C-B1b — accepted boundary
 
 The one authorized exact-source B1b read-only dry run was executed once on the target Mac and is consumed.
