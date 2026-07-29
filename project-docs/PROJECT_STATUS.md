@@ -18,183 +18,100 @@ Alpha.19 остаётся замороженным legacy-прототипом �
 - Phase 2C-B0 deterministic mapping: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
 - Phase 2C-B1a sanitized executor/harness: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
-- Phase 2C-B1b exact-source read-only dry run: принят и слит как `4fd14e515d2c4234f70effa475381f47bbb50e8b` 28 июля 2026 года;
-- post-merge documentation: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
+- Phase 2C-B1b exact-source read-only dry run: `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
+- B1b post-merge docs: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
 
-Legacy exact source остаётся private и immutable: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`, 96 synthetic и 0 personal thoughts.
+## B1b — принята и израсходована
 
-## Phase 2C-B1a — принята
-
-PR #43 squash-merged как `aec5edaca877cec5d769f4ce4efff674a9c92a7d`.
+Единственная разрешённая B1b-попытка выполнена один раз. Повтор запрещён.
 
 ```text
-final private head: c1237b9ba012d60dc720bf940082c7d8e88f4e1e
-public exact head:  667b218b8bf863c45ae074db65a314e77786f8d0
-shared tree:        58d2bb0e9b7edebb3d3d830064406feffbff5181
-```
-
-Доказано на sanitized fixtures: physical read-only SQLite, source byte stability, repeat plan/target hash equality, actual Chrome IndexedDB temporary targets, injected rollback, typed stops, no automatic retry, REQ-OBS и ноль network/model calls.
-
-## Phase 2C-B1b — exact-source dry run принят
-
-Единственная разрешённая попытка выполнена один раз на целевом Mac 28 июля 2026 года. Попытка израсходована; повтор запрещён без нового отдельного решения.
-
-Пакет и run:
-
-```text
-package repository: ne-agalakov/mindmap-local-ci
-package commit:     982cadbc62c42659aa567b803574e3e04066babc
-package tree:       9b2d2588ba678f5c2bc5737687049be75c2ece96
-authorization:      artem-2026-07-27-b1b-once
-run ID:             b1b-20260728115431-22839
-```
-
-Санитизированные evidence-файлы:
-
-```text
-mindmap-phase2cb-b1b-evidence.json
-size:   33 054 bytes
-sha256: bcd8a88469b627591eea15c430539a2ca95307655b528364b96ab9c3fc0bc6b0
-
-mindmap-phase2cb-b1b-run-manifest.json
-size:   1 076 bytes
-sha256: fcd3220fe64814d9a83171cc1ececcc7433d2b6fe5c848477d469afce3f202c7
-```
-
-Точная проверка source:
-
-- размер до/после `5 070 848` bytes;
-- SHA-256 до/после `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- open mode `readonly`, `query_only = true`;
-- `quick_check = ok`, `integrity_check = ok`;
-- modification timestamp не изменился;
-- source write performed = false.
-
-Counts совпали с принятым контрактом:
-
-```text
-thoughts:          96
-nodes:             30
-links:              0
-decisions:        133
-embeddings:        96
-runs:               3
-personalThoughts:   0
-unresolved:         1
-damaged references: 0
-```
-
-Детерминированность двух чистых прогонов:
-
-```text
+run ID:               b1b-20260728115431-22839
+source size:          5 070 848 bytes
+source SHA-256:       356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918
 portable plan hash:   d8a1289c6f1865db940f65e46aec569400b630aec3cc53bdfd897f223d2436a8
 target snapshot hash: 6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689
 ```
 
-Оба clean target записали три run и graph aggregate, получили одинаковые portable plan/target snapshot hashes и были удалены после evidence capture.
+Подтверждено: read-only/query-only; quick_check/integrity_check ok; source size/SHA/timestamp неизменны; counts `96/30/0/133/96/3/0`; один unresolved; ноль damaged references; два clean target дали одинаковые hashes; injected rollback не оставил graph/target/receipt; temporary targets удалены; network/model calls = 0; actual migration = false.
 
-`mappingContentHash` у first/second/rollback различается ожидаемо: он включает различный isolated target database name. Межпрогонные gates — target-independent `portablePlanHash` и итоговый `targetSnapshotHash`; оба совпали.
+## Phase 2C-C0 — архитектурное решение
 
-Injected rollback:
-
-- остановка `transaction_failure` после первого run commit attempt;
-- `runCountCommitted = 1` до stop;
-- `graphCommitted = false`;
-- partial target/receipt отсутствуют;
-- `rollbackTargetEmpty = true`;
-- temporary namespace удалён.
-
-REQ-OBS trace содержит freeze manifest, preflight hash, read-only extraction, planning, target freshness/creation, transactional progress, verification, source re-hash, cleanup и terminal state. На всех этапах `model = без AI`.
-
-Границы B1b:
-
-- external network calls = 0;
-- model calls = 0;
-- actual migration = false;
-- production namespace = false;
-- automatic retry = false;
-- source bytes/raw thought text/node labels/source path/model payloads в evidence отсутствуют.
-
-## Решение о принятии B1b
-
-B1b принят строго как exact-source read-only dry-run gate. Доказаны точная идентичность и целостность source, неизменность source, два одинаковых детерминированных target результата, cleanup после injected failure, удаление временных target, REQ-OBS, ноль network/model calls и отсутствие actual migration.
-
-Не доказаны и не разрешены:
-
-- actual target-Mac migration;
-- production namespace и promotion в рабочую базу;
-- rollback production migration;
-- runtime/UI integration;
-- service-level exactly-once model execution;
-- semantic quality, multi-order stability и real-data readiness;
-- повтор B1b.
-
-## Журнал решений, ошибок и первопричин B1b
-
-1. Package script использовал outer-PR `GITHUB_SHA`; в fixture это мог быть недоступный merge commit. Исправление: commit/tree выводятся из фактического checkout HEAD, явное несовпадение блокируется.
-2. Metadata могла сочетать private repository с public-mirror commit. Исправление: repository/commit provenance формируется согласованно, fixture использует явный override.
-3. Vite harness ссылался на `/src/page.ts`, хотя entry находится в `/page.ts`. Исправление и отдельная regression добавлены.
-4. Exact-source run подтвердил, что эти delivery-фиксы не скрывали ошибку migration semantics: source contract, repeatability, rollback cleanup и zero-call boundary прошли на точной базе.
-
-## Финальное принятие B1b и merge provenance
-
-```text
-reviewed private head: 3e9660f2be6b57c8c0547c1fc4052d54ba8d0486
-public CI head:        b69d41a580b1b9eee1c920836911eb6b12aa1e3b
-shared reviewed tree:  0305705240750d2b2a8d687611261b8fd39c2610
-squash merge:          4fd14e515d2c4234f70effa475381f47bbb50e8b
-post-merge docs:       e6bd47011fad2dab5a8617f5f754739de1915fd9
-```
-
-Final public verify `30357519192` и package-source `30357516712` прошли Linux, macOS, full tests, actual Chrome и packaging. Downloaded outer artifact SHA-256 `7ca49574e1bba78c10d87cae8e9907d8ce0641f711c7ee957a4533bcd99f9747`; one-shot package SHA-256 `9eb330e45f6544471e4e65eceda0e2fc60c74a585f238fffab7b7e9434a75d8f`; B1b browser proof SHA-256 `224e38f3bcc160e256024e6308c4fe685f001a9d2f7cdf1b80bbdb74b9c43171`.
-
-Google Drive status, project instruction и recovery protocol обновлены и прошли обратное чтение. Issue #45 закрыта как completed.
-
-## Phase 2C-C0 — активный design gate
-
-Issue #48 и draft PR #49 создают архитектуру actual migration без выполнения.
-
-Созданы:
-
-- `project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md`;
-- `project-docs/evidence/PHASE2CC_C0_CONTRACT.md`;
-- `project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md`;
-- `project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md`;
-- `project-docs/evidence/PHASE2CC_C0_STATUS.md`.
-
-### Архитектурное решение
-
-Actual migration не пишет в фиксированную mutable production-базу и не выполняется in-place. Она создаёт отдельную immutable generation database. После полного reopen/verification/seal только control registry атомарно переключает active pointer.
+Actual migration не выполняется in-place и не пишет в фиксированную mutable production-базу.
 
 ```text
 control registry:  mindmap-state-core-control-v1
 generation prefix: mindmap-state-core-v1-generation-
 ```
 
-IndexedDB не поддерживает atomic database rename, поэтому runtime resolver обязан быть реализован и доказан на sanitized fixtures до exact-source execution. Это меняет безопасный порядок:
+Каждый import создаёт отдельную inactive immutable generation. До activation она проходит import, close/reopen, полную проверку и seal. Promotion — одна atomic control-registry transaction с expected revision и activation receipt. Abort сохраняет прежний active pointer.
+
+Rollback не редактирует payload: отдельная явная transaction восстанавливает previous pointer по activation receipt. Скрытый fallback запрещён. Legacy source, private backup, sealed/active/previous generations migration package не удаляет.
+
+Поскольку IndexedDB не поддерживает atomic database rename, packaged runtime resolver должен быть доказан на sanitized fixtures до exact-source execution.
+
+Порядок:
 
 ```text
 C0 architecture/failure matrix
-C1 pure registry and generation contracts
-C2 native IndexedDB promotion/rollback/crash proof
+C1 pure registry/generation contracts
+C2 native IndexedDB promotion/rollback/crash/reload
 C3 packaged runtime resolver on sanitized fixtures
 C4 exact-source one-shot package
-new explicit confirmation
+новое явное подтверждение Артёма
 actual migration and activation
 ```
 
-### C0 boundary
+## Failure и recovery contract
+
+Typed stops определены для authorization, source, backup, registry, generation, import, verification, seal, promotion, resolver, rollback, observability и evidence failures. Reload/закрытие/ошибка не продолжают write автоматически. Любой stop расходует authorization и требует offline root-cause proof, regression, нового package gate и нового подтверждения.
+
+REQ-OBS-001 действует для authorization freeze, source verification, backup, generation creation, import, verification, seal, promotion, resolver verification, rollback, cleanup и evidence capture.
+
+## Release-gate дефекты C0
+
+До финального принятия обнаружены и исправлены:
+
+1. README удалил exact accepted B1a heading, ослабив machine-checked historical invariant.
+2. Generic source package сочетал private repository с public-mirror commit.
+3. Compact exporter package имел тот же независимый provenance defect.
+
+Оба packager теперь определяют repository фактического checkout либо используют явный override; regressions проверяют repository/commit consistency. Ранние зелёные CI не считаются финальным доказательством.
+
+## Reviewed C0 gate
+
+```text
+private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
+public head:  189e86ae8a92912d399196bed15d8ece849a58e9
+shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
+verify run:   30424595380
+package run:  30424595384
+```
+
+Linux lint/full suite, macOS launchers/tests, actual Chrome run-storage/graph-storage/B1a/B1b harnesses и source/exporter/B1b packaging прошли.
+
+```text
+outer artifact: 6e63c8d4bace4f5350713ca64dc983fde2f81808e64798c1089539a30985c720
+browser proof:  9ec160607e1517f6a27e3c7ed36441dfd1a4ed2a9d4ffb634083d04014d51160
+source ZIP:     7ae424491bdb82c18bb8cf46ebcf09fb2cc9f187870d4454b1c2c2d6e947cdd5
+exporter ZIP:   7ede5c196249dcbb8084856cd62763cf179c1a7600e53e174efca9425fc45a98
+B1b ZIP:        6de9eb5d15fea1c31cc2e99d98d52e734eb20d5a4e28889bb9b7c5575339bd83
+```
+
+Downloaded artifacts подтвердили portable checksums, truthful source/exporter/B1b repository/commit/tree provenance, executable user launchers и отсутствие exact SQLite/evidence bytes, secrets, generated dependencies и personal payloads. Присутствуют только допустимые sanitized fixtures и source-identity metadata.
+
+## C0 boundary
 
 - exact SQLite reopened: false;
 - B1b repeated: false;
 - backup created: false;
-- registry/generation IndexedDB created: false;
+- control registry/generation created: false;
 - actual migration/promotion: false;
 - network/model calls: 0;
-- personal data used: false.
+- personal data: 0.
 
 ## Следующий проверяемый шаг
 
-Провести внутреннюю проверку C0-документов, exact-tree public CI, downloaded-artifact inspection и Drive reverse-read, затем принять PR #49.
+Artifact revision 11 и финальные Google Drive revisions прошли reverse-read. Требуется exact mirror финального documentation tree, повторный Linux/macOS/full/actual-Chrome/package gate, downloaded-artifact inspection и merge PR #49 с expected-head protection.
 
-После принятия C0 разрешён только отдельный C1: pure registry/generation contracts и state machine на sanitized fixtures. Exact-source reopening, actual migration, production write, model calls и реальные личные данные остаются запрещены.
+После merge разрешён только отдельный C1 на sanitized fixtures. Exact-source reopening, actual migration, production write, model calls и реальные личные данные остаются запрещены.
