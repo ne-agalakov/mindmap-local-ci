@@ -24,24 +24,25 @@ require_text "start-mindmap.command" "MindMap v${release_label}"
 require_text "README.md" "# MindMap Local v${release_label}"
 require_text "README.md" "Phase 2C-B1a — accepted"
 require_text "README.md" "Phase 2C-B1b — accepted boundary"
-require_text "README.md" "Reviewed C0 gate"
-require_text "project-docs/PROJECT_STATUS.md" "Reviewed C0 gate"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "C0 reviewed gate"
-require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Reviewed C0 gate"
-require_text "project-docs/GITHUB_PROVENANCE.md" "Reviewed C0 exact-tree gate"
-require_text "project-docs/evidence/PHASE2CC_C0_STATUS.md" "reviewed gate passed"
-require_text "docs/architecture/WORK_STOP.md" "Work boundary during Phase 2C-C0 design"
-require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps during Phase 2C-C0"
-require_text "docs/architecture/DECISION_LOG.md" "ADR-014 — Immutable generations and atomic activation registry"
-require_text "docs/architecture/DECISION_LOG.md" "ADR-015 — Source artifact provenance must identify the actual checkout"
-require_text "docs/architecture/DECISION_LOG.md" "ADR-016 — Exporter artifact provenance follows the same checkout rule"
+require_text "README.md" "Phase 2C-C0 — accepted"
+require_text "README.md" "Phase 2C-C1 — allowed boundary"
+require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-C0 — принята"
+require_text "project-docs/PROJECT_INSTRUCTION.md" "Phase 2C-C1 — разрешённая граница"
+require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Phase 2C-C0 — accepted recovery architecture"
+require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-C0 accepted provenance"
+require_text "project-docs/evidence/PHASE2CC_C0_STATUS.md" "Status: accepted"
+require_text "project-docs/evidence/PHASE2CC_C0_ACCEPTANCE.md" "31657e218cd5891e9e915f698febf8ac72942ed3"
+require_text "docs/architecture/WORK_STOP.md" "Work boundary after Phase 2C-C0 acceptance"
+require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps after Phase 2C-C0 acceptance"
+require_text "docs/architecture/DECISION_LOG.md" "ADR-017 — Accept C0 only from factual merge identity"
 require_text "project-docs/evidence/PHASE2CB_B1B_ACCEPTANCE.md" "6319ee79284b0ca1afc5fe93d53ef37b4a9c5f85c0c9634976afa1a4979f5689"
 require_text "project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md" "mindmap-state-core-control-v1"
 require_text "project-docs/evidence/PHASE2CC_C0_CONTRACT.md" "execution prohibited"
 require_text "project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md" "zero automatic retry"
 require_text "project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md" "C3 — sanitized runtime resolver integration"
-require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-final-gate-passed-merge-pending"
-require_text "ARTIFACT_REVISION.json" "c09d95579292970a851cf0c1a43abce13a800d3a"
+require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-accepted-c1-only"
+require_text "ARTIFACT_REVISION.json" "31657e218cd5891e9e915f698febf8ac72942ed3"
+require_text "ARTIFACT_REVISION.json" "a8523316e16273f633fac8caac95e96a5fec1080"
 require_text "ARTIFACT_REVISION.json" "mindmap-state-core-v1-generation-"
 
 instruction_length="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; process.stdout.write(String(Array.from(readFileSync("project-docs/PROJECT_INSTRUCTION.md", "utf8")).length))')"
@@ -69,13 +70,13 @@ try {
 }
 
 const expectedRevisions = {
-  instruction: "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
-  status: "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
-  recovery: "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
+  instruction: "AIroW35OjMtTyfnm5LU17ZlydzD_h22m0llDyXiCAgoj37sdxwIAS1Tlv7DA4AOmnrbtFLyTPmrst0KL9YVj9lWW_stFBgSES-F9yo2f_cA",
+  status: "AIroW34GQdFUh8mkRAY2DgpG_71_WpS6qX-fsXKDLlLiEaj5E-yIzDkmhkSRlaSImJJyuLHbSRiDsHV14J_8WVxRNzjwu2Hl8jqPpUvJuqA",
+  recovery: "AIroW36j3OBZcn7wI6LhqlqOLAUvQFGIZMQaEBcHqw9aUUmJK6pOx4JrReih9jb5lhWs1izG5xvhnYsfM5oIZORcHhxAEq1AJIrjm5Kif3U",
 };
 
 if (drive.version !== expectedVersion) fail("Drive version mismatch.");
-if (drive.artifactRevision !== 11) fail("Drive artifact revision is not 11.");
+if (drive.artifactRevision !== 12) fail("Drive artifact revision is not 12.");
 if (drive.syncStatus !== "synced_native_google_docs_verified") fail("Drive sync is not verified.");
 if (drive.readBackAt !== drive.syncedAt) fail("Drive readback time mismatch.");
 
@@ -97,8 +98,10 @@ if (
   || audit.phase2CC0Allowed !== true
   || audit.phase2CC0DesignImplemented !== true
   || audit.phase2CC0ReviewedGatePassed !== true
-  || audit.phase2CC0Accepted !== false
-  || audit.phase2CC1Allowed !== false
+  || audit.phase2CC0Accepted !== true
+  || audit.phase2CC0MergeCommit !== "31657e218cd5891e9e915f698febf8ac72942ed3"
+  || audit.phase2CC1Allowed !== true
+  || audit.phase2CC1Implemented !== false
   || audit.actualMigrationAllowed !== false
   || audit.exactSourceOpenedDuringPhase2CC0 !== false
   || audit.backupCreatedDuringPhase2CC0 !== false
@@ -110,14 +113,14 @@ if (
   || audit.automaticRetryAllowedDuringPhase2CC0 !== false
   || audit.controlRegistryName !== "mindmap-state-core-control-v1"
   || audit.generationPrefix !== "mindmap-state-core-v1-generation-"
-  || audit.reviewedSharedTree !== "c09d95579292970a851cf0c1a43abce13a800d3a"
-) fail("DRIVE_SYNC.json does not preserve reviewed C0 boundary.");
+  || audit.finalSharedTree !== "a8523316e16273f633fac8caac95e96a5fec1080"
+) fail("DRIVE_SYNC.json does not preserve accepted C0 / C1-only boundary.");
 
 const expectedDriveStatus = `synced_native_google_docs_verified_${drive.syncedAt}`;
 if (
   artifact.appVersion !== expectedVersion
-  || artifact.artifactRevision !== 11
-  || artifact.status !== "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-final-gate-passed-merge-pending"
+  || artifact.artifactRevision !== 12
+  || artifact.status !== "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-accepted-c1-only"
   || artifact.driveSyncStatus !== expectedDriveStatus
   || artifact.repository !== "resolved-from-actual-checkout-at-package-time"
   || artifact.repositoryCommit !== "resolved-at-build-or-package-time"
@@ -128,8 +131,10 @@ if (
   || artifact.phase2CC0Allowed !== true
   || artifact.phase2CC0DesignImplemented !== true
   || artifact.phase2CC0ReviewedGatePassed !== true
-  || artifact.phase2CC0Accepted !== false
-  || artifact.phase2CC1Allowed !== false
+  || artifact.phase2CC0Accepted !== true
+  || artifact.phase2CC0MergeCommit !== "31657e218cd5891e9e915f698febf8ac72942ed3"
+  || artifact.phase2CC1Allowed !== true
+  || artifact.phase2CC1Implemented !== false
   || artifact.actualMigrationAllowed !== false
   || artifact.phase2CC0ExactSourceOpened !== false
   || artifact.phase2CC0BackupCreated !== false
@@ -141,11 +146,11 @@ if (
   || artifact.phase2CC0AutomaticRetryAllowed !== false
   || artifact.phase2CC0ControlRegistryName !== "mindmap-state-core-control-v1"
   || artifact.phase2CC0GenerationPrefix !== "mindmap-state-core-v1-generation-"
-  || artifact.phase2CC0ReviewedSharedTree !== "c09d95579292970a851cf0c1a43abce13a800d3a"
+  || artifact.phase2CC0FinalSharedTree !== "a8523316e16273f633fac8caac95e96a5fec1080"
   || artifact.driveRevisions?.instruction !== expectedRevisions.instruction
   || artifact.driveRevisions?.status !== expectedRevisions.status
   || artifact.driveRevisions?.recovery !== expectedRevisions.recovery
-) fail("ARTIFACT_REVISION.json does not preserve reviewed C0 provenance.");
+) fail("ARTIFACT_REVISION.json does not preserve accepted C0 provenance.");
 NODE
 
-echo "Release documentation gate passed for ${package_version}: reviewed C0 gate synchronized; actual migration blocked."
+echo "Release documentation gate passed for ${package_version}: C0 accepted; only C1 pure contracts allowed; actual migration blocked."

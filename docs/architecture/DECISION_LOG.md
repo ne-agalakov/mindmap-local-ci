@@ -120,3 +120,15 @@ Date: 2026-07-29.
 Decision: the compact legacy-exporter packager must also derive or explicitly receive the repository identity of the actual checkout and regression-test it. The second C0 artifact review proved that `EXPORTER_REVISION.json` still paired the private repository with a public-mirror commit after the generic source package was corrected.
 
 Consequence: both source and exporter packages are rejected unless repository and commit identify the same checkout. The B1b package already follows this rule.
+
+## ADR-017 — Accept C0 only from factual merge identity
+
+Date: 2026-07-29.
+
+Decision: accept Phase 2C-C0 only as squash merge `31657e218cd5891e9e915f698febf8ac72942ed3`, built from private head `af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5`, public counterpart `9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6` and shared tree `a8523316e16273f633fac8caac95e96a5fec1080`.
+
+The canonical Drive documents had prematurely recorded unverified identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4`. GitHub API verification proved it was not the accepted merge. Those tail blocks were replaced and reverse-read after the factual merge.
+
+Consequence: post-merge documentation may record a merge SHA only after the PR API returns `merged=true` and the returned merge commit is read back. A predicted, cached, PR-body or assistant-stated identity is not evidence.
+
+C0 acceptance authorizes only C1 pure contracts/state machine on sanitized fixtures. Exact-source reopening, native persistence, backup/registry/generation creation, actual migration, network/model calls and personal data remain prohibited.

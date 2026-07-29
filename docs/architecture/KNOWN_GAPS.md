@@ -1,6 +1,6 @@
-# Known gaps during Phase 2C-C0
+# Known gaps after Phase 2C-C0 acceptance
 
-B1b exact-source read-only dry run is accepted. It proved deterministic temporary-target behavior, not production migration or product semantics.
+B1b exact-source read-only dry run and C0 architecture/release gate are accepted. They do not prove production migration or product semantics.
 
 ## Closed
 
@@ -9,26 +9,31 @@ B1b exact-source read-only dry run is accepted. It proved deterministic temporar
 - one unresolved and zero damaged references;
 - deterministic exact-source portable-plan and target-snapshot equality;
 - exact-source injected rollback and temporary-target cleanup;
-- zero network/model calls and no actual migration;
-- B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b` and post-merge docs;
-- C0 architectural choice: immutable generation plus atomic control-registry pointer;
-- documented failure matrix and staged C1–C4 plan;
-- artifact revision 10 and exact Google Drive revisions/readback synchronized;
-- release documentation gate advanced from B1a-only state to accepted B1b / active C0;
-- generic source package repository/commit provenance fixed and regression-tested;
-- compact exporter repository/commit provenance fixed and regression-tested.
+- zero network/model calls and no actual migration during B1b;
+- B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
+- C0 immutable-generation plus atomic control-registry architecture;
+- C0 migration/activation, failure/recovery and staged C1–C4 contracts;
+- source and exporter checkout-provenance regressions;
+- final private/public tree `a8523316e16273f633fac8caac95e96a5fec1080`;
+- final current-head Linux/macOS/full/actual-Chrome/package gates;
+- downloaded source/exporter/B1b/browser artifact inspection;
+- C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3`;
+- corrected canonical Drive post-merge readback;
+- removal of false unverified merge identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4` from current documents.
 
-## Still open before C0 acceptance
+## Open in C1
 
-- final private/public exact Git-tree equality after all provenance fixes;
-- final Linux/macOS/full/actual-Chrome/package gates on that exact tree;
-- downloaded source/exporter/B1b artifact inspection on the final tree;
-- final acceptance documentation with exact heads, tree, runs and hashes;
-- C0 merge provenance.
+- pure immutable registry/generation/authorization manifest types;
+- closed attempt states and transition table;
+- typed commands, events, stops and rejections;
+- expected registry revision and previous-pointer guards;
+- deterministic replay, canonical hashes and idempotency;
+- explicit recovery states without automatic resume/retry;
+- sanitized fixture coverage for every allowed/rejected transition;
+- structural proof of zero browser/filesystem/network/model/exact-source dependencies.
 
-## Still open after C0
+## Still open after C1
 
-- C1 pure registry/generation contracts and attempt state machine;
 - C2 native IndexedDB registry, seal, promotion, rollback and crash/reload proof;
 - C3 packaged runtime resolver and blocked recovery states on sanitized fixtures;
 - private immutable backup filesystem behavior;
@@ -40,4 +45,4 @@ B1b exact-source read-only dry run is accepted. It proved deterministic temporar
 
 ## Prohibited boundary
 
-Exact source reopening, another B1b attempt, backup/registry/generation creation, actual migration, model calls and real thoughts remain prohibited until their separate gates.
+Exact source reopening, another B1b attempt, backup/registry/generation creation, native persistence before C2, actual migration, model/network calls and real thoughts remain prohibited until their separate gates.
