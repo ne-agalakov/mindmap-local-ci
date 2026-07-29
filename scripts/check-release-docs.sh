@@ -24,11 +24,12 @@ require_text "start-mindmap.command" "MindMap v${release_label}"
 require_text "README.md" "# MindMap Local v${release_label}"
 require_text "README.md" "Phase 2C-B1a — accepted"
 require_text "README.md" "Phase 2C-B1b — accepted boundary"
-require_text "README.md" "Phase 2C-C0 — active design gate"
-require_text "project-docs/PROJECT_STATUS.md" "Phase 2C-C0 — активный design gate"
-require_text "project-docs/PROJECT_INSTRUCTION.md" "Активный этап — Phase 2C-C0"
-require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Phase 2C-C0 — immutable-generation recovery architecture"
-require_text "project-docs/GITHUB_PROVENANCE.md" "Phase 2C-C0 provenance rule"
+require_text "README.md" "Reviewed C0 gate"
+require_text "project-docs/PROJECT_STATUS.md" "Reviewed C0 gate"
+require_text "project-docs/PROJECT_INSTRUCTION.md" "C0 reviewed gate"
+require_text "project-docs/RECOVERY_AND_MODEL_BUDGET.md" "Reviewed C0 gate"
+require_text "project-docs/GITHUB_PROVENANCE.md" "Reviewed C0 exact-tree gate"
+require_text "project-docs/evidence/PHASE2CC_C0_STATUS.md" "reviewed gate passed"
 require_text "docs/architecture/WORK_STOP.md" "Work boundary during Phase 2C-C0 design"
 require_text "docs/architecture/KNOWN_GAPS.md" "Known gaps during Phase 2C-C0"
 require_text "docs/architecture/DECISION_LOG.md" "ADR-014 — Immutable generations and atomic activation registry"
@@ -39,8 +40,8 @@ require_text "project-docs/architecture/ADR-0002_PHASE2CC_GENERATION_REGISTRY.md
 require_text "project-docs/evidence/PHASE2CC_C0_CONTRACT.md" "execution prohibited"
 require_text "project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md" "zero automatic retry"
 require_text "project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md" "C3 — sanitized runtime resolver integration"
-require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-design-active"
-require_text "ARTIFACT_REVISION.json" "4fd14e515d2c4234f70effa475381f47bbb50e8b"
+require_text "ARTIFACT_REVISION.json" "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-final-gate-passed-merge-pending"
+require_text "ARTIFACT_REVISION.json" "c09d95579292970a851cf0c1a43abce13a800d3a"
 require_text "ARTIFACT_REVISION.json" "mindmap-state-core-v1-generation-"
 
 instruction_length="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; process.stdout.write(String(Array.from(readFileSync("project-docs/PROJECT_INSTRUCTION.md", "utf8")).length))')"
@@ -68,13 +69,13 @@ try {
 }
 
 const expectedRevisions = {
-  instruction: "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
-  status: "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
-  recovery: "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
+  instruction: "AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw",
+  status: "AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U",
+  recovery: "AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc",
 };
 
 if (drive.version !== expectedVersion) fail("Drive version mismatch.");
-if (drive.artifactRevision !== 10) fail("Drive artifact revision is not 10.");
+if (drive.artifactRevision !== 11) fail("Drive artifact revision is not 11.");
 if (drive.syncStatus !== "synced_native_google_docs_verified") fail("Drive sync is not verified.");
 if (drive.readBackAt !== drive.syncedAt) fail("Drive readback time mismatch.");
 
@@ -93,9 +94,9 @@ const audit = drive.architectureAudit ?? {};
 if (
   audit.phase2CB1bAccepted !== true
   || audit.phase2CB1bAttemptConsumed !== true
-  || audit.phase2CB1bMergeCommit !== "4fd14e515d2c4234f70effa475381f47bbb50e8b"
   || audit.phase2CC0Allowed !== true
   || audit.phase2CC0DesignImplemented !== true
+  || audit.phase2CC0ReviewedGatePassed !== true
   || audit.phase2CC0Accepted !== false
   || audit.phase2CC1Allowed !== false
   || audit.actualMigrationAllowed !== false
@@ -109,23 +110,24 @@ if (
   || audit.automaticRetryAllowedDuringPhase2CC0 !== false
   || audit.controlRegistryName !== "mindmap-state-core-control-v1"
   || audit.generationPrefix !== "mindmap-state-core-v1-generation-"
-) fail("DRIVE_SYNC.json does not preserve accepted B1b / C0-design-only boundary.");
+  || audit.reviewedSharedTree !== "c09d95579292970a851cf0c1a43abce13a800d3a"
+) fail("DRIVE_SYNC.json does not preserve reviewed C0 boundary.");
 
 const expectedDriveStatus = `synced_native_google_docs_verified_${drive.syncedAt}`;
 if (
   artifact.appVersion !== expectedVersion
-  || artifact.artifactRevision !== 10
-  || artifact.status !== "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-design-active"
+  || artifact.artifactRevision !== 11
+  || artifact.status !== "frozen-legacy-runtime-b1b-accepted-phase2cc-c0-final-gate-passed-merge-pending"
   || artifact.driveSyncStatus !== expectedDriveStatus
   || artifact.repository !== "resolved-from-actual-checkout-at-package-time"
   || artifact.repositoryCommit !== "resolved-at-build-or-package-time"
   || artifact.phase2CB1bAccepted !== true
   || artifact.phase2CB1bAttemptConsumed !== true
-  || artifact.phase2CB1bMergeCommit !== "4fd14e515d2c4234f70effa475381f47bbb50e8b"
   || artifact.phase2CB1bActualMigrationPerformed !== false
   || artifact.phase2CB1bAutomaticRetryAllowed !== false
   || artifact.phase2CC0Allowed !== true
   || artifact.phase2CC0DesignImplemented !== true
+  || artifact.phase2CC0ReviewedGatePassed !== true
   || artifact.phase2CC0Accepted !== false
   || artifact.phase2CC1Allowed !== false
   || artifact.actualMigrationAllowed !== false
@@ -139,10 +141,11 @@ if (
   || artifact.phase2CC0AutomaticRetryAllowed !== false
   || artifact.phase2CC0ControlRegistryName !== "mindmap-state-core-control-v1"
   || artifact.phase2CC0GenerationPrefix !== "mindmap-state-core-v1-generation-"
+  || artifact.phase2CC0ReviewedSharedTree !== "c09d95579292970a851cf0c1a43abce13a800d3a"
   || artifact.driveRevisions?.instruction !== expectedRevisions.instruction
   || artifact.driveRevisions?.status !== expectedRevisions.status
   || artifact.driveRevisions?.recovery !== expectedRevisions.recovery
-) fail("ARTIFACT_REVISION.json does not preserve accepted B1b / C0-design-only provenance.");
+) fail("ARTIFACT_REVISION.json does not preserve reviewed C0 provenance.");
 NODE
 
-echo "Release documentation gate passed for ${package_version}: B1b accepted and consumed; Phase 2C-C0 design active; actual migration blocked."
+echo "Release documentation gate passed for ${package_version}: reviewed C0 gate synchronized; actual migration blocked."
