@@ -40,7 +40,13 @@
       "revisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
       "driveRevisionId": "AIroW36ZcWf_JfFt7lK5XDAm_EdJkxW3yXl7wQnfTToXePFL68CY6a_X3hKsPoNG0TgPjKbmlzRIZvvBQMFpJgOW19KCPufzQS_DfhD68hU",
       "status": "verified",
-      "verifiedMarkers": ["PHASE2CC-C0-GENERATION-REGISTRY","mindmap-state-core-control-v1","mindmap-state-core-v1-generation-","actual migration","network/model calls = 0"]
+      "verifiedMarkers": [
+        "PHASE2CC-C0-GENERATION-REGISTRY",
+        "mindmap-state-core-control-v1",
+        "mindmap-state-core-v1-generation-",
+        "actual migration",
+        "network/model calls = 0"
+      ]
     },
     {
       "name": "MindMap — решения и статус.md",
@@ -48,7 +54,13 @@
       "revisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
       "driveRevisionId": "AIroW34l1sBtHBG5ZUYUU2SwNRaYFkstTjjtij-ToqQygfDwhmKl9ToxveQyp_2jXaa3thobaQFYELKCMNlYg7bOeMf852cnLvyDRZ-QmaA",
       "status": "verified",
-      "verifiedMarkers": ["PHASE2CC-C0-STATUS-GENERATION-REGISTRY","immutable generation","activation receipt","C0 boundary","Actual migration остаётся запрещённой"]
+      "verifiedMarkers": [
+        "PHASE2CC-C0-STATUS-GENERATION-REGISTRY",
+        "immutable generation",
+        "activation receipt",
+        "C0 boundary",
+        "Actual migration остаётся запрещённой"
+      ]
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
@@ -56,7 +68,13 @@
       "revisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
       "driveRevisionId": "AIroW37oAXT98v14qVvTmdfUH492jkIdla-LdeGCrmHK4Q0P7KGX3FnpZBfRVeWF2VSegDdqdnZf0kUitkbRev0IbdjUHAM-KWMSKhjfr5Y",
       "status": "verified",
-      "verifiedMarkers": ["PHASE2CC-C0-RECOVERY-GENERATION-REGISTRY","private immutable backup","blocked state","rollback transaction","model/network calls = 0"]
+      "verifiedMarkers": [
+        "PHASE2CC-C0-RECOVERY-GENERATION-REGISTRY",
+        "private immutable backup",
+        "blocked state",
+        "rollback transaction",
+        "model/network calls = 0"
+      ]
     }
   ],
   "architectureAudit": {
