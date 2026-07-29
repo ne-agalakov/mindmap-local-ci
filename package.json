@@ -34,7 +34,8 @@
     "test:phase2cb-b1b": "node --experimental-strip-types --test tests/phase2cb-b1b-executor.test.mjs tests/phase2cb-b1b-exact-source.test.mjs tests/phase2cb-b1b-one-shot.test.mjs tests/phase2cb-b1b-packaging.test.mjs",
     "build:phase2cb-b1b-harness": "vite build --config tools/browser-phase2cb-b1b-harness/vite.config.mjs",
     "test:browser-phase2cb-b1b": "node scripts/run-browser-phase2cb-b1b-harness.mjs",
-    "package:phase2cb-b1b": "bash scripts/package-phase2cb-b1b.sh"
+    "package:phase2cb-b1b": "bash scripts/package-phase2cb-b1b.sh",
+    "test:phase2cc-c1": "node --experimental-strip-types --test tests/generation-core-phase2cc-c1-*.test.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
