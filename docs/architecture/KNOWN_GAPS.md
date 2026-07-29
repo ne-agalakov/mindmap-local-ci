@@ -12,15 +12,18 @@ B1b exact-source read-only dry run is accepted. It proved deterministic temporar
 - zero network/model calls and no actual migration;
 - B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b` and post-merge docs;
 - C0 architectural choice: immutable generation plus atomic control-registry pointer;
-- documented failure matrix and staged C1–C4 plan.
+- documented failure matrix and staged C1–C4 plan;
+- artifact revision 10 and exact Google Drive revisions/readback synchronized;
+- release documentation gate advanced from B1a-only state to accepted B1b / active C0;
+- generic source package repository/commit provenance fixed and regression-tested;
+- compact exporter repository/commit provenance fixed and regression-tested.
 
 ## Still open before C0 acceptance
 
-- generic source package repository/commit provenance is inconsistent in public-mirror builds;
-- ARTIFACT_REVISION and DRIVE_SYNC still describe the old B1a/B1b-blocked boundary;
-- release gate still enforces obsolete B1a-only markers;
-- final C0 private/public exact-tree equality after those fixes;
-- final C0 CI and downloaded-artifact inspection;
+- final private/public exact Git-tree equality after all provenance fixes;
+- final Linux/macOS/full/actual-Chrome/package gates on that exact tree;
+- downloaded source/exporter/B1b artifact inspection on the final tree;
+- final acceptance documentation with exact heads, tree, runs and hashes;
 - C0 merge provenance.
 
 ## Still open after C0
