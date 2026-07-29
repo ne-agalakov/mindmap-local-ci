@@ -15,7 +15,8 @@ Accepted foundations:
 - Phase 2C-A graph/payload storage — `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0 deterministic mapping/typed-stop contract — `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
 - Phase 2C-B1a sanitized executor/rollback harness — `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
-- Phase 2C-B1b exact-source read-only dry run — accepted and merged as `4fd14e515d2c4234f70effa475381f47bbb50e8b`.
+- Phase 2C-B1b exact-source read-only dry run — `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
+- Phase 2C-C0 actual-migration architecture/release gate — `31657e218cd5891e9e915f698febf8ac72942ed3`.
 
 ## Phase 2C-B1a — accepted
 
@@ -33,11 +34,9 @@ The one authorized exact-source B1b read-only dry run was executed once and is c
 - network/model calls were zero;
 - actual migration did not occur.
 
-## Phase 2C-C0 — active design gate
+## Phase 2C-C0 — accepted
 
-Issue #48 / PR #49 define actual-migration architecture without execution.
-
-ADR-0002 selects:
+C0 fixes the architecture and release boundary without executing migration:
 
 ```text
 control registry:  mindmap-state-core-control-v1
@@ -46,10 +45,30 @@ generation prefix: mindmap-state-core-v1-generation-
 
 A verified and sealed immutable generation becomes active only through one atomic control-registry pointer transaction. Rollback restores the previous pointer through an explicit transaction and never edits payload. Runtime resolver integration on sanitized fixtures must pass before exact-source execution.
 
-Safe sequence:
+Final accepted identity:
 
 ```text
-C0 architecture and failure matrix
+private head: af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5
+public head:  9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6
+shared tree:  a8523316e16273f633fac8caac95e96a5fec1080
+verify:       30425727226
+package:      30425727235
+merge:        31657e218cd5891e9e915f698febf8ac72942ed3
+```
+
+The current-head Linux/macOS/full/actual-Chrome/package gates passed twice. Downloaded source, exporter, B1b and browser-proof artifacts passed portable checksums, actual-checkout provenance, executable-mode and privacy review.
+
+Three release defects were proved and regression-tested before merge: a weakened historical README marker, incorrect source-package repository/commit provenance and the same independent exporter-package defect.
+
+A documentation error that had recorded unverified merge identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4` was removed from canonical Drive documents after GitHub API verification. It is not an accepted project commit.
+
+## Phase 2C-C1 — allowed boundary
+
+Only C1 pure registry/generation contracts and attempt state machine on sanitized fixtures are allowed now. C1 must not depend on IndexedDB, browser, filesystem, exact SQLite, backup files, network, model services, clocks or randomness.
+
+Safe sequence remains:
+
+```text
 C1 pure registry/generation contracts
 C2 native IndexedDB promotion/rollback/crash proof
 C3 packaged runtime resolver on sanitized fixtures
@@ -58,35 +77,17 @@ new explicit user confirmation
 actual migration and activation
 ```
 
-## Reviewed C0 gate
-
-```text
-private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
-public head:  189e86ae8a92912d399196bed15d8ece849a58e9
-shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
-verify:       30424595380
-package:      30424595384
-```
-
-Linux/macOS/full/actual-Chrome/package gates passed. Downloaded source, exporter and B1b packages passed portable checksums, actual-checkout repository/commit provenance, launcher-mode and privacy review.
-
-Three release-gate defects were found and fixed before acceptance: a weakened historical README marker, source-package repository/commit mismatch and exporter-package repository/commit mismatch. Each is now regression-tested.
-
 ## Preserved boundary
 
 Still prohibited:
 
 - reopening the exact SQLite or repeating B1b;
 - creating the real backup, registry or production generation;
-- actual target-Mac migration or promotion;
+- actual target-Mac migration, promotion or rollback;
 - source write, repair, replacement or deletion;
 - automatic retry after failure, reload or version change;
-- model execution;
+- model execution or external network calls;
 - semantic-quality claims and real personal thoughts.
-
-## Current verified step
-
-Artifact revision 11 and final Google Drive readback are synchronized. Mirror and verify the final documentation tree, inspect its downloaded artifact, then merge PR #49. After merge, only C1 pure contracts on sanitized fixtures are allowed.
 
 See:
 
@@ -94,4 +95,4 @@ See:
 - `project-docs/evidence/PHASE2CC_C0_CONTRACT.md`;
 - `project-docs/evidence/PHASE2CC_C0_FAILURE_MATRIX.md`;
 - `project-docs/evidence/PHASE2CC_C0_IMPLEMENTATION_PLAN.md`;
-- `project-docs/evidence/PHASE2CC_C0_STATUS.md`.
+- `project-docs/evidence/PHASE2CC_C0_ACCEPTANCE.md`.
