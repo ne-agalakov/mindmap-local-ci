@@ -19,7 +19,7 @@ A green workflow is necessary but insufficient. Before merge or handoff, the exa
 - documentation examples of hashes or paths are distinguished from actual private files;
 - any failure blocks merge and requires a regression scenario.
 
-This invariant originated after a green artifact contained an absolute runner path. A later B1b package regression additionally proved that repository/commit provenance must be internally consistent in public-mirror builds.
+This invariant originated after a green artifact contained an absolute runner path. Later B1b/C0 reviews proved that repository/commit provenance must also be internally consistent in public-mirror builds for every packaged artifact.
 
 ## Accepted technical foundations
 
@@ -84,7 +84,9 @@ Public exact-tree branch: `phase2cc-c0-design-exact`, PR #12.
 
 The first C0 public CI run was rejected because README removed the exact accepted B1a release-gate heading. Root cause: documentation simplification weakened a machine-checked historical invariant. The heading was restored; no runtime or migration code was involved.
 
-C0 also found a real provenance defect in the generic source packager: it always embedded the private repository name, even when a history-free public mirror commit produced the artifact. C0 must fix the packager and its regression test so repository and commit always identify the same checkout before the C0 tree can be accepted.
+The next C0 artifact review found that the generic source packager always embedded the private repository name even when a public-mirror commit produced the archive. After that fix, the following downloaded artifact proved the compact legacy exporter had the same independent defect in `EXPORTER_REVISION.json`. Both packagers now derive or explicitly receive the actual checkout repository, and both have regressions covering repository/commit consistency.
+
+Green CI before these fixes was historical evidence only; it did not make the metadata truthful.
 
 ## C0 architecture boundary
 
@@ -110,7 +112,7 @@ Canonical Google Docs were updated under revision guards and reverse-read:
 C0 is not accepted until:
 
 - repository release metadata and Drive revisions are synchronized;
-- source-packager provenance is corrected and regression-tested;
+- source and exporter packager provenance are corrected and regression-tested;
 - private/public exact tree equality is re-established;
 - final Linux/macOS/full/actual-Chrome/package gates pass;
 - the exact downloaded artifact is inspected outside the runner;
