@@ -12,11 +12,11 @@ MindMap — local-first AI-система: мысль → понимание →
 
 Alpha.19 заморожена как legacy research runtime; реальные мысли в неё не загружать.
 
-Приняты Phase 0, 1A, 2A, 2B, 2C-A, B0, B1a, B1b и C0. B1b exact-source one-shot выполнен и израсходован; exact SQLite сохраняется неизменным и повторно не открывается.
+Приняты Phase 0, 1A, 2A, 2B, 2C-A, B0, B1a, B1b, C0 и C1. B1b exact-source one-shot выполнен и израсходован; exact SQLite сохраняется неизменным и повторно не открывается.
 
 C0 merge: `31657e218cd5891e9e915f698febf8ac72942ed3`. Архитектура actual migration: immutable generation database с prefix `mindmap-state-core-v1-generation-` и atomic active pointer в registry `mindmap-state-core-control-v1`. Rollback меняет pointer и не редактирует payload.
 
-C1 pure contracts/state machine реализованы на head `ac639e625b6d0ced665c748c2c58f6b3753c4ffc` и exact public head `0eeb9fea5792b7fbf33db0061abc2f271db3b17f`, tree `2a536a54779634647eff8ebf2476840c257b2813`. CI прошёл, но C1 ещё не принята до final documentation tree и factual merge PR #52.
+C1 merge: `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`. C1 принята как pure deterministic contracts/state machine на sanitized fixtures. Она не открывала source/backup, не использовала IndexedDB/browser/filesystem/network/model paths и не выполняла migration.
 
 ## Модель данных
 
@@ -34,8 +34,8 @@ Legacy source остаётся private, immutable и read-only. Диагност
 
 Безопасный порядок:
 
-1. C1 — pure contracts/state machine.
-2. C2 — native IndexedDB registry/promotion/rollback/crash proof.
+1. C1 — pure contracts/state machine — принята.
+2. C2 — native IndexedDB registry/promotion/rollback/crash proof на sanitized fixtures.
 3. C3 — packaged runtime resolver на sanitized fixtures.
 4. C4 — отдельный exact-source one-shot package.
 5. Новое явное подтверждение Артёма непосредственно перед запуском.
@@ -43,22 +43,26 @@ Legacy source остаётся private, immutable и read-only. Диагност
 
 Actual execution требует authorization, привязанной к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID. Она расходуется до source open. Failure запрещает retry; сначала offline root-cause proof, regression и новый package gate.
 
-## Phase 2C-C1
+## Phase 2C-C2 — разрешённая граница
 
-C1 содержит только pure TypeScript contracts и sanitized fixtures. Запрещены зависимости от IndexedDB, browser APIs, filesystem, exact SQLite, backup files, network, model services, wall clock и randomness.
+C2 реализует native IndexedDB adapter для принятых C1 contracts только на sanitized fixtures. Разрешены:
 
-C1 фиксирует:
+- isolated test control registry и generation namespaces;
+- transactional seal, promotion receipt и rollback receipt;
+- expected revision/previous-pointer guards;
+- reopen, crash, reload и interruption simulations;
+- persisted blocked recovery без автоматического resume/retry;
+- actual Chrome proof и sanitized diagnostics.
 
-- immutable manifest/authorization/generation/registry identities;
-- closed attempt states and transitions;
-- typed commands, events, stops and rejections;
-- expected registry revision и previous-pointer guards;
-- deterministic replay, canonical hashing и idempotency;
-- terminal blocked recovery без автоматического resume/retry;
-- pure promotion/rollback plans без выполнения storage writes;
-- sanitized evidence и structural dependency gate.
+C2 запрещено:
 
-C1 не доказывает native persistence, crash behavior, packaged resolver или actual migration. Это отдельные C2–C4.
+- открывать exact SQLite или private backup;
+- создавать production namespace на target Mac;
+- ослаблять C1 identities/transitions/retry policy;
+- выполнять actual migration или production promotion;
+- использовать network/model services или personal data.
+
+C2 не доказывает packaged runtime resolver или exact-source migration. Это отдельные C3–C4.
 
 ## REQ-OBS-001
 
@@ -76,6 +80,6 @@ Merge SHA записывается только после фактическо�
 
 ## Текущая стоп-линия
 
-Разрешены только финальная синхронизация C1 docs/release metadata, exact-tree CI/artifact review и merge PR #52.
+Разрешён только C2 native IndexedDB proof на sanitized fixtures и его документационный/CI/artifact gate.
 
-Запрещены: C2 implementation до принятия C1; B1b retry; exact SQLite/backup access; real registry/generation creation; actual migration/promotion/rollback; model/network calls; personal data.
+Запрещены: B1b retry; exact SQLite/backup access; production namespace; C3–C4; actual migration/promotion/rollback; model/network calls; personal data.

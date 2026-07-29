@@ -28,16 +28,9 @@ generation prefix: mindmap-state-core-v1-generation-
 
 Generation inactive до import, close/reopen, exact verification и seal. Promotion — одна registry transaction с expected revision и activation receipt. Abort сохраняет прежний pointer. Rollback — отдельная явная pointer transaction; payload не мутируется. Hidden fallback запрещён.
 
-## C1 recovery contract
+## Accepted C1 recovery contract
 
-C1 pure implementation доказана на sanitized fixtures:
-
-```text
-private head: ac639e625b6d0ced665c748c2c58f6b3753c4ffc
-public head:  0eeb9fea5792b7fbf33db0061abc2f271db3b17f
-shared tree:  2a536a54779634647eff8ebf2476840c257b2813
-verify/package: 30442139981 / 30442139989
-```
+C1 принята merge-коммитом `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
 - authorization является one-shot и immutable-bound;
 - stale revision, wrong pointer, mismatched generation/hash/receipt отклоняются;
@@ -46,9 +39,21 @@ verify/package: 30442139981 / 30442139989
 - failure после committed promotion переводит attempt в `rollback_required`;
 - rollback plan изменяет только pointer и не мутирует generation payload;
 - deterministic replay и sanitized evidence проверены;
-- browser/IndexedDB/filesystem/network/model/exact-source paths отсутствуют.
+- browser/IndexedDB/filesystem/network/model/exact-source paths отсутствуют в domain core.
 
 No recovery action is required on the target Mac. C1 не открывала source/backup, не создавала registry/generation databases и не выполняла actual migration/promotion/rollback.
+
+## C2 recovery boundary
+
+C2 может использовать только isolated sanitized IndexedDB namespaces. Каждый crash/reload test обязан:
+
+- сохранять явный persisted attempt/checkpoint;
+- не продолжать write автоматически;
+- проверять expected registry revision и active pointer перед mutation;
+- оставлять previous active pointer читаемым;
+- требовать explicit rollback после committed promotion;
+- не удалять sealed/active/previous generation;
+- сохранять network/model counters = 0 и downloadable sanitized diagnostics.
 
 ## REQ-OBS-001
 
@@ -56,6 +61,6 @@ No recovery action is required on the target Mac. C1 не открывала sou
 
 ## Текущая граница
 
-C1 ещё не принята: требуется final documentation exact-tree gate и factual merge PR #52. Native persistence/crash recovery относится к C2; packaged resolver — к C3; exact-source migration — к C4 и будущему явному подтверждению.
+Разрешён только C2 native persistence/crash proof на sanitized fixtures. Packaged resolver относится к C3; exact-source migration — к C4 и будущему явному подтверждению.
 
-Actual migration, C2 implementation, exact-source reopening, model/network calls и personal data пока запрещены.
+Actual migration, exact-source reopening, production namespace, model/network calls и personal data пока запрещены.

@@ -4,17 +4,25 @@
 
 ## Принятые основания
 
-Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b и C0 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
+Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b, C0 и C1 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
 
 B1b one-shot израсходован. Exact source: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`; source unchanged; counts `96/30/0/133/96/3/0`; unresolved 1; damaged references 0; network/model calls 0; actual migration false.
 
 C0 принят merge-коммитом `31657e218cd5891e9e915f698febf8ac72942ed3`. Архитектура: immutable generation databases, registry `mindmap-state-core-control-v1`, prefix `mindmap-state-core-v1-generation-`, atomic pointer promotion и explicit pointer rollback.
 
-## Phase 2C-C1 — реализация проверена
+## Phase 2C-C1 — принята
 
-Issue #51 / PR #52 реализуют pure in-memory generation registry contracts и attempt state machine на sanitized fixtures.
+PR #52 фактически принят squash-merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-Доказано:
+```text
+private head: 6fe3b07c5a2cb0ba8a42528799f74569bbea885a
+public head:  dede561068650d9302c0570c22286f3cc3bb6da2
+shared tree:  9ad59159129eab08e77d4f435f40dd410754a81a
+verify:       30443877441
+package:      30443877425
+```
+
+Доказано на sanitized fixtures:
 
 - immutable manifest привязан к repository/commit/tree/archive/source/backup/registry/generation/authorization identity;
 - closed statuses и typed commands/events/rejections/stops;
@@ -27,30 +35,24 @@ Issue #51 / PR #52 реализуют pure in-memory generation registry contrac
 - sanitized evidence не содержит source bytes, raw thoughts, paths или personal data;
 - structural test исключает browser, IndexedDB, filesystem, network, models, clock, randomness и exact-source dependency.
 
-```text
-private head: ac639e625b6d0ced665c748c2c58f6b3753c4ffc
-public head:  0eeb9fea5792b7fbf33db0061abc2f271db3b17f
-shared tree:  2a536a54779634647eff8ebf2476840c257b2813
-verify:       30442139981
-package:      30442139989
-```
+Все 9 C1 tests и полный Linux/macOS/Chrome/package regression прошли.
 
-Все 9 C1 tests прошли. Private Actions не имели runner capacity и завершились до steps; exact public tree прошёл полный Linux/macOS/Chrome/package gate.
-
-Downloaded proof:
+Downloaded final proof:
 
 ```text
-outer artifact: 48919301a47dd46a93c1daaef89813bada64884d695c830b7d8cd8b54c560fae
-browser proof:  fd77e95f0f9ee15a9e6226018fee2b6b53980d295931b6d27007a1c56ca12167
-source ZIP:     76a769a14310347ba144b7ac71ab05f682384889ce24ca2f9623817333f6bd5a2
-exporter ZIP:   e54b4ab03944d7aca63b310b9595963d9a8b28e1c8ac0618d087b47601d1c723
-B1b ZIP:        346381787d9174a231aa8507f80d567932464ee6a25a0c77f0726932e0412013
+outer artifact: b755aeff6a9181a5f90b29abe0a46f6ef08c06f52dcbec73e271c2e3d1708ee5
+browser proof:  410728655374a7ed9459c94b083bd641a457d462b83f9b41439271d4afc36da6
+source ZIP:     62b2654bed7f04278a873acb8fd6fa0d41d8e205596c7691c9461dd635f465b7
+exporter ZIP:   2d5e758b2990cba96c89bd859bdeeb2bd1a8be1ca5d2c6d4e6a07cf3e132a594
+B1b ZIP:        89419a7a5c8f9b96522ee9225156b938d8e60bfab09ab5453071a67a97a7ed17
 ```
 
 Portable checksums, repository/commit/tree provenance, executable launchers и privacy inventory прошли.
 
-## Граница доказательства
+## Граница доказательства C1
 
-Во время C1 exact SQLite не открывался; B1b не повторялась; backup/registry/generation databases не создавались; IndexedDB/runtime integration отсутствует; actual migration/promotion/rollback не выполнялись; network/model calls и personal data = 0.
+Exact SQLite не открывался; B1b не повторялась; backup/registry/generation databases не создавались; IndexedDB/runtime integration отсутствует; actual migration/promotion/rollback не выполнялись; network/model calls и personal data = 0.
 
-C1 пока не принята. Осталось: repository docs/release metadata → final exact-tree public CI → downloaded-artifact review → factual merge PR #52 → post-merge provenance. C2–C4 и actual migration запрещены.
+## Следующий проверяемый шаг
+
+Разрешён только C2: native IndexedDB registry/seal/promotion/rollback/crash-reload proof на sanitized fixtures. C2 обязан сохранять C1 contracts без ослабления. C3–C4, exact-source reopening, actual migration, production write, model calls и реальные личные данные остаются запрещены.
