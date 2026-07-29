@@ -36,7 +36,7 @@
     "test:browser-phase2cb-b1b": "node scripts/run-browser-phase2cb-b1b-harness.mjs",
     "package:phase2cb-b1b": "bash scripts/package-phase2cb-b1b.sh",
     "test:phase2cc-c1": "node --experimental-strip-types --test tests/generation-core-phase2cc-c1-*.test.mjs",
-    "test:phase2cc-c2": "node --experimental-strip-types --test tests/native-generation-registry-phase2cc-c2.test.mjs",
+    "test:phase2cc-c2": "node --experimental-strip-types --test tests/native-generation-registry-phase2cc-c2*.test.mjs",
     "build:phase2cc-c2-harness": "vite build --config tools/browser-phase2cc-c2-harness/vite.config.mjs",
     "test:browser-phase2cc-c2": "node scripts/run-browser-phase2cc-c2-harness.mjs"
   },
