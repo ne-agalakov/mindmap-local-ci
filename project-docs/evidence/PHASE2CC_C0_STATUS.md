@@ -1,11 +1,12 @@
 # Phase 2C-C0 — current status
 
 Date: 2026-07-29
-Status: reviewed gate passed; final documentation tree rerun and merge pending
+Status: accepted; post-merge documentation closure active
 Issue: #48
 PR: #49
+Merge: `31657e218cd5891e9e915f698febf8ac72942ed3`
 
-## Architecture completed
+## Architecture accepted
 
 - ADR-0002 selects immutable generation databases and a separate atomic activation registry.
 - The migration/activation contract defines source, private backup, generation, registry, sealing, promotion, resolver verification, rollback, evidence and one-shot authorization invariants.
@@ -17,37 +18,40 @@ control registry:  mindmap-state-core-control-v1
 generation prefix: mindmap-state-core-v1-generation-
 ```
 
-## Reviewed exact-tree gate
+## Final exact-tree gate
 
 ```text
-private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
-public head:  189e86ae8a92912d399196bed15d8ece849a58e9
-shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
-verify run:   30424595380
-package run:  30424595384
+private head: af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5
+public head:  9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6
+shared tree:  a8523316e16273f633fac8caac95e96a5fec1080
+verify run:   30425727226
+package run:  30425727235
 ```
+
+Reopening the public PR independently repeated the same current-head gate: verify `30427050113`, package `30427050043` — success.
 
 Linux lint/full suite, macOS launcher/tests, actual Chrome run-storage/graph-storage/B1a/B1b harnesses and source/exporter/B1b packaging passed.
 
 Downloaded review:
 
 ```text
-outer artifact: 6e63c8d4bace4f5350713ca64dc983fde2f81808e64798c1089539a30985c720
-browser proof:  9ec160607e1517f6a27e3c7ed36441dfd1a4ed2a9d4ffb634083d04014d51160
-source ZIP:     7ae424491bdb82c18bb8cf46ebcf09fb2cc9f187870d4454b1c2c2d6e947cdd5
-exporter ZIP:   7ede5c196249dcbb8084856cd62763cf179c1a7600e53e174efca9425fc45a98
-B1b ZIP:        6de9eb5d15fea1c31cc2e99d98d52e734eb20d5a4e28889bb9b7c5575339bd83
+outer artifact: f2de7f3961c5b720a35e2cbc8987e3a5216304bf8bc8513432c4d8ddb800ff1f
+browser proof:  1e0c1aa3f2fd5004699ce6162b20f19e99933ed574ea1e142b7265d9507e1d45
+source ZIP:     636c80a35b04f3ab7b7995c2d0cbd7cb804098b69ce67bcd3b6d1031a3099f0f
+exporter ZIP:   41c693e46916d9f41d76a2efc615a37a831c39e571fc9152b43e61c3cfce7104
+B1b ZIP:        24af33670975e87ce61944955de56303d15c81a0ceb81ceb0433c0bf82b877a0
 ```
 
-Source and exporter package metadata both identify the actual public checkout. Portable checksums passed, user launchers are executable, and exact database/evidence bytes, secrets, dependencies and personal payloads were absent. Sanitized fixtures and source identity metadata remain intentionally present.
+Source/exporter/B1b package metadata identify the actual public checkout. Portable checksums passed, user launchers are executable, and exact database/evidence bytes, secrets, dependencies and personal payloads were absent.
 
 ## Release-gate findings fixed
 
-1. README had removed the exact accepted B1a heading required by the historical release gate. The heading was restored.
-2. Generic source packaging paired the private repository with a public-mirror commit. Repository identity is now derived from the actual checkout or an explicit override; regression added.
-3. Compact exporter packaging had the same independent provenance defect. It now follows the same rule; regression added.
+1. README had removed the exact accepted B1a heading required by the historical release gate.
+2. Generic source packaging paired the private repository with a public-mirror commit.
+3. Compact exporter packaging had the same independent provenance defect.
+4. Canonical Drive documents prematurely recorded unverified merge identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4`. It was replaced after factual GitHub merge and reverse-read.
 
-Earlier green runs are historical evidence only and are not used as the final C0 gate.
+Earlier green runs and false document identities are historical evidence only.
 
 ## C0 boundary
 
@@ -61,6 +65,6 @@ Earlier green runs are historical evidence only and are not used as the final C0
 
 ## Next verified step
 
-The reviewed gate evidence and final Google Drive revisions are now synchronized into artifact revision 11. Mirror this final documentation tree exactly, rerun Linux/macOS/full/actual-Chrome/package gates, inspect the downloaded artifact, then merge PR #49 with expected-head protection.
+Artifact revision 12 and corrected Google Drive revisions are synchronized. Only C1 pure registry/generation contracts and attempt state machine on sanitized fixtures are allowed.
 
-After merge, only C1 pure registry/generation contracts and state machine on sanitized fixtures are allowed. Exact-source reopening and actual migration remain prohibited.
+Exact-source reopening, native IndexedDB work, backup/registry/generation creation and actual migration remain prohibited.

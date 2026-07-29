@@ -27,10 +27,9 @@ A green workflow is necessary but insufficient. Before merge or handoff, the exa
 - Phase 2B: `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
 - Phase 2C-A: `292634312ad04fa6e6cfc5a5ded311ac1020094d`;
 - Phase 2C-B0: `dbf2484c78e4eedcbb2efb3f0b61394b79a6d216`;
-- B1 execution plan: `8a8c0eb522fb9d7646f4e6c4c4e0da2fcdf24b8b`;
 - Phase 2C-B1a: `aec5edaca877cec5d769f4ce4efff674a9c92a7d`;
 - Phase 2C-B1b: `4fd14e515d2c4234f70effa475381f47bbb50e8b`;
-- B1b post-merge docs: `e6bd47011fad2dab5a8617f5f754739de1915fd9`.
+- Phase 2C-C0: `31657e218cd5891e9e915f698febf8ac72942ed3`.
 
 ## B1b accepted exact-source boundary
 
@@ -48,64 +47,63 @@ Source remained byte-identical; two clean native IndexedDB targets produced equa
 
 B1b acceptance does not authorize another B1b run or actual migration.
 
-## Phase 2C-C0 provenance rule
+## Phase 2C-C0 accepted provenance
 
-C0 is architecture and release-infrastructure synchronization only. It introduces no exact-source executor or production target.
+C0 introduced architecture and release-infrastructure only. It did not introduce an exact-source executor or create a production target.
 
 ```text
-private branch/PR: phase2cc/c0-actual-migration-design / #49
-public branch/PR:  phase2cc-c0-design-exact / #12
-control registry: mindmap-state-core-control-v1
-generation prefix: mindmap-state-core-v1-generation-
+private PR:    #49
+public PR:     #12
+private head:  af8f3c55d9e352c1f25d7aa8f720a7e55c6611b5
+public head:   9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6
+shared tree:   a8523316e16273f633fac8caac95e96a5fec1080
+squash merge:  31657e218cd5891e9e915f698febf8ac72942ed3
 ```
+
+Exact-tree proof was reconstructed from a reviewed exact base and equal nine-file deltas; the public B1b package independently records the same current tree.
+
+## Final current-head gates
+
+```text
+verify run:            30425727226
+package run:           30425727235
+duplicate verify run:  30427050113
+duplicate package run: 30427050043
+```
+
+Linux lint/full suite, macOS launchers/tests, actual Chrome run-storage/graph-storage/B1a/B1b harnesses and source/exporter/B1b packaging passed.
+
+Downloaded review from package run `30425727235`:
+
+```text
+outer artifact: f2de7f3961c5b720a35e2cbc8987e3a5216304bf8bc8513432c4d8ddb800ff1f
+browser proof:  1e0c1aa3f2fd5004699ce6162b20f19e99933ed574ea1e142b7265d9507e1d45
+source ZIP:     636c80a35b04f3ab7b7995c2d0cbd7cb804098b69ce67bcd3b6d1031a3099f0f
+exporter ZIP:   41c693e46916d9f41d76a2efc615a37a831c39e571fc9152b43e61c3cfce7104
+B1b ZIP:        24af33670975e87ce61944955de56303d15c81a0ceb81ceb0433c0bf82b877a0
+```
+
+Source and exporter metadata identify `ne-agalakov/mindmap-local-ci` plus public head `9bb65ab0bfdc1631c93d3de42dd97be6f2b23dc6`. B1b metadata also records tree `a8523316e16273f633fac8caac95e96a5fec1080`, `actualMigrationAllowed=false`, `automaticRetryAllowed=false` and `rawSourceIncluded=false`.
+
+Portable checksums passed. User-facing exporter and B1b launchers were executable. Exact SQLite/evidence bytes, secrets, generated dependencies and personal payloads were absent. Sanitized fixtures and source-identity metadata were intentionally retained.
 
 ## Release-gate defects proved and corrected
 
 1. README removed the exact accepted B1a heading required by the historical release gate. The heading was restored.
 2. Generic source packaging paired `ne-agalakov/mindmap-local` with a public-mirror commit. It now derives the actual checkout repository or uses an explicit override; regression added.
 3. Compact exporter packaging had the same independent provenance defect. It now follows the same checkout rule; regression added.
+4. Canonical Drive documents were prematurely updated with unverified merge identity `69a9fc703a79f3aaa4bd44fc372f0cc8c9cb59f4`. GitHub API verification proved it was not the accepted merge. The false tail blocks were replaced and reverse-read after actual merge `31657e218cd5891e9e915f698febf8ac72942ed3`.
 
-Earlier green runs are historical evidence only and are not used for acceptance.
+Earlier green runs and false document identities are historical failure evidence only and are not used for acceptance.
 
-## Reviewed C0 exact-tree gate
+## Google Drive corrected post-merge readback
 
-```text
-private head: 1e13024eeef8cec8ec05f721bf9ce703f884bc91
-public head:  189e86ae8a92912d399196bed15d8ece849a58e9
-shared tree:  c09d95579292970a851cf0c1a43abce13a800d3a
-verify run:   30424595380
-package run:  30424595384
-```
-
-Linux lint/full suite, macOS launchers/tests, actual Chrome run-storage/graph-storage/B1a/B1b harnesses and source/exporter/B1b packaging passed.
-
-Downloaded review:
-
-```text
-outer artifact: 6e63c8d4bace4f5350713ca64dc983fde2f81808e64798c1089539a30985c720
-browser proof:  9ec160607e1517f6a27e3c7ed36441dfd1a4ed2a9d4ffb634083d04014d51160
-source ZIP:     7ae424491bdb82c18bb8cf46ebcf09fb2cc9f187870d4454b1c2c2d6e947cdd5
-exporter ZIP:   7ede5c196249dcbb8084856cd62763cf179c1a7600e53e174efca9425fc45a98
-B1b ZIP:        6de9eb5d15fea1c31cc2e99d98d52e734eb20d5a4e28889bb9b7c5575339bd83
-```
-
-Source `ARTIFACT_REVISION.json` and exporter `EXPORTER_REVISION.json` both identify `ne-agalakov/mindmap-local-ci` plus public head `189e86ae8a92912d399196bed15d8ece849a58e9`. B1b package also records exact tree `c09d95579292970a851cf0c1a43abce13a800d3a` and `actualMigrationAllowed=false`.
-
-Portable checksums passed. User-facing exporter and B1b launchers were executable. Exact SQLite/evidence bytes, secrets, generated dependencies and personal payloads were absent. Sanitized fixtures and source-identity metadata were intentionally retained.
-
-## Google Drive final pre-merge readback
-
-- instruction revision `AIroW34fuCHCq9tq8qvYNgO6pqoB-UKQPgK-HRpQlfOP4loxTepfGrZzlaNhB9RcRFvKlaidlhaptmYm_cGehnx-I3z94DbfAVl8d_5xJZw`, marker `PHASE2CC-C0-FINAL-CURRENT-C09D9557`;
-- status revision `AIroW34HfAFiHjD8Kvc4VA_cRE_J3_iBSTj3m3AcRytXKBVUfvAuwUww80TIHbAK7O89crfCwIib_0MQ2HnOFzwxssZeVgOpQbA3kNaFX9U`, marker `PHASE2CC-C0-FINAL-GATE-C09D9557`;
-- recovery revision `AIroW342H5Owg2CWnnV57lXeLQ02veLZnDjUVD2msgpk619RNAOVXkkaRzzQ2QXU8TAZMy8VcSR1Et0ryWTCgpVbKzAZUXANFVbRKNr4Ghc`, marker `PHASE2CC-C0-FINAL-RECOVERY-C09D9557`.
+- instruction revision `AIroW35OjMtTyfnm5LU17ZlydzD_h22m0llDyXiCAgoj37sdxwIAS1Tlv7DA4AOmnrbtFLyTPmrst0KL9YVj9lWW_stFBgSES-F9yo2f_cA`, marker `PHASE2CC-C1-ALLOWED-31657E21`;
+- status revision `AIroW34GQdFUh8mkRAY2DgpG_71_WpS6qX-fsXKDLlLiEaj5E-yIzDkmhkSRlaSImJJyuLHbSRiDsHV14J_8WVxRNzjwu2Hl8jqPpUvJuqA`, marker `PHASE2CC-C0-ACCEPTED-31657E21`;
+- recovery revision `AIroW36j3OBZcn7wI6LhqlqOLAUvQFGIZMQaEBcHqw9aUUmJK6pOx4JrReih9jb5lhWs1izG5xvhnYsfM5oIZORcHhxAEq1AJIrjm5Kif3U`, marker `PHASE2CC-C0-MERGE-RECOVERY-31657E21`.
 
 ## Current acceptance boundary
 
-Artifact revision 11 contains the reviewed gate and final Drive revisions. C0 is not merged yet. Required next steps:
+C0 is accepted. Only C1 pure registry/generation contracts and attempt state machine on sanitized fixtures are allowed.
 
-1. mirror this final documentation tree exactly to the public CI repository;
-2. rerun Linux/macOS/full/actual-Chrome/package gates;
-3. inspect the downloaded final artifact;
-4. merge PR #49 with expected-head protection.
-
-After C0 merge, only C1 pure registry/generation contracts on sanitized fixtures are allowed. Exact source reopening, backup/registry/generation creation, actual migration, model calls and personal data remain prohibited.
+Exact-source reopening, B1b retry, backup/registry/production-generation creation, native persistence, actual migration, model/network calls and personal data remain prohibited until their separate gates.
