@@ -112,3 +112,11 @@ Date: 2026-07-29.
 Decision: the generic source packager must derive or explicitly receive the repository identity of the actual checkout. It may not pair `ne-agalakov/mindmap-local` with a public-mirror commit. A regression must package a fixture with a remote and verify repository/commit consistency.
 
 Reason: the first C0 artifact review found that source packaging still hard-coded the private repository even in history-free public CI. Green CI did not make that metadata truthful.
+
+## ADR-016 — Exporter artifact provenance follows the same checkout rule
+
+Date: 2026-07-29.
+
+Decision: the compact legacy-exporter packager must also derive or explicitly receive the repository identity of the actual checkout and regression-test it. The second C0 artifact review proved that `EXPORTER_REVISION.json` still paired the private repository with a public-mirror commit after the generic source package was corrected.
+
+Consequence: both source and exporter packages are rejected unless repository and commit identify the same checkout. The B1b package already follows this rule.
