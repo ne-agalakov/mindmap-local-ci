@@ -2,7 +2,7 @@
 
 Technical identity is `repository + commit SHA + Git tree`. Green CI alone is not acceptance.
 
-## Accepted Phase 2C-C3 provenance
+## Phase 2C-C3 accepted provenance
 
 ```text
 private PR:   #57 merged
