@@ -2,9 +2,9 @@
 
 Дата актуализации: 2026-07-30.
 
-## Phase 2C-C3 — принята
+## Принятое основание
 
-Private PR #57 factual squash-merged с expected-head protection. GitHub readback подтвердил `merged=true`; Issue #56 закрыта completed. Public PR #16 закрыт как CI mirror без merge.
+Phase 2C-C3 принята factual merge `38b0e3fb9542174328396ae19bff76f18d637f21`; post-merge closure — `dd5e3ba57d0f5ce17254569625ab9bc93b149a55`.
 
 ```text
 private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
@@ -12,25 +12,40 @@ public head:  61602480f505c133df8257cc494852b43e9d3fa0
 shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
 verify:       30540259921
 package:      30540260040
-merge:        38b0e3fb9542174328396ae19bff76f18d637f21
 ```
 
-Final downloaded hashes:
+C3 доказала read-only registry-authoritative resolver, full fail-closed matrix, stale-pointer guard, deterministic reload, actual Chrome, REQ-OBS-001 и sanitized diagnostics. Exact source/backup/production/migration paths false; fallback/automatic resume/retry false; network/model calls и personal data — 0.
 
-```text
-outer source:  1d9db6cb1e09d4133893a23a54dcd64ba08d3f14c0b5248a2a0f5d86281940a2
-browser proof: d593b233490a87da9d7132759cf4c14f1c6ca359a271564c0c0836e86ebd7843
-source ZIP:    18beb6f0ef045b3c388a615a2a2db60657e557bba81db5dc6c7ed0117ad281b1
-exporter ZIP:  cf00ad8eb2ebb76aee2c138f5182d15dc9b25e434e98d97470aa0ab2a47dcd72
-B1b ZIP:       6a50e9491fa4357a97fcb050a321e0e930b224186dd20d7d590a6a30e160bcac
-```
+## Phase 2C-C4 — planning candidate
 
-Принятая область: read-only registry-authoritative resolver, full fail-closed matrix, stale-pointer guard, deterministic reload, actual Chrome, REQ-OBS-001 и sanitized diagnostics. Exact source/backup/production/migration paths false; fallback/automatic resume/retry false; network/model calls и personal data — 0.
+Issue #59 реализована только как документационный контракт. Добавлены:
 
-## Непокрыто и запрещено
+1. exact-source one-shot execution contract;
+2. checkpoint failure/recovery matrix;
+3. target-Mac package inventory/provenance;
+4. planning/implementation/package/execution/migration acceptance gates.
 
-C4 implementation/execution, private backup behavior, target-Mac production storage, actual migration/activation/rollback, semantic quality, multi-order stability и real-data safety не доказаны. B1b повторно не запускается.
+Ключевые решения кандидата:
+
+- detached authorization привязана к package/source/backup/registry/generation/attempt identity;
+- authorization расходуется атомарно до первого source open;
+- expected backup byte-identical source и не перезаписывается;
+- первый production target допускается только в strict bootstrap-empty mode;
+- deterministic import обязан воспроизвести portable-plan и target-snapshot hashes B1b;
+- promotion — одна registry pointer transaction после reopen/verification/seal;
+- P13 использует принятый C3 resolver;
+- migration authorization не разрешает rollback;
+- rollback требует отдельной authorization и меняет только pointer;
+- interruption/reload никогда не возобновляет write автоматически;
+- `possibly_hung` информирует, но не перезапускает операцию;
+- planning proof, implementation proof, package proof и actual success разделены.
+
+## Граница доказательства
+
+C4 planning candidate не содержит runner/launcher и не открывала exact SQLite/private backup. Registry/generation не создавались; actual migration/promotion/rollback не выполнялись; network/model calls и personal data — 0.
 
 ## Следующий проверяемый шаг
 
-Только C4 planning: отдельный issue, exact package contract, failure matrix, one-shot authorization semantics, offline diagnostics и acceptance plan на sanitized fixtures. До нового gate и явного подтверждения Артёма exact-source execution запрещён.
+Сначала принять planning contract через exact private/public tree, CI/package, downloaded-artifact inspection, Drive reverse-read и factual merge Issue #59. Только после этого может быть создан отдельный C4 implementation issue на sanitized fixtures.
+
+До отдельного gate запрещены C4 implementation/execution, exact-source access, B1b repeat, production namespace и actual migration. Перед будущим exact-source запуском требуется новое явное подтверждение Артёма для конкретного package/attempt.
