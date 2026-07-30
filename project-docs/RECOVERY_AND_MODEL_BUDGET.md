@@ -15,49 +15,39 @@ workspace:  synthetic
 personal:   0
 ```
 
-B1b one-shot выполнен и израсходован. Source остался byte-identical; actual migration false. Exact SQLite и sanitized evidence сохранять неизменными. B1b не повторять.
+B1b one-shot выполнен и израсходован. Source byte-identical; actual migration false. B1b не повторять.
 
-## Accepted C0/C1 recovery contract
+## Accepted C0/C1 contract
 
-C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3` фиксирует immutable generations и atomic registry. C1 merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8` фиксирует one-shot authorization, deterministic transition/replay, terminal `blocked_recovery` до promotion и explicit `rollback_required` после promotion.
+C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3` фиксирует immutable generations и atomic registry. C1 merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8` фиксирует one-shot authorization, deterministic replay, terminal `blocked_recovery` до promotion и explicit `rollback_required` после promotion.
 
-## Phase 2C-C2 native recovery proof
-
-Candidate exact tree:
+## Phase 2C-C2 final recovery proof
 
 ```text
-private head: 57472ea9b54f1f967b064ff305e187222a29ba30
-public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
-shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
-verify/package: 30455093681 / 30455093613
+private head: 83eb9a06610ff737676b002837beadf6807926dd
+public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
+shared tree:  158527376a989b304f097006ba39488d79a04c8f
+verify/package: 30516236010 / 30516236013
 ```
 
 Доказано на sanitized fixture namespaces:
 
-- generation seal хранится отдельно и immutable после первой записи;
-- registry сохраняет attempts, append-only events, seal attestations и receipts;
-- deterministic replay проверяется до persisted transition;
-- promotion и rollback являются отдельными atomic transactions;
-- stale revision, wrong active/previous pointer, generation/seal/hash/receipt mismatch блокируют mutation;
-- injected abort promotion и rollback оставляет pointer, attempt, events и receipts неизменными;
-- repeated identical operation idempotent; different fingerprint конфликтует;
+- generation seal immutable;
+- registry сохраняет attempts, append-only events, attestations и receipts;
+- deterministic replay до persisted transition;
+- promotion/rollback atomic;
+- stale revision, wrong pointer, identity/hash/receipt mismatch блокируют mutation;
+- injected abort оставляет pointer, attempt, events и receipts неизменными;
+- identical operation idempotent; changed fingerprint конфликтует;
 - pre-promotion interruption persisted как terminal `blocked_recovery`;
 - post-promotion interruption persisted как `rollback_required`;
-- close/reopen сохраняет canonical snapshot;
-- automatic resume/retry отсутствуют.
+- close/reopen canonical snapshot identical;
+- automatic resume/retry false.
 
-Actual Chrome proof подтвердил REQ-OBS-001, downloadable sanitized diagnostics, exactSourceOpened=false, backupAccessed=false, productionNamespaceUsed=false, actualMigrationPerformed=false, network/model calls 0.
-
-## Ошибки gate
-
-Три причины были доказаны до нового запуска: lint `prefer-const`; чрезмерный structural test вокруг deny-list literal; order-sensitive `JSON.stringify` в browser proof. Исправления узкие и не ослабляют runtime safety.
-
-## REQ-OBS-001
-
-Каждая длительная операция показывает name/type, elapsed/volume, last progress/heartbeat, state, model или «без AI» и downloadable diagnostics. Stale activity сообщает «возможно, процесс завис», но не разрешает restart/retry.
+Final Chrome proof SHA-256 `9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e` подтвердил REQ-OBS-001, diagnostics download, network guards и snapshot `3194c2f0b23788a422c91ab4873be3a63194c2f0b23788a422c91ab4873be3a6`. exactSourceOpened/backupAccessed/productionNamespaceUsed/actualMigrationPerformed false; calls 0.
 
 ## Текущая граница
 
-C2 ещё не принята: требуется final repository documentation tree, exact-tree CI, downloaded-artifact review и factual merge. На target Mac recovery action не требуется.
+C2 final proof complete, но acceptance требует factual expected-head merge PR #54 и post-merge closure. На target Mac recovery action не требуется.
 
-C3/C4, exact-source reopening, private backup access, production registry/generation, actual migration/promotion/rollback, model/network calls и personal data запрещены.
+C3/C4, exact-source reopening, private backup, production registry/generation, actual migration/promotion/rollback, model/network calls и personal data запрещены.
