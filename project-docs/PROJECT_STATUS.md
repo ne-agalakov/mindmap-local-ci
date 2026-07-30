@@ -4,77 +4,59 @@
 
 ## Принятые основания
 
-Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b, C0 и C1 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
-
-B1b one-shot израсходован. Exact source: `5 070 848` bytes, SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`; source unchanged; actual migration false.
-
-C0 architecture: registry `mindmap-state-core-control-v1`, immutable generation prefix `mindmap-state-core-v1-generation-`, atomic pointer promotion и explicit pointer rollback.
+Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b, C0 и C1 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли. B1b one-shot израсходован; actual migration false.
 
 ## Phase 2C-C1 — принята
 
 C1 factual merge: `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-```text
-private head: 6fe3b07c5a2cb0ba8a42528799f74569bbea885a
-public head:  dede561068650d9302c0570c22286f3cc3bb6da2
-shared tree:  9ad59159129eab08e77d4f435f40dd410754a81a
-verify:       30443877441
-package:      30443877425
-```
+## Phase 2C-C2 — final proof complete, merge pending
 
-C1 принята только как pure deterministic generation registry contracts/state machine на sanitized in-memory fixtures. Native persistence и actual migration этим не доказаны.
-
-## Phase 2C-C2 — реализация проверена
-
-Issue #53 и public PR #15 реализуют принятый C1 contract в isolated native IndexedDB fixture namespaces.
+Issue #53 и private PR #54 реализуют C1 contract в isolated native IndexedDB fixture namespaces.
 
 Доказано:
 
-- separate immutable generation seal store и registry seal attestation;
-- attempts + append-only events с replay verification;
-- atomic promotion с expected revision и previous-pointer guard;
-- explicit rollback с current pointer/revision guard;
-- idempotent repeat и typed fingerprint conflict;
-- active-pointer conflict и stale rollback revision блокируются до mutation;
-- injected abort promotion и rollback не оставляет partial pointer, attempt, events или receipts;
-- close/reopen даёт идентичный canonical snapshot;
-- interruption до promotion сохраняет terminal `blocked_recovery` без resume/retry;
-- interruption после promotion сохраняет `rollback_required`;
-- actual Chrome IndexedDB, sanitized evidence, live REQ-OBS-001 и diagnostics download;
-- network/model calls 0; exact source/backup/production namespace/personal data не использовались.
+- immutable generation seal и registry attestation;
+- attempts + append-only events с deterministic replay;
+- atomic promotion и explicit rollback;
+- revision/pointer/identity/hash/receipt/idempotency guards;
+- promotion и rollback abort без partial state;
+- deterministic close/reopen;
+- terminal `blocked_recovery` и post-promotion `rollback_required`;
+- actual Chrome, REQ-OBS-001, diagnostics download;
+- exact source/backup/production namespace/actual migration/network/model/personal paths отсутствуют.
 
-Candidate identity:
+Final pre-merge identity:
 
 ```text
-private head: 57472ea9b54f1f967b064ff305e187222a29ba30
-public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
-shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
-verify:       30455093681
-package:      30455093613
+private head: 83eb9a06610ff737676b002837beadf6807926dd
+public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
+shared tree:  158527376a989b304f097006ba39488d79a04c8f
+verify:       30516236010
+package:      30516236013
+private PR:   #54
 ```
 
-Downloaded candidate proof:
+Downloaded final proof:
 
 ```text
-outer source artifact: 50b3b75eb1d67d044dcf5e39ee545c68fba0ab91370df2ad74570cdd6066bcaf
-browser proof:         c4bf10a309479f1a921a0c4445dc2e2437e404a7c04f91b403a9a394a5af6d37
-source ZIP:            17654a4f866171f705216dd9825bb6d759a1c52a668bc10865fac33b853c065c
-exporter ZIP:          c63f6e83e38a26507f8ed7932400d4026b82b5845b6120fac9e85c63e40099eb
-B1b ZIP:               87e18e4c67eeb9b16d72a51250fe33e8f9ccdc832f998b48133634f4cb4c54e0
+outer source artifact: 34a6874bf92ae92a0be894587363bebe7b0f48df0e8c6f3bff47ee8b1ffca515
+browser proof:         9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e
+source ZIP:            9521dcabc0f0c2a95cdf31522f18e2e228a3192481e36147341283edbe50dea3
+exporter ZIP:          97e971600327c12f9495d668d5b62102d19ab6509711c9e8893cf0de37b22c48
+B1b ZIP:               2c34325a68dda1f27c194e7441af5abd30cea71c6e5a420923b4a2ba3823314e
 ```
 
-Browser final snapshot hash: `3194c2f0b23788a422c91ab4873be3a63194c2f0b23788a422c91ab4873be3a6`.
+Package-time metadata reconstructed exactly to tree `158527376a989b304f097006ba39488d79a04c8f`; artifact revision 14, checksums, inventory, command modes and privacy boundary passed. Browser snapshot: `3194c2f0b23788a422c91ab4873be3a63194c2f0b23788a422c91ab4873be3a6`.
 
-## Подтверждённые дефекты и первопричины
+## Подтверждённые дефекты
 
-1. `modelCalls` был объявлен через `let`, хотя не менялся; lint остановил gate.
-2. Safety regression запрещала exact legacy filename даже в централизованном deny-list guard; тест уточнён, runtime guard сохранён.
-3. Chrome harness сравнивал canonicalized IndexedDB output через insertion-order `JSON.stringify`; заменено canonical equality.
+1. `modelCalls` нарушал lint `prefer-const`.
+2. Safety test запрещал legacy filename внутри deny-list guard.
+3. Browser harness использовал order-sensitive `JSON.stringify` вместо canonical equality.
 
-Каждый новый запуск выполнялся только после доказанной причины и узкой коррекции. Слепого rerun не было.
+Каждый повторный запуск следовал доказанной причине и узкой коррекции.
 
-## Граница доказательства
+## Осталось
 
-C2 пока не принята. Не доказаны C3 packaged resolver, C4 exact-source package, target-Mac production storage, private backup, actual migration, semantic quality и real-data readiness.
-
-Следующий проверяемый шаг: синхронизировать repository docs/release metadata с Drive revisions, создать final exact private/public tree, повторить CI, проверить скачанный финальный artifact, открыть private PR и выполнить factual expected-head merge. C3 до этого запрещена.
+Записать final proof и Drive revisions в GitHub metadata, построить последний идентичный tree, затем слить PR #54 только с expected-head защитой. После merge — post-merge reverse-read/closure. До этого C2 не accepted; C3/C4 и actual migration запрещены.
