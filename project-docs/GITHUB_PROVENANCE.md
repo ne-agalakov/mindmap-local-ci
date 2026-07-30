@@ -1,57 +1,31 @@
 # GitHub provenance and source-artifact verification
 
-Technical identity is `repository + commit SHA + Git tree`. Green CI alone is not acceptance.
+Technical identity is `repository + commit SHA + Git tree`.
 
-## Phase 2C-C3 accepted provenance
-
-```text
-private PR:   #57 merged
-public PR:    #16 closed CI mirror
-private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
-public head:  61602480f505c133df8257cc494852b43e9d3fa0
-shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
-verify:       30540259921
-package:      30540260040
-merge:        38b0e3fb9542174328396ae19bff76f18d637f21
-closure:      dd5e3ba57d0f5ce17254569625ab9bc93b149a55
-```
-
-C3 artifacts passed checksums, reconstructed-tree provenance, inventory, executable modes, release-doc, privacy and credential scans.
-
-## Phase 2C-C4 planning candidate
-
-Issue #59 is documentation/architecture only. Working branches:
+## Phase 2C-C4 planning accepted provenance
 
 ```text
-private: phase2cc/c4-planning-contract
-public:  phase2cc-c4-planning-contract-exact
+issue:        #59 closed completed
+private PR:   #60 merged
+public PR:    #18 closed CI mirror
+private head: c291429e666c02fb909b7a4e46b6dd5f623f97ef
+public head:  28ffeb3266b4886cb3931632a8f5130ae0542205
+shared tree:  7d653175805e39eea9c50c5f76e401f285d07976
+verify:       30551648816
+package:      30551649021
+merge:        2c1f476685007a8c2fa52288ac00dfff188edb06
 ```
 
-Candidate files define:
+Downloaded hashes:
 
-- exact execution/authorization contract;
-- checkpoint failure and recovery matrix;
-- package inventory/provenance;
-- planning through actual-migration acceptance gates.
+```text
+outer source:  f3a4745941d38ec98822e35005f20b97ca733b230130a448e9c8dd86aeee1f30
+browser proof: f4b134d5f0fe80d49a50bd825a101b020c3e1bd885a50ed73b7011b0b4143ffb
+source ZIP:    bd0e433169cfcb144d1ba79c06d3c21eb35ee5c9a1b41d2c9ea8c5fb770941d0
+exporter ZIP:  557d9522f55ad74ca50da4c7ec513f4aa74a86b89e8571f03d8e09374bf386e3
+B1b ZIP:       255659f714ee2e05f829a54e297e57c7d0cafa425fa5ddf84835470c634c9583
+```
 
-No C4 runner, launcher or package exists. Exact source/private backup were not opened; B1b was not repeated; production registry/generation were not created; actual migration/promotion/rollback were not executed; network/model calls and personal data are 0.
+After normalizing declared package-time fields, source reconstructed tree `7d653175805e39eea9c50c5f76e401f285d07976`. Checksums, modes, inventory, privacy and forbidden-content checks passed. No database, private evidence bytes, authorization, credentials, dependencies or personal payload were included.
 
-## Planning acceptance provenance gate
-
-C4 planning may be accepted only after:
-
-1. identical private/public Git tree;
-2. full public CI/package on that tree;
-3. downloaded artifact inventory/checksum/privacy inspection;
-4. canonical Drive update and reverse-read;
-5. separate final documentation tree if Drive revisions change;
-6. expected-head merge of the private planning PR;
-7. GitHub `merged=true` readback and post-merge closure.
-
-The planning merge authorizes only a later implementation issue on sanitized fixtures. It does not authorize C4 code, exact package creation or exact-source execution.
-
-## Future exact package provenance
-
-A future C4 archive must record the repository/commit/tree of its actual checkout, portable checksums, workflow identities, required modes and forbidden inventory. Its outer archive SHA-256 is recorded after download and bound into the detached one-shot authorization. The archive cannot self-prove its own final outer hash.
-
-A green runner or package is never evidence of actual migration success.
+Planning acceptance authorizes only a separate sanitized-fixture implementation issue. Exact-source execution remains a later gate.

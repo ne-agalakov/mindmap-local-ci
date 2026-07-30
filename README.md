@@ -4,39 +4,21 @@ MindMap is a local-first personal AI system. Alpha.19 remains a frozen legacy re
 
 ## Accepted foundation
 
-Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1, C2 and C3 are accepted.
+Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, consumed B1b, C0, C1, C2, C3 and the C4 planning contract are accepted.
 
-## Phase 2C-C3 — accepted
+## Phase 2C-C4 planning — accepted
 
 ```text
-private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
-public head:  61602480f505c133df8257cc494852b43e9d3fa0
-shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
-verify:       30540259921
-package:      30540260040
-merge:        38b0e3fb9542174328396ae19bff76f18d637f21
-closure:      dd5e3ba57d0f5ce17254569625ab9bc93b149a55
+private head: c291429e666c02fb909b7a4e46b6dd5f623f97ef
+public head:  28ffeb3266b4886cb3931632a8f5130ae0542205
+shared tree:  7d653175805e39eea9c50c5f76e401f285d07976
+verify:       30551648816
+package:      30551649021
+merge:        2c1f476685007a8c2fa52288ac00dfff188edb06
 ```
 
-C3 accepts only the read-only, registry-authoritative, fail-closed packaged runtime resolver on sanitized fixtures.
-
-## Phase 2C-C4 — planning contract implemented, acceptance pending
-
-Issue #59 now has a documentation-only candidate defining:
-
-- exact artifact, source, backup, registry, generation, attempt and authorization identities;
-- one-shot authorization consumed before first source open;
-- strict bootstrap-empty production target gates;
-- deterministic import, reopen, portable-plan/snapshot verification and immutable seal;
-- atomic pointer promotion followed by accepted C3 resolver verification;
-- separate rollback authorization; no automatic rollback;
-- checkpoint-by-checkpoint failure/reload matrix with no resume/retry;
-- REQ-OBS-001 heartbeat and sanitized diagnostic schema;
-- offline target-Mac package inventory and provenance;
-- separate planning, implementation, package, execution and actual-migration acceptance gates.
-
-This planning candidate contains no runner, launcher, exact source, backup, production database or execution authorization.
+Accepted planning scope: immutable package/source/backup/registry/generation/attempt/authorization identities; one-shot authorization consumed before source open; bootstrap-empty target gates; deterministic import/reopen/hash/seal/promotion/C3-resolver sequence; separate rollback authorization; checkpoint recovery matrix; REQ-OBS-001; package inventory and distinct acceptance gates.
 
 ## Current boundary
 
-Only review, CI, artifact inspection, Drive reverse-read and factual acceptance of the C4 planning contract are allowed. C4 implementation/execution, exact SQLite/private backup access, B1b repetition, target-Mac production storage, actual migration/promotion/rollback, automatic resume/retry, model/network calls and personal data remain prohibited. A new explicit confirmation from Артём is required immediately before any future exact-source execution.
+Only C4 implementation on isolated sanitized fixtures is allowed next. It must not open exact SQLite/private backup, repeat B1b, create target-Mac production storage, build or launch an exact execution package, perform migration/promotion/rollback, call models/network services or use personal data. Exact-source execution requires a later accepted package and a new explicit confirmation from Артём for one exact package/attempt.

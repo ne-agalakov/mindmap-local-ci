@@ -1,84 +1,63 @@
 {
   "version": "0.6.0-alpha.19",
-  "artifactRevision": 18,
-  "syncedAt": "2026-07-30T13:49:00Z",
+  "artifactRevision": 19,
+  "syncedAt": "2026-07-30T14:35:00Z",
   "syncStatus": "synced_native_google_docs_verified",
-  "readBackAt": "2026-07-30T13:49:00Z",
+  "readBackAt": "2026-07-30T14:35:00Z",
   "documents": [
     {
       "name": "MindMap — инструкция проекта.md",
       "driveFileId": "1xgGXZfZ8zYxHugvj1kzNztyJwoLQHhWoxDHJqMtd5Go",
-      "revisionId": "AIroW37dz1nn6rBTdLtg0EHaC7Duk32o-q7tgRM2gUiw1QEQLTVtL0kaaI0Q2WrAAOcYWaX9a9IQFTtguJzIVO5kFNAL9tA5UO3fDGEwie0",
+      "revisionId": "AIroW367ctTL4TlEz4CTihuN5khc5kux2wzOmnukKZyj6udd1wRQf2ZARy6xb4NtC_wNckYuv59jSUPRJzzBdGmAPFq8YYo4vBlAKaFcftM",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C4-PLANNING-VERIFIED-11555430"
+      "verifiedMarker": "PHASE2CC-C4-PLANNING-ACCEPTED-2C1F4766"
     },
     {
       "name": "MindMap — решения и статус.md",
       "driveFileId": "1rMr251zul62o6cDlAjdK_fA0BRTZWmX4cTJldnfIKVQ",
-      "revisionId": "AIroW36TEfgFTf85Mf4KyB4mU1-xsKIYo0yanHePStI7CpFvarT3lImSpLDB4uscBbhHB0Asp4bS1xtJA86kot7bX-8r3WGLAmIN3N-eh1s",
+      "revisionId": "AIroW34adrjY5FG8QJzUxogTDI-be6KPqAX_6_Yq71FIMgqRtFpoF475ukTMxk8Qm_GRv6qKVflKbg1ZmN2iiDtnb0JnAAMhyYscjEDzKRY",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C4-PLANNING-CANDIDATE-11555430"
+      "verifiedMarker": "PHASE2CC-C4-FINAL-PLANNING-ACCEPTED-2C1F4766"
     },
     {
       "name": "MindMap — восстановление и бюджет локальной модели.md",
       "driveFileId": "1cfEpjDRWdkyyH3JmbeCBSBBW4zIaKi13lzC_Feqe0aw",
-      "revisionId": "AIroW36zpe6A-updBZsvcbBeWTiPhaeX3QN4YmfVsEsGOQKwdxXYGhvBCX5GGAtgusSuFPDDoROQoe47V1Bbhl973TgvHQ-PmE339hMWyyQ",
+      "revisionId": "AIroW36JPYI9tVKUws5oj1R-lQdevchNq8gqsgFWDk0Vt0Vx0geS8hKBEqbiVKlq7scOSeb-4H28qIPeLyEdhHFOUv6FUsU2ObVQGjFWhIY",
       "readBackStatus": "verified",
-      "verifiedMarker": "PHASE2CC-C4-RECOVERY-CANDIDATE-11555430"
+      "verifiedMarker": "PHASE2CC-C4-RECOVERY-PLANNING-ACCEPTED-2C1F4766"
     }
   ],
   "github": {
     "privateRepository": "ne-agalakov/mindmap-local",
     "publicCiMirror": "ne-agalakov/mindmap-local-ci",
-    "phase2CC3": {
-      "status": "accepted",
-      "mergeCommit": "38b0e3fb9542174328396ae19bff76f18d637f21",
-      "closureMergeCommit": "dd5e3ba57d0f5ce17254569625ab9bc93b149a55",
-      "finalSharedTree": "9bee67d28fe5979fb64b2992710aa4e6bcf2fbba"
-    },
     "phase2CC4Planning": {
       "issue": 59,
       "privatePullRequest": 60,
       "publicMirrorPullRequest": 18,
-      "status": "implementation_verified_final_acceptance_pending",
-      "accepted": false,
-      "initialPrivateHead": "e6d90735b0ac9d8dc9da85d5c7a4a1641e3b0d67",
-      "initialPublicHead": "f5d1758f51aa6e693427a0579dd8c16e502bf66b",
-      "initialSharedTree": "115554301ca88330ca44a89de72eadd44e24d9f1",
-      "verifyRun": 30548925903,
-      "packageRun": 30548925878,
-      "releaseMarkerRegressions": [
-        "PROJECT_STATUS accepted-C3 heading restored",
-        "GITHUB_PROVENANCE accepted-C3 heading restored"
-      ]
+      "status": "accepted",
+      "accepted": true,
+      "mergeCommit": "2c1f476685007a8c2fa52288ac00dfff188edb06",
+      "finalPrivateHead": "c291429e666c02fb909b7a4e46b6dd5f623f97ef",
+      "finalPublicHead": "28ffeb3266b4886cb3931632a8f5130ae0542205",
+      "finalSharedTree": "7d653175805e39eea9c50c5f76e401f285d07976",
+      "verifyRun": 30551648816,
+      "packageRun": 30551649021
     }
   },
   "architectureAudit": {
-    "status": "alpha19_frozen_b1b_consumed_c0_c1_c2_c3_accepted_c4_planning_implemented_final_gate_pending",
+    "status": "alpha19_frozen_b1b_consumed_c0_c1_c2_c3_accepted_c4_planning_accepted_implementation_sanitized_only",
     "phase2CB1bAttemptConsumed": true,
-    "phase2CC3Accepted": true,
-    "phase2CC4PlanningAllowed": true,
-    "phase2CC4PlanningImplemented": true,
-    "phase2CC4PlanningAccepted": false,
-    "phase2CC4ImplementationAllowed": false,
+    "phase2CC4PlanningAccepted": true,
+    "phase2CC4ImplementationAllowed": true,
+    "phase2CC4ImplementationScope": "sanitized-fixtures-only",
     "phase2CC4ExecutionAllowed": false,
     "actualMigrationAllowed": false,
     "exactSourceOpenedDuringPhase2CC4Planning": false,
-    "b1bRepeatedDuringPhase2CC4Planning": false,
     "backupAccessedDuringPhase2CC4Planning": false,
     "productionNamespaceUsedDuringPhase2CC4Planning": false,
-    "runnerCreatedDuringPhase2CC4Planning": false,
-    "launcherCreatedDuringPhase2CC4Planning": false,
-    "packageCreatedDuringPhase2CC4Planning": false,
-    "authorizationCreatedDuringPhase2CC4Planning": false,
-    "actualMigrationExecutedDuringPhase2CC4Planning": false,
-    "promotionExecutedDuringPhase2CC4Planning": false,
-    "rollbackExecutedDuringPhase2CC4Planning": false,
-    "automaticResumeDuringPhase2CC4Planning": false,
-    "automaticRetryDuringPhase2CC4Planning": false,
     "zeroModelCallsDuringPhase2CC4Planning": true,
     "zeroNetworkCallsDuringPhase2CC4Planning": true,
     "personalDataUsedDuringPhase2CC4Planning": false,
-    "nextGate": "phase2cc_c4_planning_final_documentation_tree_ci_artifact_and_factual_merge"
+    "nextGate": "phase2cc_c4_sanitized_implementation_contract_proof"
   }
 }
