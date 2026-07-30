@@ -34,6 +34,9 @@ jobs:
             | base64 -d > /tmp/c4-native-full-subset.tar.gz
           echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
           tar -xzf /tmp/c4-native-full-subset.tar.gz
+          base64 -d verification/c4-readback-overlay.tar.gz.b64 > /tmp/c4-readback-overlay.tar.gz
+          echo "e6dff9816a16b49228536e91bc619032444a6b9892de222932eef19f1c08112e  /tmp/c4-readback-overlay.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-readback-overlay.tar.gz
       - run: npm ci
       - name: Strict full C4 native TypeScript verification
         run: >-
@@ -44,5 +47,8 @@ jobs:
           c4-execution/runner-v4.ts c4-execution/native-fixture-backup.ts
           c4-execution/native-fixture-generation.ts c4-execution/native-target-inventory.ts
           c4-execution/native-c2c3-adapters.ts c4-execution/native-runner.ts
+          c4-execution/native-promotion-readback.ts c4-execution/native-rollback-readback.ts
       - name: Full native C4 C1 C2 C3 runtime verification
         run: node --experimental-strip-types --test tests/c4-native-full-public-smoke.test.mjs
+      - name: Readback no-create regression verification
+        run: node --experimental-strip-types --test tests/c4-readback-no-create-public-smoke.test.mjs
