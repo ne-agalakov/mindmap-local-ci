@@ -19,15 +19,11 @@ Accepted foundations:
 - Phase 2C-C0 generation/registry architecture — `31657e218cd5891e9e915f698febf8ac72942ed3`;
 - Phase 2C-C1 pure generation contracts — `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-## Phase 2C-B1a — accepted
+## Phase 2C-B1b — accepted and consumed
 
-B1a is accepted only for its sanitized executor, rollback and observability boundary.
+The single exact-source B1b read-only attempt passed and is consumed. The source stayed byte-identical, injected rollback left no target or receipt, network/model calls were zero and actual migration was false. B1b must not be repeated.
 
-## Phase 2C-B1b — accepted boundary
-
-The single exact-source B1b read-only attempt passed and is consumed. The source remained byte-identical; repeat hashes matched; injected rollback left no target or receipt; network/model calls were zero; actual migration was false. B1b must not be repeated.
-
-## Phase 2C-C0 — accepted
+## Phase 2C-C0 and C1 — accepted
 
 C0 selects immutable generation databases and one atomic control-registry pointer transaction:
 
@@ -36,46 +32,33 @@ control registry:  mindmap-state-core-control-v1
 generation prefix: mindmap-state-core-v1-generation-
 ```
 
-Promotion is a pointer change after reopen, verification and seal. Rollback restores the previous pointer and never edits generation payload.
-
-## Phase 2C-C1 — accepted
-
 C1 pure contracts/state machine were accepted by merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-```text
-private head: 6fe3b07c5a2cb0ba8a42528799f74569bbea885a
-public head:  dede561068650d9302c0570c22286f3cc3bb6da2
-shared tree:  9ad59159129eab08e77d4f435f40dd410754a81a
-verify:       30443877441
-package:      30443877425
-```
+## Phase 2C-C2 — final proof complete, merge pending
 
-C1 proves deterministic identities, transitions, replay, idempotency, one-shot authorization, revision/pointer guards, blocked recovery and explicit rollback plans on sanitized in-memory fixtures. It does not prove native persistence.
-
-## Phase 2C-C2 — implementation verified, acceptance pending
-
-C2 implements the accepted C1 contract in native IndexedDB fixture namespaces:
+C2 implements C1 in native IndexedDB fixture namespaces:
 
 - separate immutable generation seal storage;
-- control registry with active pointers, attempts, events, seal attestations and receipts;
+- registry with active pointers, attempts, events, seal attestations and receipts;
 - atomic promotion and explicit rollback;
-- revision, previous-pointer and idempotency guards;
-- injected promotion/rollback abort with no partial mutation;
+- revision, pointer, identity, hash and idempotency guards;
+- promotion/rollback abort with no partial mutation;
 - deterministic close/reopen;
 - persisted `blocked_recovery` and `rollback_required`;
-- actual Chrome proof, REQ-OBS-001 trace and downloadable sanitized diagnostics.
+- actual Chrome proof, REQ-OBS-001 and downloadable sanitized diagnostics.
 
-Candidate identity:
+Final pre-merge identity:
 
 ```text
-private head: 57472ea9b54f1f967b064ff305e187222a29ba30
-public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
-shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
-verify:       30455093681
-package:      30455093613
+private head: 83eb9a06610ff737676b002837beadf6807926dd
+public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
+shared tree:  158527376a989b304f097006ba39488d79a04c8f
+verify:       30516236010
+package:      30516236013
+private PR:   #54
 ```
 
-Downloaded candidate artifacts passed checksums, checkout provenance, inventory and privacy review. C2 is not accepted until the final documentation tree is mirrored, rerun, inspected and factually merged.
+Downloaded final artifacts passed checksums, reconstructed-tree provenance, inventory, launcher-mode and privacy review. C2 remains unaccepted until the final metadata tree passes and PR #54 is factually merged with expected-head protection.
 
 ## Preserved boundary
 
