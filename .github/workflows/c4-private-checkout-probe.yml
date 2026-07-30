@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - phase2cc/c4-public-verification
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
