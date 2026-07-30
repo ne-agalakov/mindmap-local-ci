@@ -2,63 +2,39 @@
 
 ## Technical source of truth
 
-Technical identity is `repository + commit SHA + Git tree`. A label, local directory or green workflow alone is not evidence.
-
-Primary: `ne-agalakov/mindmap-local`. Public history-free CI mirror: `ne-agalakov/mindmap-local-ci`.
-
-## Mandatory artifact invariant
-
-Before merge/handoff, the exact artifact is downloaded and checked outside the runner:
-
-- portable checksum manifests;
-- repository/commit/tree match the actual checkout;
-- required inventory and executable modes;
-- no exact databases/evidence, `.env`, credentials, caches, generated dependencies or personal payloads;
-- failure blocks merge and requires a regression.
+Technical identity is `repository + commit SHA + Git tree`. A label, directory or green workflow alone is not evidence. Primary: `ne-agalakov/mindmap-local`; public CI mirror: `ne-agalakov/mindmap-local-ci`.
 
 ## Accepted foundations
 
 B1b merge `4fd14e515d2c4234f70effa475381f47bbb50e8b`; C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3`; C1 merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-## Phase 2C-C1 accepted provenance
-
-```text
-private PR:   #52
-public PR:    #14
-private head: 6fe3b07c5a2cb0ba8a42528799f74569bbea885a
-public head:  dede561068650d9302c0570c22286f3cc3bb6da2
-shared tree:  9ad59159129eab08e77d4f435f40dd410754a81a
-verify:       30443877441
-package:      30443877425
-merge:        f8ac03fbb24493dbeac7385687b3f4a93eb10bf8
-```
-
-Downloaded C1 final artifacts passed checksums, checkout provenance, executable-mode and privacy review.
-
-## Phase 2C-C2 implementation proof
+## Phase 2C-C2 final pre-merge provenance
 
 ```text
 issue:        #53
+private PR:   #54
 public PR:    #15
-private head: 57472ea9b54f1f967b064ff305e187222a29ba30
-public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
-shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
-verify:       30455093681
-package:      30455093613
+private head: 83eb9a06610ff737676b002837beadf6807926dd
+public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
+shared tree:  158527376a989b304f097006ba39488d79a04c8f
+verify:       30516236010
+package:      30516236013
 ```
 
-Candidate downloaded hashes:
+Downloaded hashes:
 
 ```text
-outer source:  50b3b75eb1d67d044dcf5e39ee545c68fba0ab91370df2ad74570cdd6066bcaf
-browser proof: c4bf10a309479f1a921a0c4445dc2e2437e404a7c04f91b403a9a394a5af6d37
-source ZIP:    17654a4f866171f705216dd9825bb6d759a1c52a668bc10865fac33b853c065c
-exporter ZIP:  c63f6e83e38a26507f8ed7932400d4026b82b5845b6120fac9e85c63e40099eb
-B1b ZIP:       87e18e4c67eeb9b16d72a51250fe33e8f9ccdc832f998b48133634f4cb4c54e0
+outer source:  34a6874bf92ae92a0be894587363bebe7b0f48df0e8c6f3bff47ee8b1ffca515
+browser proof: 9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e
+source ZIP:    9521dcabc0f0c2a95cdf31522f18e2e228a3192481e36147341283edbe50dea3
+exporter ZIP:  97e971600327c12f9495d668d5b62102d19ab6509711c9e8893cf0de37b22c48
+B1b ZIP:       2c34325a68dda1f27c194e7441af5abd30cea71c6e5a420923b4a2ba3823314e
 ```
 
-The implementation tree passed Linux/macOS/full tests, all prior Chrome harnesses and the C2 actual-Chrome harness. The browser proof reports seal/promotion/rollback/abort/reopen/recovery/idempotency/REQ-OBS checks true and exact-source/backup/production/migration/network/model/personal paths false or zero.
+The source artifact declared public commit `cdd6939409d8bbb33da20c9875dc082cd2c39bd3`; replacing package-time metadata with repository placeholders reconstructed exactly tree `158527376a989b304f097006ba39488d79a04c8f`. Portable checksums, inventory, dedicated launcher modes and privacy scans passed. Historical sanitized provenance is allowed; private database/evidence bytes, secrets, generated dependencies and personal payloads are absent.
 
-## Current acceptance state
+The final browser proof reports all seal/promotion/rollback/abort/reopen/recovery/idempotency/REQ-OBS checks true and exact-source/backup/production/migration paths false, with zero network/model calls.
 
-C2 is a verified implementation candidate, not an accepted merge. Canonical Drive documents were updated and reverse-read on 2026-07-30. Repository documentation/release metadata must now form a new exact private/public tree, rerun CI/package gates and pass downloaded-artifact inspection. Only then may a private PR be factually merged with expected-head protection.
+## Current state
+
+C2 final proof is complete but not accepted. Canonical Drive docs were reverse-read at final-proof revisions. The next repository tree may change documentation/metadata only, must be exact across private/public and must pass the final control before PR #54 is merged with expected-head protection. Merge SHA is recorded only after GitHub returns `merged=true`.
