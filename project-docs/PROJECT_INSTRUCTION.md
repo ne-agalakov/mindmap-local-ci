@@ -10,13 +10,13 @@ MindMap — local-first AI-система: мысль → понимание →
 
 Alpha.19 заморожена как legacy research runtime; реальные мысли не загружать. Exact SQLite private и immutable. B1b one-shot выполнен, принят и израсходован; повтор запрещён.
 
-C0–C3 приняты. C3 factual merge: `38b0e3fb9542174328396ae19bff76f18d637f21`. Финальная identity: private `cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e`, public `61602480f505c133df8257cc494852b43e9d3fa0`, tree `9bee67d28fe5979fb64b2992710aa4e6bcf2fbba`, verify/package `30540259921` / `30540260040`.
+C0–C3 приняты. C3 merge `38b0e3fb9542174328396ae19bff76f18d637f21`; closure `dd5e3ba57d0f5ce17254569625ab9bc93b149a55`.
+
+Issue #59 содержит C4 planning candidate. Это документация и архитектура, не runner и не разрешение execution.
 
 ## Модель данных
 
-Иерархия: область → направление → проект → мысль. Корни — только области. Неверные вложения, циклы и повторяющиеся пути запрещены. У мысли одно основное размещение и необязательные связи. Сфера жизни — не проект; проект имеет ограниченный результат и состояние.
-
-Ноль направлений, проектов, связей, дублей или противоречий — допустимый результат. Не создавай сущности для заполнения схемы. Различай корректную ссылку, honest `unresolved` и damaged/stale reference. `Unresolved` хранится во «Входящих» и не считается ошибкой.
+Иерархия: область → направление → проект → мысль. Корни — только области. Неверные вложения, циклы и повторяющиеся пути запрещены. У мысли одно основное размещение и необязательные связи. Ноль направлений, проектов, связей, дублей или противоречий — допустимый результат. `Unresolved` хранится во «Входящих» и не считается ошибкой.
 
 AI рекомендует, но не принимает важные решения. Внешние действия требуют подтверждения.
 
@@ -24,11 +24,46 @@ AI рекомендует, но не принимает важные решен�
 
 Actual migration не пишет in-place. Каждый import создаёт отдельную immutable generation database. Control registry `mindmap-state-core-control-v1` атомарно выбирает active generation только после reopen, validation и seal. Rollback восстанавливает предыдущий pointer и не изменяет payload.
 
-C3 доказала packaged resolver: active generation выбирается только через registry; проверяются revision, pointer, attestation, identity, schema, workspace, seal и snapshot hash; missing/corrupt/mismatched/stale/interrupted state fail closed; fallback, repair, migration, mutation, automatic resume/retry и external calls отсутствуют; REQ-OBS-001 и sanitized diagnostics работают в actual Chrome.
+C3 доказала read-only resolver: active generation выбирается только через registry; missing/corrupt/mismatched/stale state fail closed; fallback, repair, mutation, automatic resume/retry и external calls отсутствуют.
+
+## C4 planning candidate
+
+Будущий exact-source attempt допустим только при immutable manifest, который связывает package repository/commit/tree/archive SHA-256, source/backup identities, registry, generation, workspace, attempt и authorization IDs, expected portable-plan и target-snapshot hashes.
+
+Detached authorization:
+
+- создаётся только после exact package acceptance и явного подтверждения Артёма;
+- расходуется атомарно до первого source open;
+- одноразовая и не разрешает automatic retry/resume;
+- не разрешает rollback.
+
+Rollback требует отдельной authorization, связанной с current/previous pointer, registry revision, activation receipt и failure evidence.
+
+Первый production target допускается только в strict bootstrap-empty mode. Любой existing/unknown registry, generation или prefix collision останавливает attempt без удаления, overwrite, repair или fallback.
+
+Future sequence: package verify → authorization consume → source read-only verify → new backup copy/reopen/hash/integrity → target gate → isolated generation → deterministic import/checkpoints → reopen → portable-plan/snapshot verify → seal → atomic pointer promotion → accepted C3 resolver verification → sanitized evidence.
+
+Failure до promotion оставляет pointer неизменным. Partial/sealed inactive generation не удаляется и не активируется автоматически. Failure после committed promotion даёт `rollback_required`; rollback не выполняется автоматически.
+
+## REQ-OBS-001
+
+Каждая длительная local/offline operation показывает work/stage, elapsed, processed/total, last progress, heartbeat, state, model `без AI`, zero-call counters и downloadable diagnostics. `possibly_hung` появляется после отсутствия heartbeat/progress дольше `max(15 s, 5 × heartbeat interval)` и не запускает restart/resume/retry/cleanup/promotion/rollback. Недостоверный ETA не показывается.
+
+Diagnostics содержат identities, hashes, counters, receipts, stages и typed errors; не содержат raw thoughts, SQLite bytes/records, local paths, credentials или personal data.
+
+## Пять отдельных gates
+
+1. Planning contract acceptance.
+2. Implementation proof только на sanitized fixtures.
+3. Exact package acceptance и downloaded-artifact inspection.
+4. Новое явное one-shot подтверждение Артёма непосредственно перед launch.
+5. Actual migration acceptance по factual evidence.
+
+Ни один предыдущий gate не заменяет следующий. Storage migration success не доказывает semantic quality; после него обязательны 96 synthetic thoughts в нескольких порядках.
 
 ## Recovery и AI-расход
 
-После failure запрещён blind retry. Сначала offline root-cause proof, regression, новый exact package gate и отдельное подтверждение. Диагностика, backup, migration и recovery выполняются без AI. Model/network calls для текущей линии — 0.
+После failure запрещён blind retry. Сначала offline root-cause proof, regression, новый exact package, reverse-read docs и новое подтверждение. Диагностика, backup, migration и recovery выполняются без AI. Model/network calls текущей линии — 0.
 
 ## Документация и release gate
 
@@ -36,6 +71,8 @@ Google Drive — продуктовый источник; GitHub — техни�
 
 ## Текущая стоп-линия
 
-Разрешено только отдельное планирование C4: issue, threat/failure matrix, package contract и тестовый план на sanitized fixtures. Запрещены C4 implementation/execution, exact SQLite/private backup, B1b repeat, target-Mac production registry/generation, actual migration/promotion/rollback, fallback, automatic resume/retry, model/network calls и personal data.
+Разрешены только review, CI, artifact inspection, Drive reverse-read и factual acceptance planning contract Issue #59.
 
-Перед будущим exact-source запуском требуется новое явное подтверждение Артёма непосредственно перед выполнением. На Mac сейчас ничего запускать не нужно.
+Запрещены: C4 implementation/execution; runner/launcher; exact SQLite/private backup access; B1b repeat; target-Mac production registry/generation; actual migration/promotion/rollback; fallback; automatic resume/retry/cleanup; model/network calls; personal data.
+
+Перед будущим exact-source launch требуется новое явное подтверждение Артёма для конкретного package/attempt. На Mac сейчас ничего запускать не нужно.
