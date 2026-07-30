@@ -8,11 +8,11 @@ MindMap — local-first AI-система: мысль → понимание →
 
 ## Текущее состояние
 
-Alpha.19 заморожена как legacy research runtime; реальные мысли в неё не загружать. B1b exact-source one-shot выполнен, принят и израсходован. Exact SQLite сохраняется неизменным и B1b повторно не запускается.
+Alpha.19 заморожена как legacy research runtime; реальные мысли не загружать. B1b exact-source one-shot выполнен, принят и израсходован. Exact SQLite сохраняется неизменным, B1b повторно не запускается.
 
-C0 принята: immutable generation databases с prefix `mindmap-state-core-v1-generation-` и atomic active pointer в `mindmap-state-core-control-v1`. Rollback меняет pointer и не редактирует payload.
+C0 принята: immutable generation databases `mindmap-state-core-v1-generation-` и atomic active pointer в `mindmap-state-core-control-v1`. C1 принята merge-коммитом `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
 
-C1 принята merge-коммитом `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`. C2 native IndexedDB implementation проверена на sanitized fixtures: private `57472ea9b54f1f967b064ff305e187222a29ba30`, public `b58bfbaa8c535c3bcfb73f135263906e9a2c7777`, tree `088cdf17babc38f559559aa794360f2b1a4a9344`, verify/package `30455093681` / `30455093613`. C2 ещё не принята до final docs/tree/artifact/merge gate.
+C2 native IndexedDB final proof завершён: private `83eb9a06610ff737676b002837beadf6807926dd`, public `cdd6939409d8bbb33da20c9875dc082cd2c39bd3`, tree `158527376a989b304f097006ba39488d79a04c8f`, verify/package `30516236010` / `30516236013`, private PR #54. C2 ещё не принята до последнего metadata-tree gate и factual expected-head merge.
 
 ## Модель данных
 
@@ -38,36 +38,34 @@ Actual execution authorization привязывается к repository, commit,
 
 ## Phase 2C-C2
 
-C2 использует только физические IndexedDB namespaces с prefix `mindmap-state-core-v1-phase2cc-c2-fixture-`; production и legacy names отклоняются до open.
+C2 использует только physical IndexedDB names с prefix `mindmap-state-core-v1-phase2cc-c2-fixture-`; production и legacy names отклоняются до open.
 
-C2 фиксирует:
+Доказано на sanitized fixtures:
 
 - immutable generation seal и seal attestation;
-- persisted attempt aggregate + append-only events с deterministic replay;
-- atomic active-pointer promotion и explicit rollback;
-- expected registry revision, previous/current pointer и identity/hash/receipt guards;
+- persisted aggregate + append-only events с deterministic replay;
+- atomic promotion и explicit rollback;
+- revision, current/previous pointer, identity/hash/receipt guards;
 - idempotent repeat и typed fingerprint conflict;
-- abort promotion/rollback без partial pointer/attempt/event/receipt mutation;
-- persisted terminal `blocked_recovery` без automatic resume/retry;
+- abort promotion/rollback без partial mutation;
+- terminal `blocked_recovery` без automatic resume/retry;
 - post-promotion `rollback_required`;
-- actual Chrome proof, sanitized evidence и REQ-OBS-001.
+- actual Chrome, sanitized evidence, REQ-OBS-001 и diagnostics download.
+
+Downloaded final artifacts восстановили exact tree `158527376a989b304f097006ba39488d79a04c8f`; exact source/backup/production namespace/actual migration/network/model/personal paths отсутствуют.
 
 C2 не доказывает packaged resolver, private backup, production namespace, exact-source execution, actual migration или semantic quality.
 
 ## REQ-OBS-001
 
-Любая длительная операция показывает name/type, elapsed time и volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Таймер меняется только при реальном переходе. Stale heartbeat означает «возможно, процесс завис», но не разрешает restart/retry.
-
-REQ-OBS-001 действует для анализа, embeddings, clustering, hierarchy, links, save, backup, migration, verification, seal, promotion, resolver, rollback, recovery и export.
+Любая длительная операция показывает name/type, elapsed/volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Stale heartbeat означает «возможно, процесс завис», но не разрешает restart/retry.
 
 ## Документация и release gate
 
-Google Drive — источник продуктовых документов; GitHub — кода и технической истории. До принятия обновляются статус, решения/ошибки/первопричины, требования, следующий проверяемый шаг, README, release metadata и версия. Документы считаются обновлёнными только после reverse-read.
-
-Зелёный CI недостаточен: exact private/public tree и downloaded artifact проверяются отдельно, включая provenance, checksums, inventory, executable modes и отсутствие database/evidence bytes, secrets, dependencies и personal payloads. Merge SHA записывается только после фактического `merged=true` и readback GitHub API.
+Google Drive — источник продуктовых документов; GitHub — кода и технической истории. Документы считаются обновлёнными только после reverse-read. Зелёный CI недостаточен: exact private/public tree и downloaded artifact проверяются отдельно. Merge SHA записывается только после фактического `merged=true` и GitHub API readback.
 
 ## Текущая стоп-линия
 
-Разрешены только синхронизация C2 docs/release metadata, final exact-tree CI/artifact review, private PR и factual merge.
+Разрешены только запись final C2 proof в metadata, последний exact-tree контроль, factual merge PR #54 и post-merge closure.
 
 Запрещены: C3/C4; B1b retry; exact SQLite/backup access; production registry/generation; actual migration/promotion/rollback; model/network calls; personal data. На Mac действий не требуется.
