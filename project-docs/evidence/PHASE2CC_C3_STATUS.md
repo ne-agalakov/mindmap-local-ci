@@ -1,21 +1,16 @@
 # Phase 2C-C3 status
 
-Status: implementation verified; final documentation gate pending.
+Status: accepted after factual merge.
 
-## Exact implementation identity
+```text
+private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
+public head:  61602480f505c133df8257cc494852b43e9d3fa0
+shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
+verify:       30540259921
+package:      30540260040
+merge:        38b0e3fb9542174328396ae19bff76f18d637f21
+```
 
-- private head: `3f2325684ff617132307d4d9180326cb190e7a02`
-- public head: `1513d26c09b096e2d80252a0b819a5da7af29fa9`
-- shared tree: `56e846d49a17f15bbbd1eedfc626f316e3a29a91`
-- verify: `30535292820`
-- package: `30535292824`
+Accepted scope: read-only fail-closed packaged runtime resolver on sanitized fixtures, actual Chrome, REQ-OBS-001 and sanitized diagnostics.
 
-## Proven scope
-
-Read-only packaged resolver, full fail-closed matrix, stale-pointer detection, deterministic reopen/reload, actual Chrome, REQ-OBS-001 and sanitized diagnostics.
-
-## Boundary
-
-Exact SQLite opened: false. B1b repeated: false. Backup accessed: false. Production namespace used: false. Actual migration/promotion/rollback: false. Fallback: false. Automatic resume/retry: false. Network/model calls: 0. Personal data: 0.
-
-C3 is not accepted before final exact-tree CI, downloaded-artifact inspection and factual expected-head merge.
+Boundary: exact source/backup/production/migration paths false; B1b repeated false; fallback, automatic resume/retry false; network/model calls and personal data zero. C4 execution remains prohibited.
