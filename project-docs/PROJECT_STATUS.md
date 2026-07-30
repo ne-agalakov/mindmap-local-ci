@@ -2,7 +2,7 @@
 
 Дата актуализации: 2026-07-30.
 
-## Принятое основание
+## Phase 2C-C3 — принята
 
 Phase 2C-C3 принята factual merge `38b0e3fb9542174328396ae19bff76f18d637f21`; post-merge closure — `dd5e3ba57d0f5ce17254569625ab9bc93b149a55`.
 
