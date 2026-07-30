@@ -32,6 +32,7 @@ jobs:
           cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
           cp verification/c4-rollback/rollback-v3.ts c4-execution/rollback-v3.ts
           printf 'export * from "./rollback-v3.ts";\n' > c4-execution/rollback.ts
+          printf '\nexport * from "./rollback.ts";\n' >> c4-execution/index.ts
       - run: npm ci
       - name: Strict rollback v3 TypeScript verification
         run: npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM c4-execution/rollback-v3.ts c4-execution/native-rollback-readback.ts c4-execution/native-runner.ts
