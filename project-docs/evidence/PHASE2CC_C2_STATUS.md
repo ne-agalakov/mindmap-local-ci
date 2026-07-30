@@ -1,17 +1,20 @@
-# Phase 2C-C2 — final proof status
+# Phase 2C-C2 — accepted status
 
 Date: 2026-07-30
-Status: final proof complete; factual merge pending
-Issue: #53
-Private PR: #54
+Status: accepted after factual merge
+Issue: #53 closed completed
+Private PR: #54 merged
 Public CI PR: #15
 
 ```text
-private head: 83eb9a06610ff737676b002837beadf6807926dd
-public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
-shared tree:  158527376a989b304f097006ba39488d79a04c8f
-verify:       30516236010
-package:      30516236013
+private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
+public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
+shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
+verify:       30517144927
+package:      30517144960
+merge:        2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1
 ```
 
-Native registry/seal/promotion/rollback/crash-reload/REQ-OBS behavior and downloaded artifacts passed. C2 remains not accepted until final metadata tree and factual expected-head merge. C3 remains blocked.
+Accepted scope: isolated sanitized native IndexedDB registry, immutable generation seal, deterministic persistence, atomic promotion, explicit rollback, crash/reload recovery, actual Chrome, REQ-OBS-001 and sanitized diagnostics.
+
+Boundary: exact source/private backup/production namespace/actual migration/model/network/personal data remained absent. C3 packaged runtime resolver is allowed separately; C4 remains blocked.
