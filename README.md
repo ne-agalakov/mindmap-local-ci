@@ -1,62 +1,26 @@
 # MindMap Local v0.6-alpha.19
 
-MindMap is a local-first personal AI system for turning thoughts into understanding, decisions, actions, results and durable memory.
+MindMap is a local-first personal AI system. Alpha.19 remains a frozen legacy research runtime; real personal thoughts must not be loaded.
 
-## Current status
+## Accepted foundation
 
-Alpha.19 remains a frozen legacy research runtime. Real personal thoughts must not be loaded.
+Phase 0, 1A, 2A, 2B, 2C-A, Phase 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1, C2 and C3 are accepted.
 
-Accepted foundations include Phase 0, Phase 1A, Phase 2A, Phase 2B, Phase 2C-A, Phase 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1 and C2.
-
-## Phase 2C-B1b — accepted and consumed
-
-The single exact-source B1b read-only attempt passed and is permanently consumed. The source stayed byte-identical; actual migration was false. B1b must not be repeated.
-
-## Phase 2C-C2 — accepted
-
-C2 was accepted by factual squash merge:
+## Phase 2C-C3 — accepted
 
 ```text
-private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
-public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
-shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
-verify:       30517144927
-package:      30517144960
-merge:        2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1
+private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
+public head:  61602480f505c133df8257cc494852b43e9d3fa0
+shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
+verify:       30540259921
+package:      30540260040
+merge:        38b0e3fb9542174328396ae19bff76f18d637f21
 ```
 
-Accepted C2 scope:
+C3 accepts only the read-only, registry-authoritative, fail-closed packaged runtime resolver on sanitized fixtures. It validates registry, revision, pointer, attestation, generation identity, schema, workspace, immutable seal and snapshot hash; rejects pointer replacement; never falls back or mutates storage; and exposes REQ-OBS-001 plus sanitized diagnostics in actual Chrome.
 
-- isolated native IndexedDB generation registry and immutable seal;
-- deterministic persisted attempt/event replay;
-- atomic active-pointer promotion and explicit rollback;
-- revision, pointer, identity, hash, receipt and idempotency guards;
-- promotion and rollback abort without partial mutation;
-- deterministic close/reopen and persisted recovery states;
-- actual Chrome IndexedDB, REQ-OBS-001 and sanitized diagnostics.
+Downloaded final artifacts passed checksum, inventory, executable-mode, release-documentation, privacy and reconstructed-tree review.
 
-Downloaded final control artifacts passed checksums, reconstructed-tree provenance, inventory, launcher-mode and privacy review.
+## Current boundary
 
-## Phase 2C-C3 — implementation verified, acceptance pending
-
-Exact implementation candidate:
-
-```text
-private head: 3f2325684ff617132307d4d9180326cb190e7a02
-public head:  1513d26c09b096e2d80252a0b819a5da7af29fa9
-shared tree:  56e846d49a17f15bbbd1eedfc626f316e3a29a91
-verify:       30535292820
-package:      30535292824
-```
-
-The packaged runtime resolves the active immutable generation only through the C2 control registry. It validates registry/revision/pointer/attestation/generation/schema/workspace/seal/snapshot identities, re-reads the registry to reject stale pointer replacement, and fails closed without fallback or mutation.
-
-Focused tests and actual Chrome cover missing, malformed, corrupt, mismatched, stale and interrupted states, deterministic reload, REQ-OBS-001, possible-hang reporting and downloadable sanitized diagnostics.
-
-The first CI candidate failed before resolver execution because Node strip-types rejected a TypeScript parameter property. The root cause was corrected with an explicit field and a regression guard; the failed workflow was not blindly rerun.
-
-C3 is not accepted until final documentation-tree CI, downloaded-artifact inspection and factual expected-head merge of PR #57.
-
-## Preserved boundary
-
-C4 and actual migration remain prohibited. No action is required on the Mac.
+Only C4 planning and contract design are allowed. C4 implementation/execution, exact SQLite/private backup access, B1b repetition, target-Mac production storage, actual migration/promotion/rollback, automatic resume/retry, model/network calls and personal data remain prohibited. A new explicit confirmation from Артём is required immediately before any future exact-source execution.
