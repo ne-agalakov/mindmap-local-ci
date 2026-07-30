@@ -40,7 +40,7 @@ jobs:
           export * from "./state-machine.ts";
           export * from "./authorization-ledger.ts";
           export * from "./state-store.ts";
-          export * from "./fixture-runtime.ts";
+          export * from "./fixture-adapters.ts";
           export * from "./canonical-fixture.ts";
           export * from "./runner.ts";
           export * from "./native-target-inventory.ts";
@@ -48,10 +48,6 @@ jobs:
           export * from "./native-fixture-backup.ts";
           export * from "./native-fixture-generation.ts";
           export * from "./native-c2c3-adapters.ts";
-          export * from "./native-promotion-readback.ts";
-          export * from "./rollback-authorization-store.ts";
-          export * from "./rollback.ts";
-          export * from "./native-rollback-readback.ts";
           EOF
           mkdir -p tools/browser-phase2cc-c4-harness
           cp verification/c4-browser-native/index.html tools/browser-phase2cc-c4-harness/index.html
