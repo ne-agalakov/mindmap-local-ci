@@ -2,10 +2,9 @@
 
 Technical identity is `repository + commit SHA + Git tree`. Green CI alone is not acceptance.
 
-## Phase 2C-C3 accepted provenance
+## Accepted Phase 2C-C3 provenance
 
 ```text
-issue:        #56 closed completed
 private PR:   #57 merged
 public PR:    #16 closed CI mirror
 private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
@@ -14,24 +13,45 @@ shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
 verify:       30540259921
 package:      30540260040
 merge:        38b0e3fb9542174328396ae19bff76f18d637f21
+closure:      dd5e3ba57d0f5ce17254569625ab9bc93b149a55
 ```
 
-Downloaded final hashes:
+C3 artifacts passed checksums, reconstructed-tree provenance, inventory, executable modes, release-doc, privacy and credential scans.
+
+## Phase 2C-C4 planning candidate
+
+Issue #59 is documentation/architecture only. Working branches:
 
 ```text
-outer source:  1d9db6cb1e09d4133893a23a54dcd64ba08d3f14c0b5248a2a0f5d86281940a2
-browser proof: d593b233490a87da9d7132759cf4c14f1c6ca359a271564c0c0836e86ebd7843
-source ZIP:    18beb6f0ef045b3c388a615a2a2db60657e557bba81db5dc6c7ed0117ad281b1
-exporter ZIP:  cf00ad8eb2ebb76aee2c138f5182d15dc9b25e434e98d97470aa0ab2a47dcd72
-B1b ZIP:       6a50e9491fa4357a97fcb050a321e0e930b224186dd20d7d590a6a30e160bcac
+private: phase2cc/c4-planning-contract
+public:  phase2cc-c4-planning-contract-exact
 ```
 
-The source artifact identified `ne-agalakov/mindmap-local-ci` commit `61602480f505c133df8257cc494852b43e9d3fa0`. Restoring package-time placeholders reconstructed exact tree `9bee67d28fe5979fb64b2992710aa4e6bcf2fbba`. Checksums, inventory, required files, executable modes, release-doc gate, privacy and credential scans passed.
+Candidate files define:
 
-Actual Chrome passed active generation resolution, registry/pointer/attestation/generation/schema/workspace/seal/hash validation, deterministic reload, stale-pointer rejection, missing-registry no-create behavior, no fallback/mutation, REQ-OBS-001 and zero external calls.
+- exact execution/authorization contract;
+- checkpoint failure and recovery matrix;
+- package inventory/provenance;
+- planning through actual-migration acceptance gates.
 
-GitHub returned `merged=true` for PR #57 using expected head `cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e` and merge commit `38b0e3fb9542174328396ae19bff76f18d637f21`.
+No C4 runner, launcher or package exists. Exact source/private backup were not opened; B1b was not repeated; production registry/generation were not created; actual migration/promotion/rollback were not executed; network/model calls and personal data are 0.
 
-## Next provenance gate
+## Planning acceptance provenance gate
 
-C4 is planning-only. No implementation or exact-source execution may begin until a separate contract/failure matrix is reviewed and a new explicit execution authorization is provided by Артём.
+C4 planning may be accepted only after:
+
+1. identical private/public Git tree;
+2. full public CI/package on that tree;
+3. downloaded artifact inventory/checksum/privacy inspection;
+4. canonical Drive update and reverse-read;
+5. separate final documentation tree if Drive revisions change;
+6. expected-head merge of the private planning PR;
+7. GitHub `merged=true` readback and post-merge closure.
+
+The planning merge authorizes only a later implementation issue on sanitized fixtures. It does not authorize C4 code, exact package creation or exact-source execution.
+
+## Future exact package provenance
+
+A future C4 archive must record the repository/commit/tree of its actual checkout, portable checksums, workflow identities, required modes and forbidden inventory. Its outer archive SHA-256 is recorded after download and bound into the detached one-shot authorization. The archive cannot self-prove its own final outer hash.
+
+A green runner or package is never evidence of actual migration success.
