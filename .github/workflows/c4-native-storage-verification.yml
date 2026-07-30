@@ -1,0 +1,33 @@
+name: c4-native-storage-verification
+
+on:
+  push:
+    branches:
+      - phase2cc/c4-public-verification
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  native-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Restore isolated C4 subset
+        run: |
+          base64 -d verification/c4-native-storage-subset.tar.gz.b64 > /tmp/c4-native-storage-subset.tar.gz
+          echo "da128c8d4f6069b4b3f27a99b2f9253d4cdbe601cb136d11a6f7293380ebb331  /tmp/c4-native-storage-subset.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-native-storage-subset.tar.gz
+      - run: npm ci
+      - name: Strict TypeScript verification
+        run: npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM c4-execution/types.ts c4-execution/fixture-adapters.ts c4-execution/canonical-fixture.ts c4-execution/native-fixture-backup.ts c4-execution/native-fixture-generation.ts
+      - name: Native IndexedDB runtime verification
+        run: node --experimental-strip-types --test tests/c4-native-storage-public-smoke.test.mjs
