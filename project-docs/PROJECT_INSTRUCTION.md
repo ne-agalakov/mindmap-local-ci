@@ -8,11 +8,9 @@ MindMap — local-first AI-система: мысль → понимание →
 
 ## Текущее состояние
 
-Alpha.19 заморожена как legacy research runtime; реальные мысли не загружать. B1b exact-source one-shot выполнен, принят и израсходован. Exact SQLite сохраняется неизменным, B1b повторно не запускается.
+Alpha.19 заморожена как legacy research runtime; реальные мысли не загружать. B1b exact-source one-shot выполнен, принят и израсходован. Exact SQLite сохраняется неизменным; B1b не повторять.
 
-C0 принята: immutable generation databases `mindmap-state-core-v1-generation-` и atomic active pointer в `mindmap-state-core-control-v1`. C1 принята merge-коммитом `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`.
-
-C2 native IndexedDB final proof завершён: private `83eb9a06610ff737676b002837beadf6807926dd`, public `cdd6939409d8bbb33da20c9875dc082cd2c39bd3`, tree `158527376a989b304f097006ba39488d79a04c8f`, verify/package `30516236010` / `30516236013`, private PR #54. C2 ещё не принята до последнего metadata-tree gate и factual expected-head merge.
+C0 и C1 приняты. C2 native IndexedDB contract принят merge-коммитом `2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1` после final tree `e6d0c0793ca6f5d20352d79e03fd12ca70f961bc`, verify `30517144927`, package `30517144960` и downloaded-artifact inspection.
 
 ## Модель данных
 
@@ -28,44 +26,43 @@ Legacy source остаётся private, immutable и read-only. Диагност
 
 Безопасный порядок:
 
-1. C2 — native IndexedDB registry/seal/promotion/rollback/crash proof.
-2. C3 — packaged runtime resolver на sanitized fixtures.
-3. C4 — отдельный exact-source one-shot package.
-4. Новое явное подтверждение Артёма непосредственно перед запуском.
-5. Actual migration и activation.
+1. C3 — packaged runtime resolver на sanitized fixtures.
+2. C4 — отдельный exact-source one-shot package.
+3. Новое явное подтверждение Артёма непосредственно перед запуском.
+4. Actual migration и activation.
 
-Actual execution authorization привязывается к repository, commit, tree, archive SHA-256, source SHA-256, generation name и attempt ID и расходуется до source open. Failure запрещает retry; сначала offline root-cause proof, regression и новый package gate.
+Failure запрещает automatic retry. Сначала offline root-cause proof, regression и новый exact package gate.
 
-## Phase 2C-C2
+## Phase 2C-C2 — принятая граница
 
-C2 использует только physical IndexedDB names с prefix `mindmap-state-core-v1-phase2cc-c2-fixture-`; production и legacy names отклоняются до open.
+C2 доказала на isolated fixture namespaces:
 
-Доказано на sanitized fixtures:
-
-- immutable generation seal и seal attestation;
+- immutable generation seal и attestation;
 - persisted aggregate + append-only events с deterministic replay;
 - atomic promotion и explicit rollback;
-- revision, current/previous pointer, identity/hash/receipt guards;
-- idempotent repeat и typed fingerprint conflict;
+- revision, current/previous pointer, identity/hash/receipt/idempotency guards;
 - abort promotion/rollback без partial mutation;
 - terminal `blocked_recovery` без automatic resume/retry;
 - post-promotion `rollback_required`;
 - actual Chrome, sanitized evidence, REQ-OBS-001 и diagnostics download.
 
-Downloaded final artifacts восстановили exact tree `158527376a989b304f097006ba39488d79a04c8f`; exact source/backup/production namespace/actual migration/network/model/personal paths отсутствуют.
+C2 не разрешает exact-source/backup access, production namespace или actual migration.
 
-C2 не доказывает packaged resolver, private backup, production namespace, exact-source execution, actual migration или semantic quality.
+## Phase 2C-C3 — разрешённая граница
 
-## REQ-OBS-001
+C3 реализует только packaged runtime resolver на sanitized fixtures. Resolver обязан:
 
-Любая длительная операция показывает name/type, elapsed/volume, last progress/heartbeat, state, model либо «без AI» и downloadable diagnostics. Stale heartbeat означает «возможно, процесс завис», но не разрешает restart/retry.
+- получать active generation только через `mindmap-state-core-control-v1`;
+- проверять registry schema/revision, pointer workspace/state, generation identity, storage schema, immutable seal и snapshot hash;
+- fail closed при missing, corrupt, stale или mismatched состоянии;
+- не использовать legacy, inactive generation или скрытый fallback;
+- не выполнять repair, migration, promotion, rollback, resume/retry или external call;
+- показывать REQ-OBS-001 и отдавать sanitized diagnostics.
 
 ## Документация и release gate
 
-Google Drive — источник продуктовых документов; GitHub — кода и технической истории. Документы считаются обновлёнными только после reverse-read. Зелёный CI недостаточен: exact private/public tree и downloaded artifact проверяются отдельно. Merge SHA записывается только после фактического `merged=true` и GitHub API readback.
+Google Drive — продуктовый источник; GitHub — техническая история. Документы считаются обновлёнными только после reverse-read. Exact private/public tree, CI и downloaded artifact проверяются до merge. Merge SHA записывается только после `merged=true` readback.
 
 ## Текущая стоп-линия
 
-Разрешены только запись final C2 proof в metadata, последний exact-tree контроль, factual merge PR #54 и post-merge closure.
-
-Запрещены: C3/C4; B1b retry; exact SQLite/backup access; production registry/generation; actual migration/promotion/rollback; model/network calls; personal data. На Mac действий не требуется.
+Разрешены C3 issue, дизайн, implementation и tests только в указанной sanitized boundary. Запрещены C4, B1b retry, exact SQLite/private backup, target-Mac production storage, actual migration/promotion/rollback, model/network calls и personal data. На Mac действий не требуется.
