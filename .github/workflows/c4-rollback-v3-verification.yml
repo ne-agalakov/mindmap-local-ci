@@ -1,0 +1,39 @@
+name: c4-rollback-v3-verification
+
+on:
+  push:
+    branches:
+      - phase2cc/c4-public-verification
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  rollback-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Restore isolated C4 runtime and rollback overlays
+        run: |
+          cat verification/c4-native-full/chunk-00.b64 verification/c4-native-full/chunk-01.b64 verification/c4-native-full/chunk-02.b64 verification/c4-native-full/chunk-03a.b64 verification/c4-native-full/chunk-03b.b64 verification/c4-native-full/chunk-04.b64 verification/c4-native-full/chunk-05.b64 | base64 -d > /tmp/c4-native-full-subset.tar.gz
+          echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-native-full-subset.tar.gz
+          base64 -d verification/c4-readback-overlay.tar.gz.b64 > /tmp/c4-readback-overlay.tar.gz
+          echo "e6dff9816a16b49228536e91bc619032444a6b9892de222932eef19f1c08112e  /tmp/c4-readback-overlay.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-readback-overlay.tar.gz
+          cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
+          cp verification/c4-rollback/rollback-v3.ts c4-execution/rollback-v3.ts
+          printf 'export * from "./rollback-v3.ts";\n' > c4-execution/rollback.ts
+      - run: npm ci
+      - name: Strict rollback v3 TypeScript verification
+        run: npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM c4-execution/rollback-v3.ts c4-execution/native-rollback-readback.ts c4-execution/native-runner.ts
+      - name: Durable rollback crash-window and heartbeat verification
+        run: node --experimental-strip-types --test verification/c4-rollback/c4-rollback-v3-public-smoke.test.mjs
