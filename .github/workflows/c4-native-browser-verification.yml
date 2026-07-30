@@ -1,0 +1,99 @@
+name: c4-native-browser-verification
+
+on:
+  push:
+    branches:
+      - phase2cc/c4-public-verification
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  chrome-native-c4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Restore isolated C4 runtime
+        run: |
+          cat \
+            verification/c4-native-full/chunk-00.b64 \
+            verification/c4-native-full/chunk-01.b64 \
+            verification/c4-native-full/chunk-02.b64 \
+            verification/c4-native-full/chunk-03a.b64 \
+            verification/c4-native-full/chunk-03b.b64 \
+            verification/c4-native-full/chunk-04.b64 \
+            verification/c4-native-full/chunk-05.b64 \
+            | base64 -d > /tmp/c4-native-full-subset.tar.gz
+          echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-native-full-subset.tar.gz
+
+          cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
+          cp verification/c4-browser-native/state-store.ts c4-execution/state-store.ts
+          cat > c4-execution/index.ts <<'EOF'
+          export * from "./types.ts";
+          export * from "./state-machine.ts";
+          export * from "./authorization-ledger.ts";
+          export * from "./state-store.ts";
+          export * from "./fixture-adapters.ts";
+          export * from "./canonical-fixture.ts";
+          export * from "./runner.ts";
+          export * from "./native-target-inventory.ts";
+          export { runNativeSanitizedC4Attempt, type NativeC4RunnerOptions } from "./native-runner.ts";
+          export * from "./native-fixture-backup.ts";
+          export * from "./native-fixture-generation.ts";
+          export * from "./native-c2c3-adapters.ts";
+          EOF
+
+          mkdir -p tools/browser-phase2cc-c4-harness scripts
+          cp verification/c4-browser-native/index.html tools/browser-phase2cc-c4-harness/index.html
+          cp verification/c4-browser-native/page.ts tools/browser-phase2cc-c4-harness/page.ts
+          cp verification/c4-browser-native/vite.config.mjs tools/browser-phase2cc-c4-harness/vite.config.mjs
+          cp verification/c4-browser-native/server.mjs tools/browser-phase2cc-c4-harness/server.mjs
+          cp verification/c4-browser-native/run-browser-phase2cc-c4-harness.mjs scripts/run-browser-phase2cc-c4-harness.mjs
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/browser-phase2cc-c4-harness/page.ts')
+          text = path.read_text()
+          needle = '    || name.startsWith(C4_JOURNAL_DATABASE_PREFIX)\n'
+          replacement = needle + '    || name.startsWith("mindmap-state-core-v1-phase2cc-c4-fixture-backup-")\n'
+          assert needle in text
+          path.write_text(text.replace(needle, replacement, 1))
+          PY
+          npm pkg set 'scripts.build:phase2cc-c4-harness=vite build --config tools/browser-phase2cc-c4-harness/vite.config.mjs'
+      - run: npm ci
+      - name: Strict native browser TypeScript verification
+        run: >-
+          npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler
+          --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM
+          tools/browser-phase2cc-c4-harness/page.ts c4-execution/native-runner.ts
+      - name: Run exact CDP Chrome harness
+        run: |
+          node scripts/run-browser-phase2cc-c4-harness.mjs | tee /tmp/c4-browser-output.log
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          text = Path('/tmp/c4-browser-output.log').read_text()
+          marker = '{\n  "status": "passed"'
+          start = text.rfind(marker)
+          assert start >= 0, text
+          payload = json.loads(text[start:])
+          names = payload['result']['databaseNames']
+          assert len(names) >= 6, names
+          assert any(name.endswith('-payload') for name in names), names
+          assert any('fixture-backup-' in name for name in names), names
+          print(json.dumps({
+              'status': 'passed',
+              'databaseCount': len(names),
+              'payloadDatabasePresent': True,
+              'backupDatabasePresent': True,
+          }, indent=2))
+          PY

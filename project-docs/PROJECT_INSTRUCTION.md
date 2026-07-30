@@ -1,82 +1,35 @@
-# ИНСТРУКЦИЯ ПРОЕКТА MINDMAP
+# MindMap — инструкция проекта
 
-## Цель и роль
+## Цель
 
-Ты работаешь над MindMap — local-first AI-системой. Цикл: мысль → понимание → связи → приоритет → решение → действие → результат → память.
-
-Первая версия — личный MVP с возможностью развития в продукт. MindMap — не заметочник и не таск-менеджер; карта лишь представляет данные. Критерий: превращает ли решение хаотичный поток мыслей в точные решения и результаты при минимуме ручной работы?
-
-Работай как стратег, архитектор, исследователь, разработчик и критический партнёр. Безопасный шаг выполняй сам; спрашивай при изменении архитектуры или риска. Различай факт, гипотезу, реализацию и эксперимент. Не выдавай предположение за причину, fixture — за базу, сборку — за успех, уверенность AI — за подтверждение.
+MindMap — local-first AI-система: мысль → понимание → связи → приоритет → решение → действие → результат → память. Различай факт, гипотезу, реализацию и эксперимент. Fixture не является реальной базой, сборка не является успехом.
 
 ## Текущее состояние
 
-v0.5.2-test.3 сохранила 96/96 мыслей, но семантически провалилась. Alpha.19 заморожена как legacy-прототип и не принимает реальные мысли.
+Alpha.19 заморожена; реальные мысли не загружать. Exact SQLite private и immutable. B1b one-shot принят и израсходован; повтор запрещён. C0–C3 и C4 planning приняты. C4 planning merge: `2c1f476685007a8c2fa52288ac00dfff188edb06`.
 
-Приняты: Phase 0 `850a5fc60a154047eae1f6a5d4f63c7969ae8412`; Phase 1A `e7b7593932614f8dfa843298f35eff0230c1e827`; Phase 2A `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`; Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`; Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+## Модель данных
 
-Phase 2C-A final head `29a317b58cbecaea13e4f21c02af2b945a6e6edc` прошёл target-Mac real-Chrome proof и exact public-mirror Linux/macOS/full/browser/package gates. Final public head `ee5401a4a2ca7763467562417b9c5c4aece01214`, shared tree `e81ae1b309a806f0078b5a8a2057f51d4c0e403d`. Артефакты проверены, базы/секреты/concrete local paths/personal thought payloads = 0. Drive после merge обновлён и прочитан обратно.
+Иерархия: область → направление → проект → мысль. Корни — только области. Неверные вложения, циклы и повторяющиеся пути запрещены. Ноль кандидатов допустим. `Unresolved` хранится во «Входящих» и не считается ошибкой. AI рекомендует; важные внешние действия требуют подтверждения.
 
-Phase 2C-B теперь разрешена только как отдельный exact-source read-only → isolated temporary-target dry run. Candidate 5, Qwen/DeepSeek-run, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI и реальные мысли запрещены.
+## Принятая migration architecture
 
-## Модель и данные
+Каждый import создаёт отдельную immutable generation. Registry `mindmap-state-core-control-v1` выбирает active generation только после reopen, verification и seal. C3 resolver читает только registry-selected generation и fail closed без fallback, repair, mutation или automatic retry.
 
-Пользователь свободно записывает мысль. AI предлагает тип, размещение, связи, проект, статус и следующий шаг. Не каждая мысль — задача: различай идеи, вопросы, наблюдения, решения, цели, проекты, материалы, людей, области и действия.
+Future C4 authorization связывает exact package repository/commit/tree/archive, source/backup, registry/generation, workspace/attempt и expected B1b hashes. Она создаётся после package acceptance и явного подтверждения Артёма, расходуется до первого source open, одноразовая и не разрешает rollback.
 
-Иерархия: область → направление → проект → мысль. Корни — только области. Неверные вложения, циклы и повторяющиеся пути запрещены. У мысли одно основное размещение и необязательные связи. Сфера жизни — не проект; проект имеет ограниченный результат и состояние.
+Rollback требует отдельной authorization, связанной с factual pointer/revision/activation receipt/failure evidence, и меняет только pointer/receipt.
 
-Ноль подходящих направлений, проектов, связей, дублей или противоречий — нормальный результат. Нельзя выдумывать сущности. Различай корректную ссылку, честную неопределённость `unresolved` и повреждённую/устаревшую ссылку. `Unresolved` хранится во «Входящих» и не считается ошибкой.
+Future execution sequence: package verify → authorization consume → source read-only verify → new backup/reopen/hash/integrity → bootstrap-empty target gate → isolated generation → deterministic import/checkpoints → reopen → portable-plan/snapshot verify → seal → atomic promotion → accepted C3 resolver → sanitized evidence.
 
-AI рекомендует, но не принимает важные решения. AI-связь сначала «предложена». Внешние действия требуют подтверждения. Сохраняй причины, альтернативы, сомнения, решения и результаты.
+## REQ-OBS-001
 
-## Целевой конвейер
+Каждая длительная local/offline operation показывает work/stage, elapsed, processed/total, last progress, heartbeat, state, model `без AI`, zero-call counters и downloadable diagnostics. `possibly_hung` после `max(15 s, 5 × heartbeat interval)` не запускает restart/resume/retry/cleanup/promotion/rollback.
 
-Этапы независимы: preflight; смысл и тип; embeddings; кластеризация; области/направления; проекты и placement либо `unresolved`; численные кандидаты; связи; дубли; противоречия; следующий шаг. У каждого этапа свои вход, выход, валидация, checkpoint и трасса.
+## Current implementation gate
 
-## State-core и хранение
+Разрешена только C4 implementation на isolated sanitized fixtures: pure runner/state machine, fixture backup, collisions, import/reopen/hash/seal/promotion/resolver, interruption/reload, separate rollback authorization, actual Chrome/macOS и sanitized diagnostics.
 
-Phase 1A фиксирует immutable identity, typed state machine, deterministic replay, compatibility guards, authorization, idempotency, stale revision, progress/save/pause/failure/block/abandonment, clean-run isolation и отдельные unresolved/damaged reference.
+Запрещены exact SQLite/private backup access, B1b repeat, filesystem search, target-Mac production namespace, exact execution package/authorization, actual migration/promotion/rollback, model/network calls и personal data.
 
-Phase 2A/2B фиксируют `mindmap-state-core-v1*`, atomic events/aggregate/artifacts/receipt, transaction completion, stale-writer guard, reopen idempotency, workspace isolation, abort и failed-upgrade rollback.
-
-Phase 2C-A фиксирует `mindmap-graph-v1`: payloads, thoughts, typed hierarchy, placement/unresolved, link lifecycle, embeddings и damaged references. Graph mutations атомарны и event-sequenced; proposed links не подтверждаются автоматически; corrupted state блокирует запись; run-only database не расширяется скрыто.
-
-Target-Mac и GitHub harness использовали разные fixtures, поэтому абсолютные snapshot hashes не сравниваются. Внутри каждого fixture close/reopen equality пройдена. Same-fixture cross-environment equality остаётся непокрытой.
-
-## Phase 2C-B — migration dry-run
-
-Только отдельная ветка/issue/PR от accepted main.
-
-Обязательные условия:
-
-- exact accepted private source/hash, open read-only;
-- source bytes/hash до и после совпадают;
-- новый пустой isolated temporary target;
-- никаких target-Mac/production namespaces;
-- versioned deterministic mapping и target hash;
-- repeat run даёт тот же hash;
-- failure/typed stop не оставляет partial target;
-- mismatch, personal data, wrong schema/workspace, duplicate run, ambiguity, invalid reference и non-empty target блокируют операцию;
-- network/model/Ollama/Qwen/DeepSeek = 0;
-- actual migration этим этапом не разрешается.
-
-## Восстановление и AI-расход
-
-После микроэтапа сохраняй результат, время, run ID, версии, модель или «без AI», входные/выходные ID и целостность. Частичный checkpoint не заменяет полное состояние. Диагностика, миграция и восстановление выполняются без AI.
-
-Перед AI-вызовом сохраняй причину, этап, модель, run ID, attempt, вход, ожидаемый результат и восстановимость. После ошибки, перезагрузки, зависания или обновления версии повтор запрещён без подтверждения пользователя. Сначала — офлайн-диагностика.
-
-## Наблюдаемость — REQ-OBS-001
-
-Любой длительный AI- или локальный микроэтап показывает: название и тип; время и объём; последнее продвижение и heartbeat; состояние; модель либо «без AI»; диагностику.
-
-Таймер меняется только при реальном переходе и замораживается при паузе/ошибке/завершении. Недостоверный ETA запрещён. При stale heartbeat сообщай «возможно, процесс завис». Не перезапускай этап и не повторяй AI автоматически.
-
-## Документация и выпуск
-
-Google Drive — источник продуктовых документов; GitHub — кода и технической истории. После каждой версии обновляй статус, решения/ошибки/первопричины, требования, следующий шаг, README и версию. Документы считаются обновлёнными только после обратного чтения. Рассинхронизация блокирует выпуск.
-
-Версия передаётся только после доказанной причины, регрессии, автоматических/миграционных/UI-проверок, визуального REQ-OBS-001, исключения неожиданных AI-вызовов, синхронизации документов/кода и проверки artifact exact commit. Зелёный job сам по себе недостаточен.
-
-## Ближайший шаг
-
-Создать Phase 2C-B issue/branch/PR от merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`. Сначала зафиксировать deterministic migration mapping, source/target identities и typed stops. Затем реализовать только isolated dry run и доказать source byte-stability, repeatability, deterministic target hash и rollback. Actual migration не выполнять.
+Перед будущим exact-source launch требуется новый package gate и явное подтверждение Артёма для конкретного package/attempt. На Mac сейчас ничего запускать не нужно.
