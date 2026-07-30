@@ -49,6 +49,7 @@ test("C3 resolver source contains no write, fallback, source, backup, network, m
   assert.match(content, /networkCalls:\s*0/);
   assert.match(content, /modelCalls:\s*0/);
   assert.match(content, /personalDataUsed:\s*false/);
+  assert.doesNotMatch(content, /constructor\([^)]*(?:private|public|protected|readonly)\s+/);
 });
 
 test("C3 packaged runtime imports the resolver from the production app module boundary", async () => {

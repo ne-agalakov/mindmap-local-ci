@@ -7,6 +7,7 @@ const MAX_TIMER_INTERVAL_MS = 250;
 
 export class ResolverObservability {
   readonly observations: C3ResolverObservation[] = [];
+  private readonly options: C3ResolverOptions;
   private readonly startedAt: number;
   private stageStartedAt: number;
   private lastProgressAt: number;
@@ -14,7 +15,8 @@ export class ResolverObservability {
   private currentStage: C3ResolverStage = "validate_request";
   private currentProcessed = 0;
 
-  constructor(private readonly options: C3ResolverOptions) {
+  constructor(options: C3ResolverOptions) {
+    this.options = options;
     const now = this.now();
     this.startedAt = now;
     this.stageStartedAt = now;
