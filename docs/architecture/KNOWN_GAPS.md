@@ -1,24 +1,22 @@
-# Known gaps during Phase 2C-C2 final gate
+# Known gaps at Phase 2C-C2 factual merge gate
 
-## Closed in C2 implementation candidate
+## Closed in final C2 proof
 
-- native IndexedDB control registry and immutable generation seal;
+- native IndexedDB registry and immutable generation seal;
 - persisted deterministic attempt/event replay;
-- atomic pointer promotion and explicit rollback;
-- revision, pointer, identity, hash, receipt and idempotency guards;
-- promotion and rollback transaction-abort proof;
+- atomic promotion and explicit rollback;
+- revision/pointer/identity/hash/receipt/idempotency guards;
+- promotion and rollback abort with no partial mutation;
 - close/reopen deterministic snapshot;
 - persisted blocked recovery without automatic resume/retry;
-- actual Chrome REQ-OBS-001 and sanitized diagnostics.
+- actual Chrome REQ-OBS-001 and sanitized diagnostics;
+- final pre-merge exact tree and downloaded-artifact proof.
 
 ## Still open
 
-- final C2 documentation-tree acceptance and factual merge;
+- factual merge and post-merge C2 closure;
 - C3 packaged runtime resolver on sanitized fixtures;
 - private backup filesystem behavior;
 - C4 exact-source one-shot package;
 - actual target-Mac migration/activation/rollback;
-- production REQ-OBS-001 across the full migration package;
-- semantic quality, multi-order stability and real-data safety.
-
-Exact source, private backup, production namespace, actual migration, model/network calls and personal data remain prohibited.
+- production REQ-OBS-001 and semantic/multi-order/real-data proof.
