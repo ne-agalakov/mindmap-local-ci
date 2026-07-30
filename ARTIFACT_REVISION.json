@@ -1,12 +1,12 @@
 {
   "appVersion": "0.6.0-alpha.19",
   "artifactRevision": 14,
-  "status": "frozen-legacy-runtime-b1b-consumed-c0-c1-accepted-c2-implemented-final-gate-pending",
-  "reason": "Phase 2C-C1 is accepted. Phase 2C-C2 native IndexedDB registry, seal, promotion, rollback and crash/reload behavior is implemented and verified on sanitized fixtures. C2 still requires the final documentation-tree CI, downloaded-artifact review and factual merge. Actual migration is prohibited.",
+  "status": "frozen-legacy-runtime-b1b-consumed-c0-c1-accepted-c2-final-proof-complete-merge-pending",
+  "reason": "Phase 2C-C2 native IndexedDB final proof and downloaded-artifact inspection are complete on sanitized fixtures. Final metadata-tree control and factual expected-head merge remain. Actual migration is prohibited.",
   "packagedAt": "resolved-at-build-or-package-time",
-  "driveSyncStatus": "synced_native_google_docs_verified_2026-07-30T04:51:00Z",
-  "releaseBoundary": "C2 native IndexedDB behavior on isolated sanitized fixture namespaces and its final acceptance gate only. C3 packaged resolver, exact SQLite/backup access, production registry/generation, actual migration, model/network calls and personal data are prohibited.",
-  "gitStatus": "Phase 2C-C2 implementation verified; final documentation exact-tree and factual merge pending",
+  "driveSyncStatus": "synced_native_google_docs_verified_2026-07-30T05:24:00Z",
+  "releaseBoundary": "C2 final metadata-tree and factual merge gate only. C3/C4, exact SQLite/backup access, production storage, actual migration, model/network calls and personal data are prohibited.",
+  "gitStatus": "Phase 2C-C2 final proof complete; factual expected-head merge pending",
   "repository": "resolved-from-actual-checkout-at-package-time",
   "repositoryCommit": "resolved-at-build-or-package-time",
   "phase0MergeCommit": "850a5fc60a154047eae1f6a5d4f63c7969ae8412",
@@ -72,24 +72,37 @@
   "phase2CC2AutomaticResumeAllowed": false,
   "phase2CC2AutomaticRetryAllowed": false,
   "actualMigrationAllowed": false,
-  "nextGate": "phase2cc-c2-final-documentation-tree-ci-downloaded-artifact-and-factual-merge",
+  "nextGate": "phase2cc-c2-final-metadata-tree-control-and-factual-expected-head-merge",
   "driveRevisions": {
-    "instruction": "AIroW36JUhPMHkePjIskqQvhd7CvVxor4PPe_z2ANYZDFtrKLphCUOYgiZ6GegkfFqofJc7J5T0K7jq1jh3WVKUS53NSCJZTg_w9rn8j_ac",
-    "status": "AIroW35EBFWTcaYlOxafpEyhuWhIPYvxC1oIfE94CwE0MUETWL_u3eTEL6WWi1SSx8NgZVO6RPzwr2PLSJa5Cgfu8huD6LduyWOLcO3jFVM",
-    "recovery": "AIroW37UeIKl_h4agBNEXM41SEMjrMYjGWlcRQWRLwf7FVPfRiZpSNb-goYBFZjRD2h5FY52C4A-rgtt0p2huHmHCv1r5YGsOZowIE6O-zA"
+    "instruction": "AIroW351BiZxRA9BlDODd4AoCRz66_zc2xF5MMc9ZTeeYCL9PxUlrxXtYcpmqEoRcnpvDQw2-PomWcbZISNyXFckzdbIDSZLAusXYEKJRBk",
+    "status": "AIroW37DcQZ0ZsyFsMTd1d3hCDgJDvN73isYLAh0j7dS9OAnWTvny2moNhnstAiy6bbBECKTac8ks82trFK08uJ5pRWJIHvHyqMEvcr7sdc",
+    "recovery": "AIroW35nLCHqqsHseRlCNKsP7HsxgygsSGLKGyrk5HMXc3YJvUU5ayvoqA0e1SvIyBEMOIC5QxEZMGG_6YbRLOisZ-AIIIWkNyHr151bIoc"
   },
   "automatedTests": {
     "phase2CB1bExactSourceDryRun": "accepted-once-and-consumed",
     "phase2CC0Architecture": "accepted",
     "phase2CC1PureContracts": "accepted-after-factual-merge",
-    "phase2CC2NativeRegistry": "candidate-exact-tree-passed",
+    "phase2CC2NativeRegistry": "final-proof-passed",
     "phase2CC2GenerationSeal": "passed",
     "phase2CC2PromotionRollback": "passed",
     "phase2CC2AbortNoPartial": "passed-for-promotion-and-rollback",
     "phase2CC2CrashReloadRecovery": "passed",
     "phase2CC2ActualChrome": "passed",
     "phase2CC2ReqObs001": "passed-on-sanitized-browser-harness",
-    "sourcePackageCheckoutProvenance": "passed-on-candidate",
-    "exporterPackageCheckoutProvenance": "passed-on-candidate"
-  }
+    "phase2CC2FinalExactTree": "passed",
+    "phase2CC2FinalDownloadedArtifactVerification": "passed",
+    "sourcePackageCheckoutProvenance": "passed-on-final-proof",
+    "exporterPackageCheckoutProvenance": "passed-on-final-proof"
+  },
+  "phase2CC2PrivatePullRequest": 54,
+  "phase2CC2FinalPrivateHead": "83eb9a06610ff737676b002837beadf6807926dd",
+  "phase2CC2FinalPublicHead": "cdd6939409d8bbb33da20c9875dc082cd2c39bd3",
+  "phase2CC2FinalSharedTree": "158527376a989b304f097006ba39488d79a04c8f",
+  "phase2CC2FinalVerifyRun": 30516236010,
+  "phase2CC2FinalPackageRun": 30516236013,
+  "phase2CC2FinalOuterArtifactSha256": "34a6874bf92ae92a0be894587363bebe7b0f48df0e8c6f3bff47ee8b1ffca515",
+  "phase2CC2FinalBrowserProofSha256": "9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e",
+  "phase2CC2FinalSourceZipSha256": "9521dcabc0f0c2a95cdf31522f18e2e228a3192481e36147341283edbe50dea3",
+  "phase2CC2FinalExporterZipSha256": "97e971600327c12f9495d668d5b62102d19ab6509711c9e8893cf0de37b22c48",
+  "phase2CC2FinalB1bZipSha256": "2c34325a68dda1f27c194e7441af5abd30cea71c6e5a420923b4a2ba3823314e"
 }
