@@ -1,24 +1,21 @@
-# Work boundary after Phase 2C-C3 implementation verification
+# Work boundary after Phase 2C-C3 acceptance
 
-C3 implementation candidate is verified on shared tree `56e846d49a17f15bbbd1eedfc626f316e3a29a91`, but C3 is not accepted.
+C3 is accepted by merge `38b0e3fb9542174328396ae19bff76f18d637f21`.
 
 ## Allowed
 
-- synchronize repository documents and release metadata with reverse-read Drive revisions;
-- build an exact private/public final documentation tree;
-- run Linux/macOS/full/actual-Chrome/package gates;
-- inspect downloaded final artifacts;
-- factually merge PR #57 only with expected-head protection after all gates pass;
-- record post-merge provenance.
+- create one C4 planning issue;
+- define the exact-source package contract, one-shot authorization, failure matrix, offline diagnostics, REQ-OBS-001 and acceptance plan using sanitized fixtures and immutable identities;
+- update and reverse-read documentation for that planning gate.
 
 ## Prohibited
 
-- C4 before factual C3 acceptance;
-- exact SQLite/private backup access or B1b repeat;
+- C4 implementation or execution;
+- opening exact SQLite or private backup;
+- repeating B1b;
 - target-Mac production registry/generation;
-- actual migration, repair, production promotion/rollback;
-- fallback to legacy/inactive/previous generation;
-- automatic resume/retry;
+- actual migration, repair, promotion or rollback;
+- fallback or automatic resume/retry;
 - model/network calls or personal data.
 
-Any failure requires root-cause evidence and a new corrected commit; no blind workflow rerun.
+Execution requires a later exact artifact-bound gate and explicit confirmation from Артём immediately before launch.
