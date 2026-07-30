@@ -15,40 +15,42 @@ workspace:  synthetic
 personal:   0
 ```
 
-B1b one-shot выполнен и израсходован. Source остался byte-identical; repeat hashes equal; injected rollback left no target/receipt; network/model calls 0; actual migration false. Exact SQLite и оба sanitized evidence JSON сохранять неизменными. B1b не повторять.
+B1b one-shot выполнен и израсходован. Source остался byte-identical; actual migration false. Exact SQLite и sanitized evidence сохранять неизменными. B1b не повторять.
 
-## Accepted C0 recovery architecture
+## Accepted C0/C1 recovery contract
 
-C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3` фиксирует immutable generations и atomic control registry:
+C0 merge `31657e218cd5891e9e915f698febf8ac72942ed3` фиксирует immutable generations и atomic registry. C1 merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8` фиксирует one-shot authorization, deterministic transition/replay, terminal `blocked_recovery` до promotion и explicit `rollback_required` после promotion.
 
-```text
-registry: mindmap-state-core-control-v1
-generation prefix: mindmap-state-core-v1-generation-
-```
+## Phase 2C-C2 native recovery proof
 
-Generation inactive до import, close/reopen, exact verification и seal. Promotion — одна registry transaction с expected revision и activation receipt. Abort сохраняет прежний pointer. Rollback — отдельная явная pointer transaction; payload не мутируется. Hidden fallback запрещён.
-
-## C1 recovery contract
-
-C1 pure implementation доказана на sanitized fixtures:
+Candidate exact tree:
 
 ```text
-private head: ac639e625b6d0ced665c748c2c58f6b3753c4ffc
-public head:  0eeb9fea5792b7fbf33db0061abc2f271db3b17f
-shared tree:  2a536a54779634647eff8ebf2476840c257b2813
-verify/package: 30442139981 / 30442139989
+private head: 57472ea9b54f1f967b064ff305e187222a29ba30
+public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
+shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
+verify/package: 30455093681 / 30455093613
 ```
 
-- authorization является one-shot и immutable-bound;
-- stale revision, wrong pointer, mismatched generation/hash/receipt отклоняются;
-- interruption до promotion переводит attempt в terminal `blocked_recovery`;
-- automatic resume/retry запрещены;
-- failure после committed promotion переводит attempt в `rollback_required`;
-- rollback plan изменяет только pointer и не мутирует generation payload;
-- deterministic replay и sanitized evidence проверены;
-- browser/IndexedDB/filesystem/network/model/exact-source paths отсутствуют.
+Доказано на sanitized fixture namespaces:
 
-No recovery action is required on the target Mac. C1 не открывала source/backup, не создавала registry/generation databases и не выполняла actual migration/promotion/rollback.
+- generation seal хранится отдельно и immutable после первой записи;
+- registry сохраняет attempts, append-only events, seal attestations и receipts;
+- deterministic replay проверяется до persisted transition;
+- promotion и rollback являются отдельными atomic transactions;
+- stale revision, wrong active/previous pointer, generation/seal/hash/receipt mismatch блокируют mutation;
+- injected abort promotion и rollback оставляет pointer, attempt, events и receipts неизменными;
+- repeated identical operation idempotent; different fingerprint конфликтует;
+- pre-promotion interruption persisted как terminal `blocked_recovery`;
+- post-promotion interruption persisted как `rollback_required`;
+- close/reopen сохраняет canonical snapshot;
+- automatic resume/retry отсутствуют.
+
+Actual Chrome proof подтвердил REQ-OBS-001, downloadable sanitized diagnostics, exactSourceOpened=false, backupAccessed=false, productionNamespaceUsed=false, actualMigrationPerformed=false, network/model calls 0.
+
+## Ошибки gate
+
+Три причины были доказаны до нового запуска: lint `prefer-const`; чрезмерный structural test вокруг deny-list literal; order-sensitive `JSON.stringify` в browser proof. Исправления узкие и не ослабляют runtime safety.
 
 ## REQ-OBS-001
 
@@ -56,6 +58,6 @@ No recovery action is required on the target Mac. C1 не открывала sou
 
 ## Текущая граница
 
-C1 ещё не принята: требуется final documentation exact-tree gate и factual merge PR #52. Native persistence/crash recovery относится к C2; packaged resolver — к C3; exact-source migration — к C4 и будущему явному подтверждению.
+C2 ещё не принята: требуется final repository documentation tree, exact-tree CI, downloaded-artifact review и factual merge. На target Mac recovery action не требуется.
 
-Actual migration, C2 implementation, exact-source reopening, model/network calls и personal data пока запрещены.
+C3/C4, exact-source reopening, private backup access, production registry/generation, actual migration/promotion/rollback, model/network calls и personal data запрещены.
