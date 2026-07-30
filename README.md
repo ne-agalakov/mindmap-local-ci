@@ -4,7 +4,7 @@ MindMap is a local-first personal AI system. Alpha.19 remains a frozen legacy re
 
 ## Accepted foundation
 
-Phase 0, 1A, 2A, 2B, 2C-A, Phase 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1, C2 and C3 are accepted.
+Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1, C2 and C3 are accepted.
 
 ## Phase 2C-C3 — accepted
 
