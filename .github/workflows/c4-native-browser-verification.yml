@@ -35,6 +35,7 @@ jobs:
           echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
           tar -xzf /tmp/c4-native-full-subset.tar.gz
           cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
+          cp verification/c4-browser-native/state-store.ts c4-execution/state-store.ts
           cat > c4-execution/index.ts <<'EOF'
           export * from "./types.ts";
           export * from "./state-machine.ts";
