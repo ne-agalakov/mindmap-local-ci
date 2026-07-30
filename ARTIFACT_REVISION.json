@@ -1,12 +1,12 @@
 {
   "appVersion": "0.6.0-alpha.19",
-  "artifactRevision": 16,
-  "status": "frozen-legacy-runtime-b1b-consumed-c0-c1-c2-accepted-c3-implemented-final-gate-pending",
-  "reason": "Phase 2C-C3 packaged runtime resolver is implemented and verified on an exact sanitized tree with full CI, actual Chrome and downloaded-artifact inspection. Final documentation-tree acceptance and factual merge remain pending. C4 and actual migration are prohibited.",
+  "artifactRevision": 17,
+  "status": "frozen-legacy-runtime-b1b-consumed-c0-c1-c2-c3-accepted-c4-planning-only",
+  "reason": "Phase 2C-C3 packaged runtime resolver is accepted after factual expected-head merge and reverse-read closure. Only C4 planning/contract work is allowed; implementation, exact-source execution and actual migration are prohibited.",
   "packagedAt": "resolved-at-build-or-package-time",
-  "driveSyncStatus": "synced_native_google_docs_verified_2026-07-30T10:55:00Z",
-  "releaseBoundary": "C3 final documentation-tree, CI, artifact and factual merge gate only. C4, exact SQLite/private backup access, B1b retry, target-Mac production storage, actual migration, model/network calls and personal data are prohibited.",
-  "gitStatus": "Phase 2C-C3 implementation verified; final documentation exact-tree and merge pending",
+  "driveSyncStatus": "synced_native_google_docs_verified_2026-07-30T12:05:00Z",
+  "releaseBoundary": "C4 planning and contract design only. Exact SQLite/private backup, B1b retry, C4 implementation/execution, target-Mac production storage, actual migration, model/network calls and personal data are prohibited.",
+  "gitStatus": "Phase 2C-C3 accepted; post-merge closure; C4 planning only",
   "repository": "resolved-from-actual-checkout-at-package-time",
   "repositoryCommit": "resolved-at-build-or-package-time",
   "phase0MergeCommit": "850a5fc60a154047eae1f6a5d4f63c7969ae8412",
@@ -68,13 +68,13 @@
   "phase2CC2AutomaticRetryAllowed": false,
   "phase2CC3Allowed": true,
   "phase2CC3Implemented": true,
-  "phase2CC3Accepted": false,
+  "phase2CC3Accepted": true,
   "actualMigrationAllowed": false,
-  "nextGate": "phase2cc-c3-final-documentation-tree-ci-artifact-and-factual-merge",
+  "nextGate": "phase2cc-c4-planning-contract-only",
   "driveRevisions": {
-    "instruction": "AIroW36i4K512dFd3aOyA6k1NuKxUhb6e4yDBNZmNUhIRb2l7MI6S5DlD8z0e0sClsSj_nhW2amXsEOE8L6GKcN16cmTp1qJhdc2vI5KgxU",
-    "status": "AIroW367Kf20zX2jesCYRZrbABR7m7UT9wLQCI8clUla7RxAaorpvB5jFV-P7HbLHF-KgmdTiKI7S3oXwZTJUHNIvoxnOK3lCwTbSdGPYRM",
-    "recovery": "AIroW35QzcSOaWNSoOF1e3RrnWy8mDT4_dsAiGFAAdBxsf20sRGZyYidUOxJfzRVgVg3T3C-wzRFItKzvGeb4rE8pM4G3tRMZsdzm1UGsE4"
+    "instruction": "AIroW378OSjYn-KZvw_JPXHaFwbcouSrs_6VIm8tMjJzETgsPmO5n20D-ubc7YKE4Q2LVrfQxP_X5LzHXMq7PbTIDPqsfdx_Typ6MRm6XrY",
+    "status": "AIroW35VAXqXhbtENAKZeIfzJ5ZZSa5B75eUIu27_6Q8_MtmKy1JO9jXgGTJblCUo1BDUCbWoar1OkJCbPVco98o1xOV8nMMtKfXSoaLNPs",
+    "recovery": "AIroW36Z_D_RJVPf-oBD7z5goohJtWsdZMtN2eJPwP_uZV5wPq8zHzmkD7jGSls91NM4-vCSo-u2I2SqzcCdN5aQ31JRwQo-SltHqoVXHWM"
   },
   "automatedTests": {
     "phase2CB1bExactSourceDryRun": "accepted-once-and-consumed",
@@ -89,7 +89,7 @@
     "phase2CC2ReqObs001": "passed",
     "phase2CC2FinalExactTree": "passed",
     "phase2CC2FinalDownloadedArtifactVerification": "passed",
-    "phase2CC3PackagedResolver": "implementation-verified-final-doc-tree-pending",
+    "phase2CC3PackagedResolver": "accepted-after-factual-merge",
     "phase2CC3FailClosedMatrix": "passed",
     "phase2CC3DeterministicReload": "passed",
     "phase2CC3StalePointerGuard": "passed",
@@ -97,7 +97,9 @@
     "phase2CC3ReqObs001": "passed-on-sanitized-browser-harness",
     "phase2CC3InitialExactTree": "passed",
     "phase2CC3InitialDownloadedArtifactVerification": "passed",
-    "phase2CC3InitialFailureRootCause": "node-strip-types-parameter-property-fixed-with-regression"
+    "phase2CC3InitialFailureRootCause": "node-strip-types-parameter-property-fixed-with-regression",
+    "phase2CC3FinalExactTree": "passed",
+    "phase2CC3FinalDownloadedArtifactVerification": "passed"
   },
   "phase2CC3Issue": 56,
   "phase2CC3PrivatePullRequest": 57,
@@ -123,5 +125,19 @@
   "phase2CC3ZeroModelCalls": true,
   "phase2CC3PersonalDataUsed": false,
   "phase2CC3AutomaticResumeAllowed": false,
-  "phase2CC3AutomaticRetryAllowed": false
+  "phase2CC3AutomaticRetryAllowed": false,
+  "phase2CC3MergeCommit": "38b0e3fb9542174328396ae19bff76f18d637f21",
+  "phase2CC3FinalPrivateHead": "cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e",
+  "phase2CC3FinalPublicHead": "61602480f505c133df8257cc494852b43e9d3fa0",
+  "phase2CC3FinalSharedTree": "9bee67d28fe5979fb64b2992710aa4e6bcf2fbba",
+  "phase2CC3FinalVerifyRun": 30540259921,
+  "phase2CC3FinalPackageRun": 30540260040,
+  "phase2CC3FinalOuterArtifactSha256": "1d9db6cb1e09d4133893a23a54dcd64ba08d3f14c0b5248a2a0f5d86281940a2",
+  "phase2CC3FinalBrowserProofSha256": "d593b233490a87da9d7132759cf4c14f1c6ca359a271564c0c0836e86ebd7843",
+  "phase2CC3FinalSourceZipSha256": "18beb6f0ef045b3c388a615a2a2db60657e557bba81db5dc6c7ed0117ad281b1",
+  "phase2CC3FinalExporterZipSha256": "cf00ad8eb2ebb76aee2c138f5182d15dc9b25e434e98d97470aa0ab2a47dcd72",
+  "phase2CC3FinalB1bZipSha256": "6a50e9491fa4357a97fcb050a321e0e930b224186dd20d7d590a6a30e160bcac",
+  "phase2CC4PlanningAllowed": true,
+  "phase2CC4ImplementationAllowed": false,
+  "phase2CC4ExecutionAllowed": false
 }
