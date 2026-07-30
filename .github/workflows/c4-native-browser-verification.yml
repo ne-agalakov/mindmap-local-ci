@@ -34,6 +34,7 @@ jobs:
             | base64 -d > /tmp/c4-native-full-subset.tar.gz
           echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
           tar -xzf /tmp/c4-native-full-subset.tar.gz
+
           cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
           cp verification/c4-browser-native/state-store.ts c4-execution/state-store.ts
           cat > c4-execution/index.ts <<'EOF'
@@ -50,90 +51,39 @@ jobs:
           export * from "./native-fixture-generation.ts";
           export * from "./native-c2c3-adapters.ts";
           EOF
-          mkdir -p tools/browser-phase2cc-c4-harness
+
+          mkdir -p tools/browser-phase2cc-c4-harness scripts
           cp verification/c4-browser-native/index.html tools/browser-phase2cc-c4-harness/index.html
           cp verification/c4-browser-native/page.ts tools/browser-phase2cc-c4-harness/page.ts
-          cat > tools/browser-phase2cc-c4-harness/vite.config.mjs <<'EOF'
-          import { defineConfig } from "vite";
-          import { resolve } from "node:path";
-          export default defineConfig({
-            root: resolve("tools/browser-phase2cc-c4-harness"),
-            base: "./",
-            build: {
-              outDir: resolve("dist/browser-phase2cc-c4-harness"),
-              emptyOutDir: true,
-              rollupOptions: { input: resolve("tools/browser-phase2cc-c4-harness/index.html") },
-            },
-          });
-          EOF
+          cp verification/c4-browser-native/vite.config.mjs tools/browser-phase2cc-c4-harness/vite.config.mjs
+          cp verification/c4-browser-native/server.mjs tools/browser-phase2cc-c4-harness/server.mjs
+          cp verification/c4-browser-native/run-browser-phase2cc-c4-harness.mjs scripts/run-browser-phase2cc-c4-harness.mjs
       - run: npm ci
       - name: Strict native browser TypeScript verification
         run: >-
           npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler
           --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM
           tools/browser-phase2cc-c4-harness/page.ts c4-execution/native-runner.ts
-      - name: Build browser harness
-        run: npx vite build --config tools/browser-phase2cc-c4-harness/vite.config.mjs
-      - name: Run actual Chrome with reload and IndexedDB
+      - name: Run exact CDP Chrome harness
         run: |
-          npx vite preview --config tools/browser-phase2cc-c4-harness/vite.config.mjs --host 127.0.0.1 --port 4179 > /tmp/c4-vite.log 2>&1 &
-          server_pid=$!
-          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-          for attempt in $(seq 1 100); do
-            curl -fsS http://127.0.0.1:4179/ >/dev/null && break
-            sleep 0.1
-          done
-          chrome_path="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)"
-          test -n "$chrome_path"
-          "$chrome_path" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-background-networking \
-            --disable-component-update \
-            --disable-default-apps \
-            --disable-extensions \
-            --disable-sync \
-            --metrics-recording-only \
-            --no-first-run \
-            --no-default-browser-check \
-            --user-data-dir=/tmp/mindmap-c4-native-chrome \
-            --virtual-time-budget=15000 \
-            --dump-dom \
-            http://127.0.0.1:4179/ > /tmp/c4-native-dom.html
+          node scripts/run-browser-phase2cc-c4-harness.mjs | tee /tmp/c4-browser-output.log
           python - <<'PY'
-          import html
           import json
-          import re
           from pathlib import Path
 
-          document = Path('/tmp/c4-native-dom.html').read_text()
-          match = re.search(r'<pre id="result"[^>]*>(.*?)</pre>', document, re.S)
-          assert match, document
-          result = json.loads(html.unescape(match.group(1)))
-          assert result['ok'] is True, result
-          for key in (
-              'actualChrome', 'browserIndexedDb', 'actualReload', 'durableInterruption',
-              'reloadClassifiedBlocked', 'reloadNoResume', 'reloadNoRetry', 'rerunRejected',
-              'rerunSourceOpenCountZero', 'rerunPromotionCallsZero', 'rerunResolverCallsZero',
-              'fullP00P15', 'authorizationConsumedBeforeSource', 'backupVerified',
-              'generationSealed', 'promotionExactlyOnce', 'c3ResolverVerified',
-              'durableCompletedReload', 'reqObsAllStages', 'possibleHangRendered',
-              'liveObservabilityRendered', 'diagnosticsDownloadAvailable',
-              'diagnosticsSanitized', 'networkGuardsInstalled', 'zeroNetworkCalls',
-              'zeroModelCalls',
-          ):
-              assert result[key] is True, (key, result)
-          for key in (
-              'exactSourceOpened', 'privateBackupAccessed', 'productionNamespaceUsed',
-              'actualMigrationPerformed', 'automaticResumePerformed',
-              'automaticRetryPerformed', 'automaticCleanupPerformed', 'personalDataUsed',
-          ):
-              assert result[key] is False, (key, result)
-          assert re.fullmatch(r'[a-f0-9]{64}', result['targetSnapshotHash'])
-          names = result['databaseNames']
+          text = Path('/tmp/c4-browser-output.log').read_text()
+          marker = '{\n  "status": "passed"'
+          start = text.rfind(marker)
+          assert start >= 0, text
+          payload = json.loads(text[start:])
+          names = payload['result']['databaseNames']
           assert len(names) >= 6, names
           assert any(name.endswith('-payload') for name in names), names
           assert any('fixture-backup-c4-' in name for name in names), names
-          print(json.dumps({'status': 'passed', 'result': result}, indent=2, ensure_ascii=False))
+          print(json.dumps({
+              'status': 'passed',
+              'databaseCount': len(names),
+              'payloadDatabasePresent': True,
+              'backupDatabasePresent': True,
+          }, indent=2))
           PY
