@@ -1,99 +1,48 @@
 # MindMap Local v0.6-alpha.19
 
-MindMap is a local-first personal AI system intended to turn a stream of thoughts into understanding, connections, priorities, decisions, actions, results and durable memory.
+MindMap is a local-first personal AI system for turning thoughts into understanding, decisions, actions, results and durable memory.
 
 ## Current status
 
-Alpha.19 remains a frozen research prototype and must not receive real personal thought data.
+Alpha.19 remains a frozen legacy research runtime. Real personal thoughts must not be loaded.
 
-Accepted foundations:
+Accepted foundations include Phase 0, Phase 1A, Phase 2A, Phase 2B, Phase 2C-A, Phase 2C-B0, B1a, the consumed B1b read-only dry run, C0, C1 and C2.
 
-- Phase 0 exact legacy evidence: merge `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
-- Phase 1A pure state core: merge `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A transactional storage contract: merge `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B native IndexedDB run storage: merge `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A canonical graph/payload storage: merge `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
+## Phase 2C-B1b — accepted and consumed
 
-## Accepted Phase 2C-A
+The single exact-source B1b read-only attempt passed and is permanently consumed. The source stayed byte-identical; actual migration was false. B1b must not be repeated.
 
-Phase 2C-A adds:
+## Phase 2C-C2 — accepted
 
-- content-addressed payloads and thought records;
-- typed area → direction → project hierarchy;
-- exactly one placement or explicit `unresolved` per thought;
-- proposed/confirmed/rejected link lifecycle;
-- embeddings bound to exact text hash, model and dimensions;
-- damaged references separate from unresolved;
-- deterministic graph replay and canonical snapshot hashes;
-- atomic graph events + materialized graph + idempotency receipt;
-- stale-revision and idempotency-conflict rejection;
-- workspace isolation, abort rollback and corruption refusal;
-- coexistence with accepted run stores in a fresh unified database;
-- refusal to silently upgrade an existing run-only database.
-
-Exact provenance:
+C2 was accepted by factual squash merge:
 
 ```text
-final reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
-squash merge:        292634312ad04fa6e6cfc5a5ded311ac1020094d
-public CI head:      ee5401a4a2ca7763467562417b9c5c4aece01214
-shared Git tree:     e81ae1b309a806f0078b5a8a2057f51d4c0e403d
+private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
+public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
+shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
+verify:       30517144927
+package:      30517144960
+merge:        2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1
 ```
 
-Target-Mac real Chrome passed atomic commit, reopen, idempotency, isolation, run-adapter coexistence, abort rollback, run-only refusal, corruption refusal and link lifecycle.
+Accepted C2 scope:
 
-Public-mirror final gates:
+- isolated native IndexedDB generation registry and immutable seal;
+- deterministic persisted attempt/event replay;
+- atomic active-pointer promotion and explicit rollback;
+- revision, pointer, identity, hash, receipt and idempotency guards;
+- promotion and rollback abort without partial mutation;
+- deterministic close/reopen and persisted recovery states;
+- actual Chrome IndexedDB, REQ-OBS-001 and sanitized diagnostics.
 
-- verify `30198811851` — Linux lint/full tests, actual Chrome run/graph storage, GitHub-hosted macOS: passed;
-- package-source `30198811852` — tests, source/exporter packaging and upload: passed.
+Downloaded final control artifacts passed checksums, reconstructed-tree provenance, inventory, launcher-mode and privacy review.
 
-Downloaded final artifacts:
+## Phase 2C-C3 — allowed boundary
 
-- outer source: `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- inner source ZIP: `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- inner exporter ZIP: `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser proof: `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- browser log: `0bf055b8ed72d24debe8d4579d98051cc4956f6175c84b28f1a024f80ebe352a`.
+C3 may implement and prove only the packaged runtime resolver on sanitized fixtures. The resolver must read the active generation through the control registry, verify registry/pointer/generation/seal/schema/workspace/snapshot identities, fail closed on missing or corrupt state, and never fall back to legacy or inactive data.
 
-External inspection found no database, `.env`, credentials, concrete local user-home path, runtime cache or personal thought/database payload. Google Drive was updated after merge and reverse-read.
-
-The target-Mac and GitHub harnesses used different deterministic fixtures. Their absolute hashes therefore are not one cross-environment state:
-
-```text
-target-Mac fixture: ee7f14540dbc394654b81e1724dc35b0b01f8d13f303ab03a157e5c1079b4fc1
-GitHub fixture:     bc59236e3ce7173c3f91176fb163f808a99de6f2343afcdc6eea8b12bdca5a54
-```
-
-Each fixture passed close/reopen equality. Same-fixture cross-environment hash equality remains uncovered.
-
-## Commands
-
-```bash
-npm run install:ci
-npm run test:state-core
-npm run test:storage-contract
-npm run test:indexeddb-storage
-npm run test:graph-storage
-npm run test:browser-storage
-npm run test:browser-graph-storage
-npm test
-npm run package:source
-```
+C3 must not open the exact SQLite or private backup, create target-Mac production storage, perform migration or repair, automatically resume/retry, call models/network services, or use personal data.
 
 ## Preserved boundary
 
-Phase 2C-B may now be planned and implemented only as a separate exact-source read-only → isolated temporary-target dry run.
-
-Still prohibited:
-
-- Candidate 5 continuation;
-- Qwen or DeepSeek execution;
-- Candidate 6;
-- legacy database write/repair;
-- actual target-Mac migration or production-storage change;
-- runtime/UI integration and REQ-OBS-001 claims;
-- semantic claims and real personal thoughts.
-
-## Next verified step
-
-Open Phase 2C-B as a separate issue/branch/PR from accepted `main`. First freeze the deterministic migration mapping and typed stop contract. Then implement an isolated synthetic dry run proving source byte-stability, repeatability, deterministic target hash and full rollback. Actual migration remains a later explicit user-confirmed gate.
+C4 and actual migration remain prohibited. No action is required on the Mac.

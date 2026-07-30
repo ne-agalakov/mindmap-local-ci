@@ -12,7 +12,43 @@ if [[ -n "$(git status --porcelain)" ]]; then
   exit 65
 fi
 
+resolve_repository() {
+  if [[ -n "${MINDMAP_REPOSITORY_OVERRIDE:-}" ]]; then
+    printf '%s' "${MINDMAP_REPOSITORY_OVERRIDE}"
+    return
+  fi
+
+  local remote_url
+  remote_url="$(git config --get remote.origin.url || true)"
+  case "${remote_url}" in
+    https://github.com/*)
+      remote_url="${remote_url#https://github.com/}"
+      ;;
+    http://github.com/*)
+      remote_url="${remote_url#http://github.com/}"
+      ;;
+    git@github.com:*)
+      remote_url="${remote_url#git@github.com:}"
+      ;;
+    ssh://git@github.com/*)
+      remote_url="${remote_url#ssh://git@github.com/}"
+      ;;
+    *)
+      echo "Legacy exporter packaging refused: cannot resolve GitHub repository from remote.origin.url; set MINDMAP_REPOSITORY_OVERRIDE." >&2
+      exit 65
+      ;;
+  esac
+
+  remote_url="${remote_url%.git}"
+  if [[ ! "${remote_url}" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
+    echo "Legacy exporter packaging refused: invalid repository identity ${remote_url}." >&2
+    exit 65
+  fi
+  printf '%s' "${remote_url}"
+}
+
 commit_sha="$(git rev-parse HEAD)"
+repository="$(resolve_repository)"
 version="$(node -p 'require("./package.json").version')"
 short_sha="${commit_sha:0:12}"
 out_dir="${project_root}/release-artifacts"
@@ -34,14 +70,14 @@ git archive --format=tar HEAD \
 # mode bit, so packaging establishes that mode explicitly and tests the archive.
 chmod 0755 "${archive_dir}/start-legacy-exporter.command"
 
-node --input-type=module - "${archive_dir}/EXPORTER_REVISION.json" "${commit_sha}" "${version}" <<'NODE'
+node --input-type=module - "${archive_dir}/EXPORTER_REVISION.json" "${commit_sha}" "${version}" "${repository}" <<'NODE'
 import { writeFile } from "node:fs/promises";
-const [path, commitSha, version] = process.argv.slice(2);
+const [path, commitSha, version, repository] = process.argv.slice(2);
 const marker = {
   format: "mindmap-legacy-browser-exporter",
   schemaVersion: 1,
   appVersion: version,
-  repository: "ne-agalakov/mindmap-local",
+  repository,
   repositoryCommit: commitSha,
   packagedAt: new Date().toISOString(),
   status: "phase0-read-only-exporter-accepted-evidence-preserved",

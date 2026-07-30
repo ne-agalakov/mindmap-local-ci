@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindMap Phase 2C-C2 Browser Harness</title>
+    <style>
+      :root { color-scheme: dark; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      body { margin: 0; padding: 24px; background: #0c0d10; color: #eceff4; }
+      pre { white-space: pre-wrap; border: 1px solid #353945; border-radius: 12px; padding: 16px; min-height: 260px; background: #15171d; }
+      button { padding: 10px 14px; border-radius: 8px; border: 1px solid #596071; background: #242832; color: inherit; }
+      button:disabled { opacity: .45; }
+      [data-status="passed"] { border-color: #5d9d73; }
+      [data-status="failed"] { border-color: #c56b6b; }
+      [data-status="running"] { border-color: #8b84c6; }
+    </style>
+  </head>
+  <body>
+    <h1>MindMap Phase 2C-C2 Browser Harness</h1>
+    <button id="download" disabled>Download sanitized diagnostics</button>
+    <pre id="result" data-status="running">starting…</pre>
+    <script type="module" src="/page.ts"></script>
+  </body>
+</html>

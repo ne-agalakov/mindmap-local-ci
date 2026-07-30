@@ -1,99 +1,49 @@
 # MindMap — решения и статус
 
-Дата актуализации: 2026-07-26.
+Дата актуализации: 2026-07-30.
 
-## Назначение
+## Принятые основания
 
-Персональная local-first AI-система: мысль → понимание → связи → приоритет → решение → действие → результат → память.
+Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b, C0, C1 и C2 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли. B1b one-shot израсходован; actual migration false.
 
-Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли.
+## Phase 2C-C2 — принята
 
-## Принятые этапы
-
-- Phase 0 exact source: `850a5fc60a154047eae1f6a5d4f63c7969ae8412`;
-- Phase 1A pure state-core: `e7b7593932614f8dfa843298f35eff0230c1e827`;
-- Phase 2A storage contract: `aa5eaaae08a3da4d0ff00ea03aea12b793137a21`;
-- Phase 2B native IndexedDB run storage: `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
-- Phase 2C-A graph/payload storage: `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
-
-Legacy source remains private and immutable:
-
-- size `5 070 848` bytes;
-- SHA-256 `356b943275cce292d0e14f8a7fbe95af07e79de73f06d3e361874d342aa2f918`;
-- 96 synthetic, 0 personal thoughts;
-- integrity `ok`;
-- write/migration/network/model calls — 0.
-
-## Phase 2C-A — принята
-
-PR #38 squash-merged from exact reviewed head:
+Private PR #54 слита с expected-head защитой. GitHub подтвердил `merged=true`.
 
 ```text
-reviewed head: 29a317b58cbecaea13e4f21c02af2b945a6e6edc
-merge:         292634312ad04fa6e6cfc5a5ded311ac1020094d
+private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
+public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
+shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
+verify:       30517144927
+package:      30517144960
+merge:        2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1
 ```
 
-Приняты canonical graph/payload contracts и native IndexedDB graph storage:
-
-- payloads, thoughts, typed hierarchy;
-- placement либо explicit `unresolved`;
-- proposed/confirmed/rejected links;
-- embeddings bound to exact text;
-- damaged references separately;
-- atomic event/materialized-state/receipt transaction;
-- deterministic replay and reopen-stable hash;
-- stale/idempotency guards;
-- workspace isolation, abort rollback and corruption refusal;
-- fresh unified run+graph database;
-- run-only database refusal.
-
-### Финальная проверка
-
-Exact public counterpart:
+Downloaded final control:
 
 ```text
-public head: ee5401a4a2ca7763467562417b9c5c4aece01214
-shared tree: e81ae1b309a806f0078b5a8a2057f51d4c0e403d
+outer source artifact: 3f5bc2a8c781483c8a218287acc240897de9d8a640c4bab44b9beb0081de3d58
+browser proof:         8be977709e13605d634db94950fda78c823818dd348947e6e115a6a25ed77f9c
+source ZIP:            f35da2df4c0e38a6131c1b15ed6f45c9aa4d37af1e73727f29283a40abc834e9
+exporter ZIP:          1ecba0b67b3c80ce14d444d304596ff594778edabe2195ff972f40cfc0e00ba8
+B1b ZIP:               ceb0569e3a35b9664aedfc34b2c2c0530065f59cb95d0daae7c00586ea4221b5
 ```
 
-- verify `30198811851` — success;
-- package `30198811852` — success;
-- Linux/macOS/full tests/actual Chrome/package — passed;
-- outer artifact `2184324939c12db0af27ad913904d953b0ee5b5f73b1c7e85c580f020263688c`;
-- inner source `81d469a6eb53908b1c863c8643598a1953bffa8392174d9e1292b3a1e2058c3b`;
-- inner exporter `1388fbc608d27c6d446646c84fd7c29ab59a76ed3e587a4b41f803b901b32109`;
-- browser proof `5c63ffa99679b9cff87d8c82b16d7d4f31080e3bbbc6c7c1a218e8cbe1ddb755`;
-- privacy/credential/data findings — 0.
+Принято: immutable generation seal, native control registry, deterministic attempts/events, atomic promotion, explicit rollback, transaction abort without partial mutation, revision/pointer/idempotency guards, deterministic reopen, persisted recovery states, actual Chrome, REQ-OBS-001 и sanitized diagnostics.
 
-Drive после merge обновлён и прочитан обратно:
+Стоп-линия C2 подтверждена: exactSourceOpened=false; B1bRepeated=false; backupAccessed=false; productionNamespaceUsed=false; actualMigrationPerformed=false; network/model calls=0; personal data=false.
 
-- instruction `AIroW37ZYyE_aMLJxvUodCy1o2WnLjd_tUMJTp94Bzpm6pz-hhRp9RqMXgiZ2WRefBFDz1TGrQG6CsmnkGHpnTuyEq1c-1duUZCUDvaop3E`;
-- status `AIroW36BDxK0THdoc-SlGQ3zq2CtBoPdpwJ7zjGcXzvKZKrrIqU_baZXfnNi1ZqFIlT8oRYmJDKor_N-MhawbIZjEhEkCCC9RWkXs4cIoF0`;
-- recovery `AIroW35Q8r2B6M35cMS0OBUjGWp2HtXfscrHknyRRLjwcTgYoBC4lub293D009ujIgGpodrxiTPn0kaCZAm1DpdfU3YwWwji8BA-DUVZSXU`.
+## Phase 2C-C3 — разрешена, не начата
 
-### Исправленные причины финального gate
+Следующий проверяемый этап — packaged runtime resolver только на sanitized fixtures. C3 должна доказать:
 
-1. Release-doc marker был регистрозависим: ожидал `same-fixture`, README начинал предложение с `Same-fixture`. Исправлен сам gate; storage-код не падал.
-2. Первый внешний privacy regex сопоставил два документационных шаблона пути, а не реальные пути. Формулировки уточнены; повторный scan дал ноль concrete local user-home findings.
+- active generation выбирается только через control registry;
+- registry, pointer, generation, seal, schema, workspace и snapshot hash проверяются;
+- missing/corrupt/stale/mismatched state приводит к typed fail-closed result;
+- отсутствует fallback к legacy или inactive generation;
+- resolver не выполняет migration, repair, promotion, rollback, resume/retry или external call;
+- reload/reopen и REQ-OBS-001 проверены в packaged runtime и actual Chrome.
 
-## Границы доказательства
+## Непокрыто
 
-Не доказаны:
-
-- same-fixture cross-environment snapshot equality;
-- Phase 2C-B migration dry run;
-- source byte-stability и deterministic migrated target;
-- actual target-Mac migration;
-- production runtime/UI и REQ-OBS-001;
-- service-level exactly-once model execution;
-- semantic quality, multi-order stability и personal-data safety.
-
-## Стоп-линия
-
-Разрешены только planning/implementation Phase 2C-B в отдельном issue/branch/PR и тесты на exact read-only source package + isolated temporary target.
-
-Запрещены Candidate 5, Qwen/DeepSeek, Candidate 6, legacy write/repair, actual target-Mac migration, runtime/UI integration и реальные мысли.
-
-## Следующий проверяемый шаг
-
-Открыть Phase 2C-B от accepted `main`. Сначала зафиксировать versioned deterministic mapping и typed stops; затем доказать isolated dry run, source byte-stability, repeatability, deterministic target hash и full rollback. Успех dry run не разрешает actual migration автоматически.
+C4 exact-source package, private backup behavior, target-Mac production storage, actual migration/activation/rollback, semantic quality, multi-order stability и real data остаются запрещёнными или непроверенными.

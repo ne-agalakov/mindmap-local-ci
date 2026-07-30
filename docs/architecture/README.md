@@ -14,6 +14,7 @@ This directory is the durable map for the state-core refoundation.
 - [`PHASE2B_RESULT.md`](./PHASE2B_RESULT.md) — accepted run adapter.
 - [`ADR-0002-PHASE2C-GRAPH-PAYLOAD-STORAGE.md`](./ADR-0002-PHASE2C-GRAPH-PAYLOAD-STORAGE.md) — accepted graph/payload decision.
 - [`PHASE2CA_VERIFICATION.md`](./PHASE2CA_VERIFICATION.md) — accepted Phase 2C-A evidence and limits.
+- [`PHASE2CB_MAPPING_CONTRACT.md`](./PHASE2CB_MAPPING_CONTRACT.md) — implemented B0 mapping/typed-stop contract; acceptance pending.
 - [`KNOWN_GAPS.md`](./KNOWN_GAPS.md) — remaining evidence gaps.
 - [`WORK_STOP.md`](./WORK_STOP.md) — current work boundary.
 
@@ -27,4 +28,4 @@ Accepted:
 - Phase 2B `b4b35dcd7125c820f75f89387bc18ac3fa509cb0`;
 - Phase 2C-A `292634312ad04fa6e6cfc5a5ded311ac1020094d`.
 
-The next allowed boundary is Phase 2C-B: exact read-only source → isolated temporary target, deterministic mapping/hash, repeatability, typed stops and rollback. Actual target-Mac migration, runtime/UI, semantic execution, Candidate 6, legacy writes and real thoughts remain unauthorized.
+Phase 2C-B0 mapping/typed-stop contract is implemented with sanitized fixtures but is not accepted. B1 exact read-only source → isolated temporary target remains blocked until B0 acceptance. Actual target-Mac migration, runtime/UI, semantic execution, Candidate 6, legacy writes and real thoughts remain unauthorized.
