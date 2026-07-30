@@ -133,7 +133,6 @@ Consequence: post-merge documentation may record a merge SHA only after the PR A
 
 C0 acceptance authorizes only C1 pure contracts/state machine on sanitized fixtures. Exact-source reopening, native persistence, backup/registry/generation creation, actual migration, network/model calls and personal data remain prohibited.
 
-
 ## ADR-018 — C1 acceptance requires a final documentation tree
 
 Date: 2026-07-29.
@@ -150,6 +149,23 @@ Decision: packaged runtime may resolve a generation only through the accepted C2
 
 No legacy, previous, inactive or guessed-generation fallback is allowed. The resolver cannot repair, migrate, promote, roll back, automatically resume/retry or call external services. Missing or invalid state returns a typed rejection.
 
-Reason: IndexedDB has no atomic database rename; runtime correctness therefore depends on the control pointer and immutable generation attestation, not on a guessed database name.
+Acceptance: C3 was accepted by factual merge `38b0e3fb9542174328396ae19bff76f18d637f21` after final tree `9bee67d28fe5979fb64b2992710aa4e6bcf2fbba`, CI/package and downloaded-artifact review.
 
-Acceptance consequence: implementation tree `56e846d49a17f15bbbd1eedfc626f316e3a29a91` remains a candidate until final documentation-tree CI, downloaded-artifact review and factual expected-head merge.
+## ADR-021 — Proposed C4 one-shot execution and separate rollback authorization
+
+Date: 2026-07-30.
+Status: planning candidate; not yet accepted.
+
+Decision candidate:
+
+1. A future C4 migration authorization binds exact package/source/backup/registry/generation/attempt identities and is consumed atomically before first source open.
+2. The authorization is one-shot; failure after consumption never resumes or retries automatically.
+3. First production activation is allowed only in strict bootstrap-empty mode. Any collision is terminal and is not repaired or deleted automatically.
+4. Generation import must reproduce the accepted portable-plan and target-snapshot hashes, then close/reopen, verify and seal before promotion.
+5. Promotion is one atomic registry pointer transaction followed by the accepted C3 resolver.
+6. Migration authorization has `rollbackAuthorized=false`. Rollback requires a separate detached authorization bound to the observed current/previous pointer, registry revision, activation receipt and failure evidence.
+7. Planning, sanitized implementation, exact package, user authorization and actual migration acceptance remain separate gates.
+
+Rationale: a migration permission must not silently include a second state-changing decision. Separating rollback prevents hidden recovery, preserves evidence and makes every active-pointer transition explicit and auditable.
+
+Consequence while candidate: C4 implementation/execution, exact source/private backup access, production namespace and actual migration remain prohibited.
