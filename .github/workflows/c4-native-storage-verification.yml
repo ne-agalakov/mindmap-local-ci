@@ -23,7 +23,15 @@ jobs:
           cache: npm
       - name: Restore isolated full C4 native subset
         run: |
-          cat verification/c4-native-full/chunk-*.b64 | base64 -d > /tmp/c4-native-full-subset.tar.gz
+          cat \
+            verification/c4-native-full/chunk-00.b64 \
+            verification/c4-native-full/chunk-01.b64 \
+            verification/c4-native-full/chunk-02.b64 \
+            verification/c4-native-full/chunk-03a.b64 \
+            verification/c4-native-full/chunk-03b.b64 \
+            verification/c4-native-full/chunk-04.b64 \
+            verification/c4-native-full/chunk-05.b64 \
+            | base64 -d > /tmp/c4-native-full-subset.tar.gz
           echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
           tar -xzf /tmp/c4-native-full-subset.tar.gz
       - run: npm ci
