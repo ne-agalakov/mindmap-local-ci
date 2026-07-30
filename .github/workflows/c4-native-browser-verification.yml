@@ -1,0 +1,124 @@
+name: c4-native-browser-verification
+
+on:
+  push:
+    branches:
+      - phase2cc/c4-public-verification
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  chrome-native-c4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Restore isolated C4 runtime
+        run: |
+          cat \
+            verification/c4-native-full/chunk-00.b64 \
+            verification/c4-native-full/chunk-01.b64 \
+            verification/c4-native-full/chunk-02.b64 \
+            verification/c4-native-full/chunk-03a.b64 \
+            verification/c4-native-full/chunk-03b.b64 \
+            verification/c4-native-full/chunk-04.b64 \
+            verification/c4-native-full/chunk-05.b64 \
+            | base64 -d > /tmp/c4-native-full-subset.tar.gz
+          echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/c4-native-full-subset.tar.gz
+          cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
+          mkdir -p tools/browser-phase2cc-c4-harness
+          cp verification/c4-browser-native/index.html tools/browser-phase2cc-c4-harness/index.html
+          cp verification/c4-browser-native/page.ts tools/browser-phase2cc-c4-harness/page.ts
+          cat > tools/browser-phase2cc-c4-harness/vite.config.mjs <<'EOF'
+          import { defineConfig } from "vite";
+          import { resolve } from "node:path";
+          export default defineConfig({
+            root: resolve("tools/browser-phase2cc-c4-harness"),
+            base: "./",
+            build: {
+              outDir: resolve("dist/browser-phase2cc-c4-harness"),
+              emptyOutDir: true,
+              rollupOptions: { input: resolve("tools/browser-phase2cc-c4-harness/index.html") },
+            },
+          });
+          EOF
+      - run: npm ci
+      - name: Strict native browser TypeScript verification
+        run: >-
+          npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler
+          --allowImportingTsExtensions --strict --skipLibCheck --lib ES2022,DOM
+          tools/browser-phase2cc-c4-harness/page.ts c4-execution/native-runner.ts
+      - name: Build browser harness
+        run: npx vite build --config tools/browser-phase2cc-c4-harness/vite.config.mjs
+      - name: Run actual Chrome with reload and IndexedDB
+        run: |
+          npx vite preview --config tools/browser-phase2cc-c4-harness/vite.config.mjs --host 127.0.0.1 --port 4179 > /tmp/c4-vite.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 100); do
+            curl -fsS http://127.0.0.1:4179/ >/dev/null && break
+            sleep 0.1
+          done
+          chrome_path="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)"
+          test -n "$chrome_path"
+          "$chrome_path" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-background-networking \
+            --disable-component-update \
+            --disable-default-apps \
+            --disable-extensions \
+            --disable-sync \
+            --metrics-recording-only \
+            --no-first-run \
+            --no-default-browser-check \
+            --user-data-dir=/tmp/mindmap-c4-native-chrome \
+            --virtual-time-budget=15000 \
+            --dump-dom \
+            http://127.0.0.1:4179/ > /tmp/c4-native-dom.html
+          python - <<'PY'
+          import html
+          import json
+          import re
+          from pathlib import Path
+
+          document = Path('/tmp/c4-native-dom.html').read_text()
+          match = re.search(r'<pre id="result"[^>]*>(.*?)</pre>', document, re.S)
+          assert match, document
+          result = json.loads(html.unescape(match.group(1)))
+          assert result['ok'] is True, result
+          for key in (
+              'actualChrome', 'browserIndexedDb', 'actualReload', 'durableInterruption',
+              'reloadClassifiedBlocked', 'reloadNoResume', 'reloadNoRetry', 'rerunRejected',
+              'rerunSourceOpenCountZero', 'rerunPromotionCallsZero', 'rerunResolverCallsZero',
+              'fullP00P15', 'authorizationConsumedBeforeSource', 'backupVerified',
+              'generationSealed', 'promotionExactlyOnce', 'c3ResolverVerified',
+              'durableCompletedReload', 'reqObsAllStages', 'possibleHangRendered',
+              'liveObservabilityRendered', 'diagnosticsDownloadAvailable',
+              'diagnosticsSanitized', 'networkGuardsInstalled', 'zeroNetworkCalls',
+              'zeroModelCalls',
+          ):
+              assert result[key] is True, (key, result)
+          for key in (
+              'exactSourceOpened', 'privateBackupAccessed', 'productionNamespaceUsed',
+              'actualMigrationPerformed', 'automaticResumePerformed',
+              'automaticRetryPerformed', 'automaticCleanupPerformed', 'personalDataUsed',
+          ):
+              assert result[key] is False, (key, result)
+          assert re.fullmatch(r'[a-f0-9]{64}', result['targetSnapshotHash'])
+          names = result['databaseNames']
+          assert len(names) >= 6, names
+          assert any(name.endswith('-payload') for name in names), names
+          assert any('fixture-backup-c4-' in name for name in names), names
+          print(json.dumps({'status': 'passed', 'result': result}, indent=2, ensure_ascii=False))
+          PY
