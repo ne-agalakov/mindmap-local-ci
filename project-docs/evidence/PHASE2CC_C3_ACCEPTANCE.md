@@ -1,15 +1,15 @@
-# Phase 2C-C3 acceptance candidate
+# Phase 2C-C3 acceptance
 
-Status: candidate; not accepted.
+Status: accepted.
 
-Acceptance requires all of the following on one final exact private/public tree:
+Acceptance evidence:
 
-1. canonical Drive documents updated and reverse-read;
-2. repository README, status, instruction, recovery, provenance, requirements and next gate synchronized;
-3. Linux/macOS/full test suite and all actual-Chrome harnesses pass;
-4. source/package and C3 browser artifacts downloaded and independently inspected;
-5. exact tree, repository and commit provenance reconstructed;
-6. private PR #57 merged with expected-head protection and `merged=true` readback;
-7. post-merge provenance recorded.
+- exact final private/public tree `9bee67d28fe5979fb64b2992710aa4e6bcf2fbba`;
+- full verify `30540259921` and package `30540260040` success;
+- downloaded artifacts independently inspected;
+- canonical Drive documents reverse-read;
+- private PR #57 merged with expected head `cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e`;
+- GitHub readback returned merge `38b0e3fb9542174328396ae19bff76f18d637f21` and `merged=true`;
+- Issue #56 closed completed; public CI mirror #16 closed unmerged.
 
-Implementation evidence alone does not authorize C4 or actual migration.
+C3 acceptance authorizes only C4 planning. It does not authorize exact-source access, C4 execution or actual migration.
