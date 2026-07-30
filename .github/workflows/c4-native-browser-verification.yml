@@ -58,6 +58,7 @@ jobs:
           cp verification/c4-browser-native/vite.config.mjs tools/browser-phase2cc-c4-harness/vite.config.mjs
           cp verification/c4-browser-native/server.mjs tools/browser-phase2cc-c4-harness/server.mjs
           cp verification/c4-browser-native/run-browser-phase2cc-c4-harness.mjs scripts/run-browser-phase2cc-c4-harness.mjs
+          npm pkg set 'scripts.build:phase2cc-c4-harness=vite build --config tools/browser-phase2cc-c4-harness/vite.config.mjs'
       - run: npm ci
       - name: Strict native browser TypeScript verification
         run: >-
