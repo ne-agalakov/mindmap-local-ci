@@ -1,19 +1,21 @@
-# Work boundary during Phase 2C-C2 factual merge gate
+# Work boundary after Phase 2C-C2 acceptance
 
-C1 is accepted by merge `f8ac03fbb24493dbeac7385687b3f4a93eb10bf8`. C2 final proof tree `158527376a989b304f097006ba39488d79a04c8f` passed CI and downloaded-artifact inspection. C2 is not accepted until final metadata-tree control and factual expected-head merge of PR #54.
+C2 is accepted by factual merge `2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1` after final exact tree `e6d0c0793ca6f5d20352d79e03fd12ca70f961bc`, CI and downloaded-artifact inspection.
 
 ## Allowed
 
-- synchronize final C2 proof and Drive revisions;
-- create one exact private/public metadata tree;
-- run the final control CI/package and inspect any changed artifact;
-- merge PR #54 with expected-head protection;
-- record factual post-merge provenance and reverse-read.
+- C3 issue, architecture, implementation and tests for a packaged runtime resolver on sanitized fixtures;
+- registry/pointer/generation/seal/schema/workspace/snapshot verification;
+- fail-closed resolver errors and sanitized diagnostics;
+- packaged-runtime and actual-Chrome REQ-OBS-001 proof;
+- exact private/public tree, CI and artifact gates for C3.
 
 ## Prohibited
 
-- C3/C4 before C2 acceptance;
+- C4 before C3 acceptance;
 - exact SQLite/private backup access or B1b retry;
-- production registry/generation on target Mac;
-- actual migration, production promotion/rollback;
+- target-Mac production registry/generation;
+- actual migration, repair, production promotion/rollback;
+- fallback to legacy or inactive generation;
+- automatic resume/retry;
 - model/network calls or personal data.
