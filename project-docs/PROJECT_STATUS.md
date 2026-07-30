@@ -2,77 +2,35 @@
 
 Дата актуализации: 2026-07-30.
 
-## Принятые основания
+## Phase 2C-C3 — принята
 
-Phase 0, 1A, 2A, 2B, 2C-A, 2C-B0, B1a, B1b, C0, C1 и C2 приняты. Alpha.19 остаётся замороженным legacy-прототипом и не принимает реальные мысли. B1b one-shot израсходован; actual migration false.
-
-## Phase 2C-C2 — принята
-
-Private PR #54 слита с expected-head защитой. GitHub подтвердил `merged=true`.
+Private PR #57 factual squash-merged с expected-head protection. GitHub readback подтвердил `merged=true`; Issue #56 закрыта completed. Public PR #16 закрыт как CI mirror без merge.
 
 ```text
-private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
-public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
-shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
-verify:       30517144927
-package:      30517144960
-merge:        2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1
+private head: cec6c0ef1c0ce4eea5ab69ef172df060e9df5d2e
+public head:  61602480f505c133df8257cc494852b43e9d3fa0
+shared tree:  9bee67d28fe5979fb64b2992710aa4e6bcf2fbba
+verify:       30540259921
+package:      30540260040
+merge:        38b0e3fb9542174328396ae19bff76f18d637f21
 ```
 
-Downloaded final control:
+Final downloaded hashes:
 
 ```text
-outer source artifact: 3f5bc2a8c781483c8a218287acc240897de9d8a640c4bab44b9beb0081de3d58
-browser proof:         8be977709e13605d634db94950fda78c823818dd348947e6e115a6a25ed77f9c
-source ZIP:            f35da2df4c0e38a6131c1b15ed6f45c9aa4d37af1e73727f29283a40abc834e9
-exporter ZIP:          1ecba0b67b3c80ce14d444d304596ff594778edabe2195ff972f40cfc0e00ba8
-B1b ZIP:               ceb0569e3a35b9664aedfc34b2c2c0530065f59cb95d0daae7c00586ea4221b5
+outer source:  1d9db6cb1e09d4133893a23a54dcd64ba08d3f14c0b5248a2a0f5d86281940a2
+browser proof: d593b233490a87da9d7132759cf4c14f1c6ca359a271564c0c0836e86ebd7843
+source ZIP:    18beb6f0ef045b3c388a615a2a2db60657e557bba81db5dc6c7ed0117ad281b1
+exporter ZIP:  cf00ad8eb2ebb76aee2c138f5182d15dc9b25e434e98d97470aa0ab2a47dcd72
+B1b ZIP:       6a50e9491fa4357a97fcb050a321e0e930b224186dd20d7d590a6a30e160bcac
 ```
 
-Принято: immutable generation seal, native control registry, deterministic attempts/events, atomic promotion, explicit rollback, transaction abort without partial mutation, revision/pointer/idempotency guards, deterministic reopen, persisted recovery states, actual Chrome, REQ-OBS-001 и sanitized diagnostics.
+Принятая область: read-only registry-authoritative resolver, full fail-closed matrix, stale-pointer guard, deterministic reload, actual Chrome, REQ-OBS-001 и sanitized diagnostics. Exact source/backup/production/migration paths false; fallback/automatic resume/retry false; network/model calls и personal data — 0.
 
-Стоп-линия C2 подтверждена: exactSourceOpened=false; B1bRepeated=false; backupAccessed=false; productionNamespaceUsed=false; actualMigrationPerformed=false; network/model calls=0; personal data=false.
+## Непокрыто и запрещено
 
-## Phase 2C-C3 — разрешена, не начата
+C4 implementation/execution, private backup behavior, target-Mac production storage, actual migration/activation/rollback, semantic quality, multi-order stability и real-data safety не доказаны. B1b повторно не запускается.
 
-Следующий проверяемый этап — packaged runtime resolver только на sanitized fixtures. C3 должна доказать:
+## Следующий проверяемый шаг
 
-- active generation выбирается только через control registry;
-- registry, pointer, generation, seal, schema, workspace и snapshot hash проверяются;
-- missing/corrupt/stale/mismatched state приводит к typed fail-closed result;
-- отсутствует fallback к legacy или inactive generation;
-- resolver не выполняет migration, repair, promotion, rollback, resume/retry или external call;
-- reload/reopen и REQ-OBS-001 проверены в packaged runtime и actual Chrome.
-
-## Непокрыто
-
-C4 exact-source package, private backup behavior, target-Mac production storage, actual migration/activation/rollback, semantic quality, multi-order stability и real data остаются запрещёнными или непроверенными.
-
-## Phase 2C-C3 — реализация проверена; принятие ожидает финального gate
-
-```text
-issue:        #56
-private PR:   #57 open
-public PR:    #16 open
-private head: 3f2325684ff617132307d4d9180326cb190e7a02
-public head:  1513d26c09b096e2d80252a0b819a5da7af29fa9
-shared tree:  56e846d49a17f15bbbd1eedfc626f316e3a29a91
-verify:       30535292820
-package:      30535292824
-```
-
-Проверены read-only packaged resolver, полный fail-closed matrix, stale-pointer detection, deterministic reopen/reload, actual Chrome, REQ-OBS-001 и sanitized diagnostics. Fallback, mutation, repair, migration, automatic resume/retry и external calls отсутствуют.
-
-Downloaded implementation artifacts:
-
-```text
-outer source:  27522e006e9e613f6d7431eeaaa5c5e2819b90141ad45bc7b345bc192c97ba6d
-browser proof: d388648a41d213062d1544d64b359a743e2e38d8faf65e7799594c33958f437f
-source ZIP:    def1f7a6cf463fb231026ab2d56b6d460fed69b52cf2a09fad2b742bba563c17
-exporter ZIP:  aae42e28ef47fb12ba3c9fb3f58b8828168416643c424d11d14b0fb3ab4f8de2
-B1b ZIP:       6c475c2ed54935eeee7d233a5179b2dc8c42e5b217f792394940d75a51320c43
-```
-
-Первый run `30534724654` доказал Node strip-types incompatibility с TypeScript parameter property до исполнения resolver. Исправление узкое; regression guard добавлен; старый run не повторялся.
-
-C3 пока не принята. Разрешены только final docs/exact-tree/CI/artifact/merge операции. C4 и actual migration остаются заблокированными.
+Только C4 planning: отдельный issue, exact package contract, failure matrix, one-shot authorization semantics, offline diagnostics и acceptance plan на sanitized fixtures. До нового gate и явного подтверждения Артёма exact-source execution запрещён.
