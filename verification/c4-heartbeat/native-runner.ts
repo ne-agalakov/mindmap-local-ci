@@ -148,99 +148,80 @@ export async function runNativeSanitizedC4Attempt(
     nowIso: () => options.clock.nowIso(),
   });
 
-  const monitoredAuthorizationLedger: C4AuthorizationLedger = Object.freeze({
-    consume(authorization, manifest, consumedAt, sourceOpenCount, hasher) {
-      return monitor(
-        "P02",
-        "Consume one-shot C4 authorization",
-        () => options.authorizationLedger.consume(
-          authorization,
-          manifest,
-          consumedAt,
-          sourceOpenCount,
-          hasher,
-        ),
-      );
-    },
-    read(authorizationId) {
-      return options.authorizationLedger.read(authorizationId);
-    },
-  });
+  const monitoredAuthorizationLedger = Object.freeze({
+    consume: (...args: Parameters<C4AuthorizationLedger["consume"]>) => monitor(
+      "P02",
+      "Consume one-shot C4 authorization",
+      () => options.authorizationLedger.consume(...args),
+    ),
+    read: (...args: Parameters<C4AuthorizationLedger["read"]>) =>
+      options.authorizationLedger.read(...args),
+  } satisfies C4AuthorizationLedger);
 
-  const monitoredStateStore: C4ExecutionStateStore | undefined = options.stateStore
+  const monitoredStateStore = options.stateStore
     ? Object.freeze({
-        initialize(state) {
+        initialize: (...args: Parameters<C4ExecutionStateStore["initialize"]>) => {
+          const [state] = args;
           return monitor(
-            "P00",
+            state.checkpoint,
             "Persist initial C4 journal state",
-            () => options.stateStore!.initialize(state),
+            () => options.stateStore!.initialize(...args),
           );
         },
-        commit(expectedRevision, state) {
+        commit: (...args: Parameters<C4ExecutionStateStore["commit"]>) => {
+          const [, state] = args;
           return monitor(
             state.checkpoint,
             `Persist C4 checkpoint ${state.checkpoint}`,
-            () => options.stateStore!.commit(expectedRevision, state),
+            () => options.stateStore!.commit(...args),
           );
         },
-        load(attemptId) {
-          return options.stateStore!.load(attemptId);
-        },
-      })
+        load: (...args: Parameters<C4ExecutionStateStore["load"]>) =>
+          options.stateStore!.load(...args),
+      } satisfies C4ExecutionStateStore)
     : undefined;
 
-  const monitoredSource: C4FixtureSourceAdapterLike = Object.freeze({
+  const monitoredSource = Object.freeze({
     get sourceOpenCount() {
       return options.source.sourceOpenCount;
     },
-    openReadOnly() {
-      return monitor(
-        "P03",
-        "Open and verify sanitized fixture source read-only",
-        () => options.source.openReadOnly(),
-      );
-    },
-  });
+    openReadOnly: (...args: Parameters<C4FixtureSourceAdapterLike["openReadOnly"]>) => monitor(
+      "P03",
+      "Open and verify sanitized fixture source read-only",
+      () => options.source.openReadOnly(...args),
+    ),
+  } satisfies C4FixtureSourceAdapterLike);
 
-  const monitoredBackupStore: C4FixtureBackupStoreLike = Object.freeze({
-    createCloseReopenVerify(backupId, sourceBytes, expected, hasher, faults) {
-      return monitor(
-        "P04",
-        "Create, close, reopen and verify fixture backup",
-        () => backupStore.createCloseReopenVerify(
-          backupId,
-          sourceBytes,
-          expected,
-          hasher,
-          faults,
-        ),
-      );
-    },
-  });
+  const monitoredBackupStore = Object.freeze({
+    createCloseReopenVerify: (
+      ...args: Parameters<C4FixtureBackupStoreLike["createCloseReopenVerify"]>
+    ) => monitor(
+      "P04",
+      "Create, close, reopen and verify fixture backup",
+      () => backupStore.createCloseReopenVerify(...args),
+    ),
+  } satisfies C4FixtureBackupStoreLike);
 
-  const monitoredGenerationStore: C4GenerationStoreLike = Object.freeze({
-    listPhysicalNames() {
-      return monitor(
-        "P05",
-        "Enumerate physical fixture generations",
-        () => generationStore.listPhysicalNames(),
-      );
-    },
-    listLogicalNames() {
-      return monitor(
-        "P05",
-        "Enumerate logical fixture generations",
-        () => generationStore.listLogicalNames(),
-      );
-    },
-    create(manifest) {
-      return monitor(
-        "P06",
-        "Create isolated fixture generation",
-        () => generationStore.create(manifest),
-      );
-    },
-    importDeterministic(manifest, records, hasher, onCheckpoint) {
+  const monitoredGenerationStore = Object.freeze({
+    listPhysicalNames: (...args: Parameters<C4GenerationStoreLike["listPhysicalNames"]>) => monitor(
+      "P05",
+      "Enumerate physical fixture generations",
+      () => generationStore.listPhysicalNames(...args),
+    ),
+    listLogicalNames: (...args: Parameters<C4GenerationStoreLike["listLogicalNames"]>) => monitor(
+      "P05",
+      "Enumerate logical fixture generations",
+      () => generationStore.listLogicalNames(...args),
+    ),
+    create: (...args: Parameters<C4GenerationStoreLike["create"]>) => monitor(
+      "P06",
+      "Create isolated fixture generation",
+      () => generationStore.create(...args),
+    ),
+    importDeterministic: (
+      ...args: Parameters<C4GenerationStoreLike["importDeterministic"]>
+    ) => {
+      const [manifest, records, hasher, onCheckpoint] = args;
       return monitor(
         "P07",
         "Import deterministic fixture records",
@@ -255,92 +236,81 @@ export async function runNativeSanitizedC4Attempt(
         ),
       );
     },
-    closeReopenVerify(manifest, hasher) {
-      return monitor(
-        "P08",
-        "Close, reopen and verify fixture generation",
-        () => generationStore.closeReopenVerify(manifest, hasher),
-      );
-    },
-    seal(manifest, sealedAt) {
-      return monitor(
-        "P10",
-        "Persist immutable fixture generation seal",
-        () => generationStore.seal(manifest, sealedAt),
-      );
-    },
-    payloadFingerprint(physicalGenerationDatabaseName, hasher) {
-      return monitor(
-        "P14",
-        "Read fixture generation payload fingerprint",
-        () => generationStore.payloadFingerprint(physicalGenerationDatabaseName, hasher),
-      );
-    },
-  });
+    closeReopenVerify: (
+      ...args: Parameters<C4GenerationStoreLike["closeReopenVerify"]>
+    ) => monitor(
+      "P08",
+      "Close, reopen and verify fixture generation",
+      () => generationStore.closeReopenVerify(...args),
+    ),
+    seal: (...args: Parameters<C4GenerationStoreLike["seal"]>) => monitor(
+      "P10",
+      "Persist immutable fixture generation seal",
+      () => generationStore.seal(...args),
+    ),
+    payloadFingerprint: (
+      ...args: Parameters<C4GenerationStoreLike["payloadFingerprint"]>
+    ) => monitor(
+      "P14",
+      "Read fixture generation payload fingerprint",
+      () => generationStore.payloadFingerprint(...args),
+    ),
+  } satisfies C4GenerationStoreLike);
 
-  const targetInventoryAdapter: C4TargetInventoryAdapter = Object.freeze({
-    inspect(manifest) {
-      return monitor(
-        "P05",
-        "Inspect fail-closed native target inventory",
-        async () => {
-          const inspected = await inspectNativeC4TargetInventory({
-            indexedDB,
-            manifest,
-            hasher: options.hasher,
-          });
-          if (!inspected.ok) return inspected;
-          onTargetInventory?.(inspected.value);
-          return Object.freeze({
-            ok: true,
-            inventory: inspected.value.inventory,
-            evidenceFingerprint: inspected.value.evidenceFingerprint,
-          });
-        },
-      );
-    },
-  });
+  const targetInventoryAdapter = Object.freeze({
+    inspect: (...args: Parameters<C4TargetInventoryAdapter["inspect"]>) => monitor(
+      "P05",
+      "Inspect fail-closed native target inventory",
+      async () => {
+        const [manifest] = args;
+        const inspected = await inspectNativeC4TargetInventory({
+          indexedDB,
+          manifest,
+          hasher: options.hasher,
+        });
+        if (!inspected.ok) return inspected;
+        onTargetInventory?.(inspected.value);
+        return Object.freeze({
+          ok: true,
+          inventory: inspected.value.inventory,
+          evidenceFingerprint: inspected.value.evidenceFingerprint,
+        });
+      },
+    ),
+  } satisfies C4TargetInventoryAdapter);
 
-  const monitoredPromotion: C4PromotionAdapter = Object.freeze({
-    preflight(manifest) {
-      return monitor(
-        "P11",
-        "Verify C1/C2 promotion preflight",
-        () => options.promotion.preflight(manifest),
-      );
-    },
-    prepare(request) {
-      return monitor(
-        "P11",
-        "Prepare accepted C1/C2 promotion state",
-        () => options.promotion.prepare(request),
-      );
-    },
-    promoteOnce(request) {
-      return monitor(
-        "P12",
-        "Invoke the single authorized C2 promotion call",
-        () => options.promotion.promoteOnce(request),
-      );
-    },
-    readbackUncertainPromotion(manifest) {
-      return monitor(
-        "P12",
-        "Read back uncertain C2 promotion without retry",
-        () => options.promotion.readbackUncertainPromotion(manifest),
-      );
-    },
-  });
+  const monitoredPromotion = Object.freeze({
+    preflight: (...args: Parameters<C4PromotionAdapter["preflight"]>) => monitor(
+      "P11",
+      "Verify C1/C2 promotion preflight",
+      () => options.promotion.preflight(...args),
+    ),
+    prepare: (...args: Parameters<C4PromotionAdapter["prepare"]>) => monitor(
+      "P11",
+      "Prepare accepted C1/C2 promotion state",
+      () => options.promotion.prepare(...args),
+    ),
+    promoteOnce: (...args: Parameters<C4PromotionAdapter["promoteOnce"]>) => monitor(
+      "P12",
+      "Invoke the single authorized C2 promotion call",
+      () => options.promotion.promoteOnce(...args),
+    ),
+    readbackUncertainPromotion: (
+      ...args: Parameters<C4PromotionAdapter["readbackUncertainPromotion"]>
+    ) => monitor(
+      "P12",
+      "Read back uncertain C2 promotion without retry",
+      () => options.promotion.readbackUncertainPromotion(...args),
+    ),
+  } satisfies C4PromotionAdapter);
 
-  const monitoredResolver: C4ResolverAdapter = Object.freeze({
-    resolve(manifest) {
-      return monitor(
-        "P13",
-        "Verify active generation through accepted C3 resolver",
-        () => options.resolver.resolve(manifest),
-      );
-    },
-  });
+  const monitoredResolver = Object.freeze({
+    resolve: (...args: Parameters<C4ResolverAdapter["resolve"]>) => monitor(
+      "P13",
+      "Verify active generation through accepted C3 resolver",
+      () => options.resolver.resolve(...args),
+    ),
+  } satisfies C4ResolverAdapter);
 
   try {
     const result = await runSanitizedC4Attempt({
