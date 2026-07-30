@@ -1,18 +1,18 @@
-# Phase 2C-C2 — final acceptance evidence before merge
+# Phase 2C-C2 — accepted evidence
 
 Date: 2026-07-30
-Status: final proof complete; not accepted before factual merge
+Status: accepted by factual merge `2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1`
 
 ```text
-private head: 83eb9a06610ff737676b002837beadf6807926dd
-public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
-shared tree:  158527376a989b304f097006ba39488d79a04c8f
-verify run:   30516236010
-package run:  30516236013
-outer source: 34a6874bf92ae92a0be894587363bebe7b0f48df0e8c6f3bff47ee8b1ffca515
-browser proof: 9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e
+private head: f3986e2905d34bbd56c8ccd3686c8e5cfab44e45
+public head:  f7b43c7ddec69be304d15aaa0bdd0eb714081085
+shared tree:  e6d0c0793ca6f5d20352d79e03fd12ca70f961bc
+verify run:   30517144927
+package run:  30517144960
+outer source: 3f5bc2a8c781483c8a218287acc240897de9d8a640c4bab44b9beb0081de3d58
+browser proof: 8be977709e13605d634db94950fda78c823818dd348947e6e115a6a25ed77f9c
 ```
 
 Critical scenarios passed: immutable seal; deterministic persisted replay; atomic promotion; promotion abort; explicit rollback; rollback abort; revision/pointer/fingerprint conflicts; idempotency; `blocked_recovery`; `rollback_required`; close/reopen; actual Chrome REQ-OBS-001 and diagnostics. Prohibited paths remained absent.
 
-Proof limits: no packaged runtime resolver, exact-source C4, target-Mac production storage, private backup, actual migration, semantic quality or real-data readiness.
+Proof limits: no packaged runtime resolver, exact-source C4, target-Mac production storage, private backup, actual migration, semantic quality or real-data readiness. C3 is a separate gate.
