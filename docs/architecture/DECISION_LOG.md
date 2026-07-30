@@ -141,3 +141,15 @@ Date: 2026-07-29.
 Decision: Phase 2C-C1 implementation at private head `ac639e625b6d0ced665c748c2c58f6b3753c4ffc` / public head `0eeb9fea5792b7fbf33db0061abc2f271db3b17f` / tree `2a536a54779634647eff8ebf2476840c257b2813` is an acceptance candidate only. Initial CI and downloaded-artifact review prove the code tree, but C1 is accepted only after canonical Drive reverse-read, artifact revision 13, final exact private/public tree, rerun CI/artifact inspection and factual expected-head merge of PR #52.
 
 Consequence: no predicted merge SHA may be written as accepted provenance. C2, exact-source access and actual migration remain blocked until factual C1 merge and post-merge documentation closure.
+
+## ADR-020 — C3 resolver is read-only, fail-closed and registry-authoritative
+
+Date: 2026-07-30.
+
+Decision: packaged runtime may resolve a generation only through the accepted C2 control registry. It must prove the registry exists without creating it, validate registry/pointer/attestation/generation/schema/workspace/seal/hash, and re-read registry before returning to reject pointer replacement.
+
+No legacy, previous, inactive or guessed-generation fallback is allowed. The resolver cannot repair, migrate, promote, roll back, automatically resume/retry or call external services. Missing or invalid state returns a typed rejection.
+
+Reason: IndexedDB has no atomic database rename; runtime correctness therefore depends on the control pointer and immutable generation attestation, not on a guessed database name.
+
+Acceptance consequence: implementation tree `56e846d49a17f15bbbd1eedfc626f316e3a29a91` remains a candidate until final documentation-tree CI, downloaded-artifact review and factual expected-head merge.

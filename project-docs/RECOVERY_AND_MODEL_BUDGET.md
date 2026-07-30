@@ -53,3 +53,13 @@ C3 должна проверить cold start, reload, reopened registry/generat
 ## Текущая граница
 
 C3 разрешена, но не начата. C4, exact-source reopening, private backup, target-Mac production storage, actual migration/promotion/rollback, model/network calls и personal data запрещены.
+
+## Phase 2C-C3 recovery proof — реализация проверена
+
+Resolver не восстанавливает и не меняет storage. Cold start, close/reopen, browser reload, explicit interruption и pointer replacement проверены на sanitized fixtures. Interrupted verification завершается typed rejection; automatic resume/retry false. Missing databases не создаются. Stale pointer не возвращает данные.
+
+REQ-OBS-001 включает `possibly_hung`, elapsed/progress/heartbeat/inactivity, `без AI` и downloadable diagnostics. Проверенный tree `56e846d49a17f15bbbd1eedfc626f316e3a29a91`; verify/package `30535292820` / `30535292824`.
+
+Первый CI failure был import-time Node strip-types incompatibility, а не recovery failure. Причина исправлена и покрыта regression guard.
+
+До принятия C3 запрещены C4, exact-source/backup access, production namespace, repair/migration/promotion/rollback, automatic retry/resume, model/network calls и personal data.

@@ -66,3 +66,11 @@ Google Drive — продуктовый источник; GitHub — техни�
 ## Текущая стоп-линия
 
 Разрешены C3 issue, дизайн, implementation и tests только в указанной sanitized boundary. Запрещены C4, B1b retry, exact SQLite/private backup, target-Mac production storage, actual migration/promotion/rollback, model/network calls и personal data. На Mac действий не требуется.
+
+## Phase 2C-C3 — реализация проверена, acceptance pending
+
+C3 resolver обязан оставаться read-only и fail-closed. Он открывает только существующие sanitized registry/generation databases, выбирает active generation только через control registry, проверяет revision, pointer, attestation, identity, schema, workspace, immutable seal и snapshot hash, затем повторно читает registry для stale-pointer guard.
+
+Missing/corrupt/mismatched/stale/interrupted состояние не разрешает fallback, repair, migration, promotion, rollback, automatic resume/retry или external call. REQ-OBS-001 и sanitized diagnostics обязательны.
+
+Текущая разрешённая работа: final repository documentation tree, CI/package, downloaded-artifact inspection и factual expected-head merge PR #57. C4, exact SQLite/private backup, B1b repeat, target-Mac production storage, actual migration и personal data запрещены.

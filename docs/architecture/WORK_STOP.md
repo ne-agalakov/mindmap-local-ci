@@ -1,21 +1,24 @@
-# Work boundary after Phase 2C-C2 acceptance
+# Work boundary after Phase 2C-C3 implementation verification
 
-C2 is accepted by factual merge `2ce6230f537baf71715ca9e2dccf23a5e4f9e0b1` after final exact tree `e6d0c0793ca6f5d20352d79e03fd12ca70f961bc`, CI and downloaded-artifact inspection.
+C3 implementation candidate is verified on shared tree `56e846d49a17f15bbbd1eedfc626f316e3a29a91`, but C3 is not accepted.
 
 ## Allowed
 
-- C3 issue, architecture, implementation and tests for a packaged runtime resolver on sanitized fixtures;
-- registry/pointer/generation/seal/schema/workspace/snapshot verification;
-- fail-closed resolver errors and sanitized diagnostics;
-- packaged-runtime and actual-Chrome REQ-OBS-001 proof;
-- exact private/public tree, CI and artifact gates for C3.
+- synchronize repository documents and release metadata with reverse-read Drive revisions;
+- build an exact private/public final documentation tree;
+- run Linux/macOS/full/actual-Chrome/package gates;
+- inspect downloaded final artifacts;
+- factually merge PR #57 only with expected-head protection after all gates pass;
+- record post-merge provenance.
 
 ## Prohibited
 
-- C4 before C3 acceptance;
-- exact SQLite/private backup access or B1b retry;
+- C4 before factual C3 acceptance;
+- exact SQLite/private backup access or B1b repeat;
 - target-Mac production registry/generation;
 - actual migration, repair, production promotion/rollback;
-- fallback to legacy or inactive generation;
+- fallback to legacy/inactive/previous generation;
 - automatic resume/retry;
 - model/network calls or personal data.
+
+Any failure requires root-cause evidence and a new corrected commit; no blind workflow rerun.

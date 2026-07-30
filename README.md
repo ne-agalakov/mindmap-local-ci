@@ -37,11 +37,25 @@ Accepted C2 scope:
 
 Downloaded final control artifacts passed checksums, reconstructed-tree provenance, inventory, launcher-mode and privacy review.
 
-## Phase 2C-C3 — allowed boundary
+## Phase 2C-C3 — implementation verified, acceptance pending
 
-C3 may implement and prove only the packaged runtime resolver on sanitized fixtures. The resolver must read the active generation through the control registry, verify registry/pointer/generation/seal/schema/workspace/snapshot identities, fail closed on missing or corrupt state, and never fall back to legacy or inactive data.
+Exact implementation candidate:
 
-C3 must not open the exact SQLite or private backup, create target-Mac production storage, perform migration or repair, automatically resume/retry, call models/network services, or use personal data.
+```text
+private head: 3f2325684ff617132307d4d9180326cb190e7a02
+public head:  1513d26c09b096e2d80252a0b819a5da7af29fa9
+shared tree:  56e846d49a17f15bbbd1eedfc626f316e3a29a91
+verify:       30535292820
+package:      30535292824
+```
+
+The packaged runtime resolves the active immutable generation only through the C2 control registry. It validates registry/revision/pointer/attestation/generation/schema/workspace/seal/snapshot identities, re-reads the registry to reject stale pointer replacement, and fails closed without fallback or mutation.
+
+Focused tests and actual Chrome cover missing, malformed, corrupt, mismatched, stale and interrupted states, deterministic reload, REQ-OBS-001, possible-hang reporting and downloadable sanitized diagnostics.
+
+The first CI candidate failed before resolver execution because Node strip-types rejected a TypeScript parameter property. The root cause was corrected with an explicit field and a regression guard; the failed workflow was not blindly rerun.
+
+C3 is not accepted until final documentation-tree CI, downloaded-artifact inspection and factual expected-head merge of PR #57.
 
 ## Preserved boundary
 

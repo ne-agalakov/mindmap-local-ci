@@ -1,29 +1,27 @@
-# Known gaps after Phase 2C-C2 acceptance
+# Known gaps after Phase 2C-C3 implementation verification
 
-## Closed in C2
+## Closed by the C3 implementation candidate
 
-- native IndexedDB registry and immutable generation seal;
-- deterministic persisted attempt/event replay;
-- atomic promotion and explicit rollback;
-- revision/pointer/identity/hash/receipt/idempotency guards;
-- promotion and rollback abort with no partial mutation;
-- deterministic close/reopen;
-- persisted recovery states without automatic resume/retry;
-- actual Chrome REQ-OBS-001 and sanitized diagnostics;
-- exact-tree, downloaded-artifact and factual merge gates.
+- packaged runtime reads active generation only through control registry;
+- registry/pointer/attestation/generation/schema/workspace/seal/hash validation;
+- fail-closed handling for missing, malformed, corrupt, mismatched, stale and interrupted state;
+- no legacy/inactive fallback, hidden repair/migration or mutation;
+- deterministic close/reopen and browser reload;
+- pointer replacement detection between reads;
+- actual-Chrome REQ-OBS-001, possible-hang state and sanitized diagnostics;
+- zero network/model calls and no personal data on sanitized fixtures.
 
-## Open in C3
+## Still open before C3 acceptance
 
-- packaged runtime resolver reads only the active pointer;
-- complete registry/pointer/generation/seal/schema/workspace/hash verification;
-- fail-closed handling for missing, corrupt, stale and mismatched state;
-- no legacy/inactive fallback or hidden migration/repair;
-- packaged cold start, reload and actual-Chrome REQ-OBS proof.
+- final documentation exact tree and release metadata;
+- rerun full CI/package on that tree;
+- downloaded final artifact inspection;
+- factual expected-head merge and post-merge readback.
 
 ## Still prohibited or unproved
 
-- private backup filesystem behavior;
 - C4 exact-source one-shot package;
+- private backup filesystem behavior;
 - target-Mac production storage and actual migration/activation/rollback;
 - production REQ-OBS-001;
 - semantic quality, multi-order stability and real-data safety.
