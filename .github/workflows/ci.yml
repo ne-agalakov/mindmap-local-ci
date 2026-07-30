@@ -83,6 +83,16 @@ jobs:
           status=${PIPESTATUS[0]}
           echo "status=${status}" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: Run actual Chrome Phase 2C-C3 packaged runtime resolver harness
+        id: browser_phase2cc_c3
+        if: steps.full_tests.outputs.status == '0' && steps.browser_storage.outputs.status == '0' && steps.browser_graph_storage.outputs.status == '0' && steps.browser_phase2cb_b1a.outputs.status == '0' && steps.browser_phase2cb_b1b.outputs.status == '0' && steps.browser_phase2cc_c2.outputs.status == '0'
+        shell: bash
+        run: |
+          set +e
+          npm run test:browser-phase2cc-c3 2>&1 | tee browser-phase2cc-c3-output.log
+          status=${PIPESTATUS[0]}
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Upload test diagnostics
         if: steps.full_tests.outputs.status != '0'
         uses: actions/upload-artifact@v4
@@ -125,8 +135,15 @@ jobs:
           name: browser-phase2cc-c2-proof-${{ github.sha }}
           path: browser-phase2cc-c2-output.log
           if-no-files-found: error
+      - name: Upload Phase 2C-C3 browser proof
+        if: always() && steps.browser_phase2cc_c3.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-phase2cc-c3-proof-${{ github.sha }}
+          path: browser-phase2cc-c3-output.log
+          if-no-files-found: error
       - name: Fail when tests failed
-        if: steps.full_tests.outputs.status != '0' || steps.browser_storage.outputs.status != '0' || steps.browser_graph_storage.outputs.status != '0' || steps.browser_phase2cb_b1a.outputs.status != '0' || steps.browser_phase2cb_b1b.outputs.status != '0' || steps.browser_phase2cc_c2.outputs.status != '0'
+        if: steps.full_tests.outputs.status != '0' || steps.browser_storage.outputs.status != '0' || steps.browser_graph_storage.outputs.status != '0' || steps.browser_phase2cb_b1a.outputs.status != '0' || steps.browser_phase2cb_b1b.outputs.status != '0' || steps.browser_phase2cc_c2.outputs.status != '0' || steps.browser_phase2cc_c3.outputs.status != '0'
         run: exit 1
 
   macos-launchers:
