@@ -1,35 +1,18 @@
-# Phase 2C-C2 — acceptance candidate evidence
+# Phase 2C-C2 — final acceptance evidence before merge
 
 Date: 2026-07-30
-Status: candidate; not accepted before final documentation tree and factual merge
-
-## Candidate proof
+Status: final proof complete; not accepted before factual merge
 
 ```text
-private head: 57472ea9b54f1f967b064ff305e187222a29ba30
-public head:  b58bfbaa8c535c3bcfb73f135263906e9a2c7777
-shared tree:  088cdf17babc38f559559aa794360f2b1a4a9344
-verify run:   30455093681
-package run:  30455093613
-outer artifact: 50b3b75eb1d67d044dcf5e39ee545c68fba0ab91370df2ad74570cdd6066bcaf
-browser proof:  c4bf10a309479f1a921a0c4445dc2e2437e404a7c04f91b403a9a394a5af6d37
+private head: 83eb9a06610ff737676b002837beadf6807926dd
+public head:  cdd6939409d8bbb33da20c9875dc082cd2c39bd3
+shared tree:  158527376a989b304f097006ba39488d79a04c8f
+verify run:   30516236010
+package run:  30516236013
+outer source: 34a6874bf92ae92a0be894587363bebe7b0f48df0e8c6f3bff47ee8b1ffca515
+browser proof: 9610fe23de063eb3ee17d10cc19972a57532650b75d5abbbebd04fd134caef7e
 ```
 
-## Critical scenarios
+Critical scenarios passed: immutable seal; deterministic persisted replay; atomic promotion; promotion abort; explicit rollback; rollback abort; revision/pointer/fingerprint conflicts; idempotency; `blocked_recovery`; `rollback_required`; close/reopen; actual Chrome REQ-OBS-001 and diagnostics. Prohibited paths remained absent.
 
-1. Generation seal persists and is immutable.
-2. Attempt/event state survives close/reopen and replay matches aggregate.
-3. Promotion changes pointer/attempt/receipt atomically.
-4. Promotion abort leaves all registry state unchanged.
-5. Explicit rollback restores previous pointer and does not mutate payload.
-6. Rollback abort leaves all registry state unchanged.
-7. Wrong active pointer and stale registry revision stop before mutation.
-8. Identical operation is idempotent; changed fingerprint conflicts.
-9. Pre-promotion interruption persists terminal blocked recovery without resume/retry.
-10. Post-promotion interruption requires explicit rollback.
-11. Actual Chrome renders REQ-OBS-001 and exposes sanitized diagnostics.
-12. Exact source, backup, production namespace, actual migration, network/model calls and personal data remain absent.
-
-## Proof limits
-
-No packaged runtime resolver, exact-source C4, target-Mac production storage, private backup, actual migration, semantic quality or real-data readiness is claimed.
+Proof limits: no packaged runtime resolver, exact-source C4, target-Mac production storage, private backup, actual migration, semantic quality or real-data readiness.
