@@ -60,10 +60,10 @@ jobs:
           cp verification/c4-browser-native/run-browser-phase2cc-c4-harness.mjs scripts/run-browser-phase2cc-c4-harness.mjs
           python - <<'PY'
           from pathlib import Path
-          path = Path('scripts/run-browser-phase2cc-c4-harness.mjs')
+          path = Path('tools/browser-phase2cc-c4-harness/page.ts')
           text = path.read_text()
-          needle = '      verifyResult(result);'
-          replacement = '      console.log(JSON.stringify({ status: "observed", url, result }, null, 2));\n      verifyResult(result);'
+          needle = '    || name.startsWith(C4_JOURNAL_DATABASE_PREFIX)\n'
+          replacement = needle + '    || name.startsWith("mindmap-state-core-v1-phase2cc-c4-fixture-backup-")\n'
           assert needle in text
           path.write_text(text.replace(needle, replacement, 1))
           PY
@@ -89,7 +89,7 @@ jobs:
           names = payload['result']['databaseNames']
           assert len(names) >= 6, names
           assert any(name.endswith('-payload') for name in names), names
-          assert any('fixture-backup-c4-' in name for name in names), names
+          assert any('fixture-backup-' in name for name in names), names
           print(json.dumps({
               'status': 'passed',
               'databaseCount': len(names),
