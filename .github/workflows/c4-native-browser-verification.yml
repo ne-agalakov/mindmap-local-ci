@@ -35,6 +35,24 @@ jobs:
           echo "1cc9c27c66c8ccd79aa83bed00c0f029842a7e838a14ceab8d83069441fe392a  /tmp/c4-native-full-subset.tar.gz" | sha256sum -c -
           tar -xzf /tmp/c4-native-full-subset.tar.gz
           cp verification/c4-heartbeat/native-runner.ts c4-execution/native-runner.ts
+          cat > c4-execution/index.ts <<'EOF'
+          export * from "./types.ts";
+          export * from "./state-machine.ts";
+          export * from "./authorization-ledger.ts";
+          export * from "./state-store.ts";
+          export * from "./fixture-runtime.ts";
+          export * from "./canonical-fixture.ts";
+          export * from "./runner.ts";
+          export * from "./native-target-inventory.ts";
+          export { runNativeSanitizedC4Attempt, type NativeC4RunnerOptions } from "./native-runner.ts";
+          export * from "./native-fixture-backup.ts";
+          export * from "./native-fixture-generation.ts";
+          export * from "./native-c2c3-adapters.ts";
+          export * from "./native-promotion-readback.ts";
+          export * from "./rollback-authorization-store.ts";
+          export * from "./rollback.ts";
+          export * from "./native-rollback-readback.ts";
+          EOF
           mkdir -p tools/browser-phase2cc-c4-harness
           cp verification/c4-browser-native/index.html tools/browser-phase2cc-c4-harness/index.html
           cp verification/c4-browser-native/page.ts tools/browser-phase2cc-c4-harness/page.ts
