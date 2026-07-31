@@ -1,0 +1,66 @@
+name: req-obs-001
+
+on:
+  pull_request:
+    branches:
+      - phase2cc/c4-exact-tree-verification
+    paths:
+      - "app/lib/operation-observability.ts"
+      - "app/lib/batch-run-state.ts"
+      - "tests/operation-observability.test.mjs"
+      - "tests/req-obs-checkpoint-context.test.mjs"
+      - "tests/batch-run-state.test.mjs"
+      - "tests/ui-recovery.test.mjs"
+      - "tools/browser-req-obs-harness/**"
+      - "scripts/run-browser-req-obs-harness.mjs"
+      - "package.json"
+      - ".github/workflows/req-obs-001.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-chrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+      - run: npm ci
+      - name: Exact blob inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object app/lib/operation-observability.ts)" = "34bb4457b50264b315b31ea933eb74707cee7a24"
+          test "$(git hash-object app/lib/batch-run-state.ts)" = "8cfd3c6900f217c97640722df308c120303139f8"
+          test "$(git hash-object tests/operation-observability.test.mjs)" = "74846b01f30502f8238767992ebf6b09bf63a6b1"
+          test "$(git hash-object tests/req-obs-checkpoint-context.test.mjs)" = "c4712c49806b93e7605c8e62e48c09bf5bccb4f0"
+          test "$(git hash-object tools/browser-req-obs-harness/page.ts)" = "7ca1e7b5728965dc937f00c3ee83d68c5de60173"
+          test "$(git hash-object scripts/run-browser-req-obs-harness.mjs)" = "1aac8ab7c45b6438c5c15ab9628704974b779b70"
+      - name: Lint changed implementation
+        run: npx eslint app/lib/operation-observability.ts app/lib/batch-run-state.ts tests/operation-observability.test.mjs tests/req-obs-checkpoint-context.test.mjs tools/browser-req-obs-harness/page.ts tools/browser-req-obs-harness/vite.config.mjs tools/browser-req-obs-harness/server.mjs scripts/run-browser-req-obs-harness.mjs
+      - name: Strict compile observability contract
+        run: npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --lib ES2022,DOM,DOM.Iterable --skipLibCheck app/lib/operation-observability.ts
+      - name: Focused regressions
+        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-recovery.test.mjs
+      - name: Actual Chrome all-state proof
+        run: npm run test:browser-req-obs
+
+  macos-contract:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+      - run: npm ci
+      - name: Focused regressions
+        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-recovery.test.mjs
+      - name: Build browser proof
+        run: npm run build:browser-req-obs

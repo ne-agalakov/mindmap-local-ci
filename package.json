@@ -41,7 +41,10 @@
     "test:browser-phase2cc-c2": "node scripts/run-browser-phase2cc-c2-harness.mjs",
     "test:phase2cc-c3": "node --experimental-strip-types --test tests/active-generation-resolver-phase2cc-c3*.test.mjs",
     "build:phase2cc-c3-harness": "vite build --config tools/browser-phase2cc-c3-harness/vite.config.mjs",
-    "test:browser-phase2cc-c3": "node scripts/run-browser-phase2cc-c3-harness.mjs"
+    "test:browser-phase2cc-c3": "node scripts/run-browser-phase2cc-c3-harness.mjs",
+    "build:phase2cc-c4-harness": "vite build --config tools/browser-phase2cc-c4-harness/vite.config.mjs",
+    "build:browser-req-obs": "vite build --config tools/browser-req-obs-harness/vite.config.mjs",
+    "test:browser-req-obs": "node scripts/run-browser-req-obs-harness.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

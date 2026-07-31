@@ -45,6 +45,43 @@ export type OperationLiveness =
   | "completed"
   | "possibly_stalled";
 
+
+export type OperationDiagnosticsCounter = number | "unknown";
+
+export type OperationDiagnostics = {
+  format: "mindmap-operation-diagnostics";
+  schemaVersion: 1;
+  exportedAt: string;
+  liveness: OperationLiveness;
+  stageDurationSeconds?: number;
+  heartbeatAgeMs?: number;
+  progressAgeMs?: number;
+  observation: Pick<
+    OperationObservation,
+    | "stageKey"
+    | "workKind"
+    | "runtimeState"
+    | "startedAt"
+    | "stageStartedAt"
+    | "stageFinishedAt"
+    | "stageDurationKnown"
+    | "lastProgressAt"
+    | "lastHeartbeatAt"
+    | "stallAfterMs"
+    | "modelLabel"
+    | "completed"
+    | "total"
+  >;
+  safety: {
+    networkCalls: OperationDiagnosticsCounter;
+    modelCalls: OperationDiagnosticsCounter;
+    automaticRetryAllowed: false;
+    automaticResumeAllowed: false;
+    automaticRestartAllowed: false;
+    personalDataIncluded: false;
+  };
+};
+
 export function updateOperationObservation(
   current: OperationObservation | undefined,
   update: OperationObservationUpdate,
@@ -52,7 +89,10 @@ export function updateOperationObservation(
 ): OperationObservation {
   const sameOperation = current?.operationId === update.operationId;
   const sameStage = sameOperation && current?.stageKey === update.stageKey;
-  const progressed = update.progressed !== false;
+  const completedAdvanced = sameStage
+    && typeof update.completed === "number"
+    && (typeof current?.completed !== "number" || update.completed > current.completed);
+  const progressed = update.progressed ?? (!current || !sameStage || completedAdvanced);
   const terminal = ["paused", "stopped", "completed"].includes(update.runtimeState);
   const currentTerminal = current
     ? ["paused", "stopped", "completed"].includes(current.runtimeState)
@@ -78,7 +118,7 @@ export function updateOperationObservation(
         ? current.lastProgressAt
         : now,
     lastHeartbeatAt: now,
-    stallAfterMs: update.stallAfterMs,
+    stallAfterMs: Math.max(15_000, update.stallAfterMs),
     modelLabel: update.modelLabel,
     activity: update.activity,
     completed: update.completed,
@@ -103,10 +143,14 @@ export function operationLiveness(
   if (observation.runtimeState === "stopped") return "stopped";
   if (observation.runtimeState === "completed") return "completed";
 
-  const heartbeatAge = Math.max(0, nowMs - Date.parse(observation.lastHeartbeatAt));
-  const progressAge = Math.max(0, nowMs - Date.parse(observation.lastProgressAt));
-  const heartbeatLimit = Math.min(15_000, observation.stallAfterMs);
-  if (heartbeatAge > heartbeatLimit || progressAge > observation.stallAfterMs) {
+  const heartbeatAt = Date.parse(observation.lastHeartbeatAt);
+  const progressAt = Date.parse(observation.lastProgressAt);
+  if (!Number.isFinite(heartbeatAt) || !Number.isFinite(progressAt)) {
+    return "possibly_stalled";
+  }
+  const heartbeatAge = Math.max(0, nowMs - heartbeatAt);
+  const progressAge = Math.max(0, nowMs - progressAt);
+  if (heartbeatAge > observation.stallAfterMs || progressAge > observation.stallAfterMs) {
     return "possibly_stalled";
   }
   return observation.runtimeState;
@@ -122,10 +166,14 @@ export function stageDurationSeconds(
 ) {
   if (observation.stageDurationKnown === false) return undefined;
   const terminal = ["paused", "stopped", "completed"].includes(observation.runtimeState);
-  const endMs = terminal
-    ? Date.parse(observation.stageFinishedAt ?? observation.lastProgressAt)
-    : nowMs;
-  return Math.max(0, Math.floor((endMs - Date.parse(observation.stageStartedAt)) / 1000));
+  const startMs = Date.parse(observation.stageStartedAt);
+  let endMs = nowMs;
+  if (terminal) {
+    if (!observation.stageFinishedAt) return undefined;
+    endMs = Date.parse(observation.stageFinishedAt);
+  }
+  if (!Number.isFinite(startMs) || !Number.isFinite(endMs)) return undefined;
+  return Math.max(0, Math.floor((endMs - startMs) / 1000));
 }
 
 export function observationFromCheckpoint(input: {
@@ -158,3 +206,62 @@ export function observationFromCheckpoint(input: {
     total: input.total,
   };
 }
+
+export function buildOperationDiagnostics(
+  observation: OperationObservation,
+  input: {
+    exportedAt?: string;
+    nowMs?: number;
+    networkCalls?: number;
+    modelCalls?: number;
+  } = {},
+): OperationDiagnostics {
+  const exportedAt = input.exportedAt ?? new Date().toISOString();
+  const nowMs = input.nowMs ?? Date.parse(exportedAt);
+  return {
+    format: "mindmap-operation-diagnostics",
+    schemaVersion: 1,
+    exportedAt,
+    liveness: operationLiveness(observation, nowMs),
+    stageDurationSeconds: stageDurationSeconds(observation, nowMs),
+    heartbeatAgeMs: ageMs(observation.lastHeartbeatAt, nowMs),
+    progressAgeMs: ageMs(observation.lastProgressAt, nowMs),
+    observation: {
+      stageKey: observation.stageKey,
+      workKind: observation.workKind,
+      runtimeState: observation.runtimeState,
+      startedAt: observation.startedAt,
+      stageStartedAt: observation.stageStartedAt,
+      stageFinishedAt: observation.stageFinishedAt,
+      stageDurationKnown: observation.stageDurationKnown,
+      lastProgressAt: observation.lastProgressAt,
+      lastHeartbeatAt: observation.lastHeartbeatAt,
+      stallAfterMs: observation.stallAfterMs,
+      modelLabel: observation.modelLabel,
+      completed: observation.completed,
+      total: observation.total,
+    },
+    safety: {
+      networkCalls: knownCounter(input.networkCalls),
+      modelCalls: knownCounter(input.modelCalls),
+      automaticRetryAllowed: false,
+      automaticResumeAllowed: false,
+      automaticRestartAllowed: false,
+      personalDataIncluded: false,
+    },
+  };
+}
+
+function ageMs(iso: string, nowMs: number) {
+  const value = Date.parse(iso);
+  return Number.isFinite(value) && Number.isFinite(nowMs)
+    ? Math.max(0, nowMs - value)
+    : undefined;
+}
+
+function knownCounter(value: number | undefined): OperationDiagnosticsCounter {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0
+    ? Math.floor(value)
+    : "unknown";
+}
+

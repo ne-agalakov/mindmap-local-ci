@@ -174,12 +174,12 @@ export function restoreCheckpointExecutionContext(
   const terminalStage = terminal ? decisionStage(terminal) : undefined;
   const terminalInput = terminal?.input as { zeroModelCalls?: unknown } | undefined;
 
+  if (stage === "complete") return { workKind: "storage", modelLabel: "без AI" };
   if (terminalStage === stage && terminalInput?.zeroModelCalls === true) {
     return { workKind: "local", modelLabel: "без AI" };
   }
   if (stage === "candidates") return { workKind: "local", modelLabel: "без AI" };
   if (stage === "embeddings") return { workKind: "ai", modelLabel: "embeddinggemma" };
-  if (stage === "complete") return { workKind: "storage", modelLabel: latestRunModel(runDecisions) ?? "без AI" };
 
   return {
     workKind: "ai",
