@@ -1,0 +1,29 @@
+name: c4-node-modules-cache
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-node-modules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Archive dependency tree
+        run: tar -czf c4-node-modules.tgz node_modules
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c4-node-modules-${{ github.sha }}
+          path: c4-node-modules.tgz
+          if-no-files-found: error
+          retention-days: 1
