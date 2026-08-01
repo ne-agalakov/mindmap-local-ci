@@ -25,11 +25,13 @@ jobs:
           ref: phase2cc/req-obs-001-exact
           fetch-depth: 0
 
-      - name: Verify transport parts
+      - name: Verify source and transport parts
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "dfd5cdfa7773b2fcc7a2fe84bad03b5abb6950a1"
+          test "$(git hash-object app/page.tsx)" = "015cbd38025f63900d4c05e894e78264869e3aa2"
+          test "$(git hash-object app/lib/local-db.ts)" = "8421ec6ef34fcd3c071464650ae101f3796df2f8"
+          test ! -e app/lib/operation-call-counters.ts
           echo 'f5183714c3eb179ef8ce4fbfafaaf1ef2d2b343c111d2efd25d837248c23948b  tools/req-obs-final-patch/part-00' | sha256sum -c -
           echo 'e28b83c74460163c6255d025c281cd91ebf2ac0b2847b3bd5ec02cb22ceb4985  tools/req-obs-final-patch/part-01' | sha256sum -c -
           echo 'c36733ebc5a18af34d30a5770faaa3cc1deb55c81b7cfabdb2a1c93a1cad4b59  tools/req-obs-final-patch/part-02' | sha256sum -c -
