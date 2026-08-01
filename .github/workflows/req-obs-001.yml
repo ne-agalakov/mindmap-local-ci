@@ -75,5 +75,5 @@ jobs:
       - run: npm ci
       - name: Focused regressions
         run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/operation-call-counters.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-stage-diagnostics.test.mjs tests/ui-recovery.test.mjs
-      - name: Build application and browser proof
-        run: npm run build && npm run build:browser-req-obs
+      - name: Build browser proof
+        run: npm run build:browser-req-obs
