@@ -1,0 +1,82 @@
+name: req-obs-final-apply
+
+on:
+  push:
+    branches:
+      - phase2cc/req-obs-001-exact
+    paths:
+      - tools/req-obs-final-patch/**
+      - .github/workflows/req-obs-final-apply.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: req-obs-final-apply
+  cancel-in-progress: false
+
+jobs:
+  apply-exact-patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2cc/req-obs-001-exact
+          fetch-depth: 0
+
+      - name: Verify transport parts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "dfd5cdfa7773b2fcc7a2fe84bad03b5abb6950a1"
+          echo 'f5183714c3eb179ef8ce4fbfafaaf1ef2d2b343c111d2efd25d837248c23948b  tools/req-obs-final-patch/part-00' | sha256sum -c -
+          echo 'e28b83c74460163c6255d025c281cd91ebf2ac0b2847b3bd5ec02cb22ceb4985  tools/req-obs-final-patch/part-01' | sha256sum -c -
+          echo 'c36733ebc5a18af34d30a5770faaa3cc1deb55c81b7cfabdb2a1c93a1cad4b59  tools/req-obs-final-patch/part-02' | sha256sum -c -
+          echo 'fac2f938b1639477b9dff8eb860d6ab8a5565bbf0637b6709fb53cdbf3b40600  tools/req-obs-final-patch/part-03' | sha256sum -c -
+          echo 'f91dcbfa756891a328e9039cd28dedd570e14480ff2fd5551674ecc3f8077a70  tools/req-obs-final-patch/part-04' | sha256sum -c -
+
+      - name: Assemble and apply exact patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/req-obs-final-patch/part-* > /tmp/reqobs.patch.b64
+          base64 -d /tmp/reqobs.patch.b64 > /tmp/reqobs.patch
+          echo '19524b6b8fd38fd6def4718967423fde28b93857d31715505dd0c179b837a9e4  /tmp/reqobs.patch' | sha256sum -c -
+          git apply --check /tmp/reqobs.patch
+          git apply /tmp/reqobs.patch
+
+      - name: Verify exact result blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object app/lib/operation-call-counters.ts)" = "8e95019573113b67a96f6749a3fc5c7d75723dec"
+          test "$(git hash-object app/lib/local-db.ts)" = "b4cd5cc56cd2c8c4312548d26e748be781335e8b"
+          test "$(git hash-object app/page.tsx)" = "645fa022d66e2620a13948f64e8aea52eab43d7c"
+          test "$(git hash-object tests/operation-call-counters.test.mjs)" = "b6bfa86bc2ced0a42846e1dd830937f81eb960c3"
+          test "$(git hash-object tests/ui-stage-diagnostics.test.mjs)" = "2eee54fe38c0f9d288568ca77e5ba515bb8a987a"
+          test "$(git hash-object tests/ui-recovery.test.mjs)" = "f3610b142fb73227c53d4db9ce49d407da9fc96f"
+
+      - name: Run dependency-free regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --experimental-strip-types --test \
+            tests/operation-call-counters.test.mjs \
+            tests/ui-stage-diagnostics.test.mjs \
+            tests/ui-recovery.test.mjs \
+            tests/operation-observability.test.mjs \
+            tests/req-obs-checkpoint-context.test.mjs
+
+      - name: Commit exact source result and remove transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -r tools/req-obs-final-patch
+          git rm .github/workflows/req-obs-final-apply.yml
+          git add app/lib/operation-call-counters.ts app/lib/local-db.ts app/page.tsx \
+            tests/operation-call-counters.test.mjs tests/ui-stage-diagnostics.test.mjs tests/ui-recovery.test.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(req-obs): wire persisted stage diagnostics counters'
+          git push origin HEAD:phase2cc/req-obs-001-exact
