@@ -185,10 +185,12 @@ test("candidate continuation verifies the configured model before any AI POST", 
   const start = source.indexOf("async function continueSyntheticTestWithConfirmation()");
   const end = source.indexOf("\n  function saveAnalysisReview", start);
   const handler = source.slice(start, end);
-  assert.match(handler, /requestConfiguredSemanticModel/);
+  assert.match(handler, /readConfiguredSemanticModel/);
   assert.match(handler, /configured\.model !== runModel/);
   assert.match(handler, /AI-вызов не выполнен/);
-  assert.ok(handler.indexOf("requestConfiguredSemanticModel") < handler.indexOf("runSyntheticTest(false)"));
+  assert.ok(handler.indexOf("readConfiguredSemanticModel") < handler.indexOf("runSyntheticTest(false, continuationDecisions)"));
+  assert.match(source, /operation_network_call_planned/);
+  assert.match(source, /operation_network_call_completed/);
   assert.match(route, /export function GET\(\)/);
 });
 

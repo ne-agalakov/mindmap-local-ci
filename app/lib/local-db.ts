@@ -59,6 +59,8 @@ export type PersistedAiDecision = {
     | "batch_continuation_blocked"
     | "pipeline_ai_call_planned"
     | "pipeline_ai_call_completed"
+    | "operation_network_call_planned"
+    | "operation_network_call_completed"
     | "pipeline_preflight"
     | "pipeline_extract"
     | "pipeline_embeddings"

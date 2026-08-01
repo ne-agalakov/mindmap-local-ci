@@ -16,6 +16,7 @@ import {
   restoreCheckpointExecutionContext,
 } from "./lib/batch-run-state";
 import {
+  buildOperationDiagnostics,
   elapsedSeconds,
   heartbeatOperation,
   observationFromCheckpoint,
@@ -26,6 +27,7 @@ import {
   type OperationRuntimeState,
   type OperationWorkKind,
 } from "./lib/operation-observability";
+import { projectOperationCallCounters } from "./lib/operation-call-counters";
 import {
   descendantNodeIds,
   hierarchyLabel,
@@ -473,8 +475,10 @@ function NeuralBackground({ theme }: { theme: Theme }) {
 
 function OperationObservability({
   observation,
+  onDownloadDiagnostics,
 }: {
   observation: OperationObservation;
+  onDownloadDiagnostics?: () => void;
 }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -524,6 +528,11 @@ function OperationObservability({
       <p>{observation.activity}</p>
       {liveness === "possibly_stalled" && (
         <p>Автоперезапуска и повторного AI-вызова не будет. Скачайте диагностику или безопасно остановите этап.</p>
+      )}
+      {onDownloadDiagnostics && (
+        <button type="button" onClick={onDownloadDiagnostics}>
+          Скачать диагностику этапа
+        </button>
       )}
     </div>
   );
@@ -733,6 +742,7 @@ export default function Home() {
         engine: "offline",
         model: "embeddinggemma",
         input: {
+          operationId,
           stage: "thought_embedding",
           attempt: 1,
           reason: "Подобрать локальный смысловой контекст для новой мысли.",
@@ -774,6 +784,7 @@ export default function Home() {
         engine: embeddingResponse.ok ? "ollama" : "offline",
         model: "embeddinggemma",
         input: {
+          operationId,
           stage: "thought_embedding",
           attempt: 1,
           callId: embeddingCallId,
@@ -836,6 +847,7 @@ export default function Home() {
         createdAt: new Date().toISOString(),
         engine: "offline",
         input: {
+          operationId,
           stage: "thought_analysis",
           attempt: 1,
           reason: "Предложить тип, размещение, связи и следующий шаг.",
@@ -867,6 +879,7 @@ export default function Home() {
         engine: "ollama",
         model: analysis.model,
         input: {
+          operationId,
           stage: "thought_analysis",
           attempt: 1,
           callId: analysisCallId,
@@ -1880,7 +1893,7 @@ export default function Home() {
       workKind: "storage",
       runtimeState: "completed",
       stallAfterMs: 30_000,
-      modelLabel: model ?? "без AI",
+      modelLabel: "без AI",
       activity: "Итоговое состояние и проверка сохранены.",
       completed: SYNTHETIC_TEST_TOTAL,
       total: SYNTHETIC_TEST_TOTAL,
@@ -2254,25 +2267,88 @@ export default function Home() {
     await runSyntheticTest(true);
   }
 
-  async function startNewSelectedModelRun() {
-    let configured: { model: string; engine: "ollama"; pipelineVersion: string };
+  async function readConfiguredSemanticModel(operationId: string) {
+    let nextDecisions = decisions;
+    const callId = uid();
+    const persistDecision = async (decision: PersistedAiDecision) => {
+      nextDecisions = [...nextDecisions, decision];
+      await saveSnapshot({ thoughts, links, nodes, decisions: nextDecisions });
+      setDecisions(nextDecisions);
+    };
+    await persistDecision({
+      id: callId,
+      eventType: "operation_network_call_planned",
+      createdAt: new Date().toISOString(),
+      engine: "offline",
+      input: {
+        operationId,
+        request: "semantic_model_configuration",
+        attempt: 1,
+      },
+      userAction: "explicit_model_configuration_check",
+    });
+    let response: Response;
     try {
-      configured = await requestConfiguredSemanticModel();
+      response = await fetch("/api/semantic-pipeline", { method: "GET" });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Не удалось прочитать выбранную модель.";
+      await persistDecision({
+        id: uid(),
+        eventType: "operation_network_call_completed",
+        createdAt: new Date().toISOString(),
+        engine: "offline",
+        input: { operationId, callId, attempt: 1 },
+        output: { completed: false, error: message },
+        userAction: "network_call_returned_without_retry",
+      });
+      return { ok: false as const, message, decisions: nextDecisions };
+    }
+    const body = await response.json().catch(() => ({})) as Partial<{
+      model: string;
+      engine: "ollama";
+      pipelineVersion: string;
+    }>;
+    await persistDecision({
+      id: uid(),
+      eventType: "operation_network_call_completed",
+      createdAt: new Date().toISOString(),
+      engine: "offline",
+      input: { operationId, callId, attempt: 1 },
+      output: { completed: response.ok, status: response.status },
+      userAction: "network_call_returned_without_retry",
+    });
+    if (!response.ok || typeof body.model !== "string" || body.engine !== "ollama" || typeof body.pipelineVersion !== "string") {
+      return {
+        ok: false as const,
+        message: `semantic_model_info_${response.status}`,
+        decisions: nextDecisions,
+      };
+    }
+    return {
+      ok: true as const,
+      configured: body as { model: string; engine: "ollama"; pipelineVersion: string },
+      decisions: nextDecisions,
+    };
+  }
+
+  async function startNewSelectedModelRun() {
+    const operationId = batchProgress.runId ?? `model-config-${Date.now()}`;
+    const configResult = await readConfiguredSemanticModel(operationId);
+    if (!configResult.ok) {
       setBatchProgress((current) => ({
         ...current,
         status: "paused",
         awaitingConfirmation: true,
         continuationBlock: { code: "model_config_unavailable" },
-        error: `${message} Новый run не начат; AI-вызов не выполнен.`,
+        error: `${configResult.message} Новый run не начат; AI-вызов не выполнен.`,
       }));
       return;
     }
+    const configured = configResult.configured;
     const orderVariant = batchProgress.orderVariant ?? "original";
     const confirmed = confirm(`Начать отдельный чистый run на модели ${configured.model} в порядке ${orderVariant}? История прежнего run сохранится. После подтверждения начнётся новый AI-прогон.`);
     if (!confirmed) return;
-    await runSyntheticTest(false, undefined, true);
+    await runSyntheticTest(false, configResult.decisions, true);
   }
 
   async function calculateCandidatesWithoutAi() {
@@ -2466,12 +2542,13 @@ export default function Home() {
   }
 
   async function continueSyntheticTestWithConfirmation() {
+    let continuationDecisions = decisions;
     if (batchProgress.stage === "candidates") {
-      let configured: { model: string; engine: "ollama"; pipelineVersion: string };
-      try {
-        configured = await requestConfiguredSemanticModel();
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "Не удалось прочитать выбранную модель.";
+      const operationId = batchProgress.runId ?? `model-config-${Date.now()}`;
+      const configResult = await readConfiguredSemanticModel(operationId);
+      continuationDecisions = configResult.decisions;
+      if (!configResult.ok) {
+        const message = configResult.message;
         const blocked: PersistedAiDecision = {
           id: uid(),
           eventType: "batch_continuation_blocked",
@@ -2486,7 +2563,7 @@ export default function Home() {
           output: { message: `${message} AI-вызов не выполнен.` },
           userAction: "blocked_before_model_call",
         };
-        const nextDecisions = [...decisions, blocked];
+        const nextDecisions = [...continuationDecisions, blocked];
         await saveSnapshot({ thoughts, links, nodes, decisions: nextDecisions });
         setDecisions(nextDecisions);
         setBatchProgress((current) => ({
@@ -2498,7 +2575,8 @@ export default function Home() {
         }));
         return;
       }
-      const runModel = latestRunModel(decisions, batchProgress.runId);
+      const configured = configResult.configured;
+      const runModel = latestRunModel(continuationDecisions, batchProgress.runId);
       if (runModel && configured.model !== runModel) {
         const message = `Этот сохранённый run принадлежит модели ${runModel}, а приложение запущено с ${configured.model}. AI-вызов не выполнен. Запустите прежнюю модель для продолжения или начните отдельный чистый run на выбранной модели.`;
         const blocked: PersistedAiDecision = {
@@ -2517,7 +2595,7 @@ export default function Home() {
           output: { message },
           userAction: "blocked_before_model_call",
         };
-        const nextDecisions = [...decisions, blocked];
+        const nextDecisions = [...continuationDecisions, blocked];
         await saveSnapshot({ thoughts, links, nodes, decisions: nextDecisions });
         setDecisions(nextDecisions);
         setBatchProgress((current) => ({
@@ -2536,7 +2614,7 @@ export default function Home() {
       const confirmed = confirm(`Следующий этап отправит сохранённые пары модели ${configured.model} для проверки связей, дублей и противоречий. Продолжить?`);
       if (!confirmed) return;
     }
-    await runSyntheticTest(false);
+    await runSyntheticTest(false, continuationDecisions);
   }
 
   function saveAnalysisReview(
@@ -2744,6 +2822,19 @@ export default function Home() {
     anchor.download = `mindmap-${new Date().toISOString().slice(0, 10)}.sqlite`;
     anchor.click();
     URL.revokeObjectURL(url);
+  }
+
+  function downloadStageDiagnostics(observation: OperationObservation) {
+    const counters = projectOperationCallCounters(decisions, observation);
+    const diagnostics = buildOperationDiagnostics(observation, {
+      networkCalls: typeof counters.networkCalls === "number" ? counters.networkCalls : undefined,
+      modelCalls: typeof counters.modelCalls === "number" ? counters.modelCalls : undefined,
+    });
+    const safeStage = observation.stageKey.replace(/[^a-z0-9_-]+/gi, "-");
+    downloadJson({
+      ...diagnostics,
+      persistedCallEvidence: counters,
+    }, `mindmap-stage-${safeStage}-${new Date().toISOString().slice(0, 10)}.json`);
   }
 
   function downloadDiagnostics() {
@@ -3108,7 +3199,10 @@ export default function Home() {
                 <p>{pipelineStageHint(batchProgress.stage)}</p>
               )}
               {displayedObservation && (
-                <OperationObservability observation={displayedObservation} />
+                <OperationObservability
+                  observation={displayedObservation}
+                  onDownloadDiagnostics={() => downloadStageDiagnostics(displayedObservation)}
+                />
               )}
               {batchProgress.currentContent && batchProgress.status === "running" && (
                 <p>{batchProgress.currentContent}</p>
@@ -4448,12 +4542,6 @@ async function requestAnalysis(payload: AnalysisRequestPayload) {
   }
 }
 
-async function requestConfiguredSemanticModel() {
-  const response = await fetch("/api/semantic-pipeline", { method: "GET" });
-  if (!response.ok) throw new Error(`semantic_model_info_${response.status}`);
-  return await response.json() as { model: string; engine: "ollama"; pipelineVersion: string };
-}
-
 async function requestSemanticStage<T>(payload: Record<string, unknown>, signal?: AbortSignal) {
   const response = await fetch("/api/semantic-pipeline", {
     method: "POST",
@@ -4697,7 +4785,7 @@ function pipelineStageObservationDefaults(
       workKind: "storage",
       runtimeState: "completed",
       stallAfterMs: 30_000,
-      modelLabel: model ?? "без AI",
+      modelLabel: "без AI",
       activity: "Итоговый checkpoint сохранён.",
     },
   };
