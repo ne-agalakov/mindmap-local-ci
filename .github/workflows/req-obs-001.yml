@@ -6,10 +6,15 @@ on:
       - phase2cc/c4-exact-tree-verification
     paths:
       - "app/lib/operation-observability.ts"
+      - "app/lib/operation-call-counters.ts"
       - "app/lib/batch-run-state.ts"
+      - "app/lib/local-db.ts"
+      - "app/page.tsx"
       - "tests/operation-observability.test.mjs"
+      - "tests/operation-call-counters.test.mjs"
       - "tests/req-obs-checkpoint-context.test.mjs"
       - "tests/batch-run-state.test.mjs"
+      - "tests/ui-stage-diagnostics.test.mjs"
       - "tests/ui-recovery.test.mjs"
       - "tools/browser-req-obs-harness/**"
       - "scripts/run-browser-req-obs-harness.mjs"
@@ -23,7 +28,7 @@ permissions:
 jobs:
   linux-chrome:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,23 +41,31 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object app/lib/operation-observability.ts)" = "34bb4457b50264b315b31ea933eb74707cee7a24"
+          test "$(git hash-object app/lib/operation-call-counters.ts)" = "8e95019573113b67a96f6749a3fc5c7d75723dec"
           test "$(git hash-object app/lib/batch-run-state.ts)" = "8cfd3c6900f217c97640722df308c120303139f8"
+          test "$(git hash-object app/lib/local-db.ts)" = "b4cd5cc56cd2c8c4312548d26e748be781335e8b"
+          test "$(git hash-object app/page.tsx)" = "645fa022d66e2620a13948f64e8aea52eab43d7c"
           test "$(git hash-object tests/operation-observability.test.mjs)" = "74846b01f30502f8238767992ebf6b09bf63a6b1"
+          test "$(git hash-object tests/operation-call-counters.test.mjs)" = "b6bfa86bc2ced0a42846e1dd830937f81eb960c3"
           test "$(git hash-object tests/req-obs-checkpoint-context.test.mjs)" = "c4712c49806b93e7605c8e62e48c09bf5bccb4f0"
+          test "$(git hash-object tests/ui-stage-diagnostics.test.mjs)" = "2eee54fe38c0f9d288568ca77e5ba515bb8a987a"
+          test "$(git hash-object tests/ui-recovery.test.mjs)" = "f3610b142fb73227c53d4db9ce49d407da9fc96f"
           test "$(git hash-object tools/browser-req-obs-harness/page.ts)" = "7ca1e7b5728965dc937f00c3ee83d68c5de60173"
           test "$(git hash-object scripts/run-browser-req-obs-harness.mjs)" = "1aac8ab7c45b6438c5c15ab9628704974b779b70"
       - name: Lint changed implementation
-        run: npx eslint app/lib/operation-observability.ts app/lib/batch-run-state.ts tests/operation-observability.test.mjs tests/req-obs-checkpoint-context.test.mjs tools/browser-req-obs-harness/page.ts tools/browser-req-obs-harness/vite.config.mjs tools/browser-req-obs-harness/server.mjs scripts/run-browser-req-obs-harness.mjs
-      - name: Strict compile observability contract
-        run: npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --lib ES2022,DOM,DOM.Iterable --skipLibCheck app/lib/operation-observability.ts
+        run: npx eslint app/lib/operation-observability.ts app/lib/operation-call-counters.ts app/lib/batch-run-state.ts app/lib/local-db.ts app/page.tsx tests/operation-observability.test.mjs tests/operation-call-counters.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-stage-diagnostics.test.mjs tests/ui-recovery.test.mjs tools/browser-req-obs-harness/page.ts tools/browser-req-obs-harness/vite.config.mjs tools/browser-req-obs-harness/server.mjs scripts/run-browser-req-obs-harness.mjs
+      - name: Strict compile observability contracts
+        run: npx tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --allowImportingTsExtensions --lib ES2022,DOM,DOM.Iterable --skipLibCheck app/lib/operation-observability.ts app/lib/operation-call-counters.ts
       - name: Focused regressions
-        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-recovery.test.mjs
+        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/operation-call-counters.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-stage-diagnostics.test.mjs tests/ui-recovery.test.mjs
+      - name: Production application build
+        run: npm run build
       - name: Actual Chrome all-state proof
         run: npm run test:browser-req-obs
 
   macos-contract:
     runs-on: macos-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -61,6 +74,6 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Focused regressions
-        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-recovery.test.mjs
-      - name: Build browser proof
-        run: npm run build:browser-req-obs
+        run: node --experimental-strip-types --test tests/operation-observability.test.mjs tests/operation-call-counters.test.mjs tests/batch-run-state.test.mjs tests/req-obs-checkpoint-context.test.mjs tests/ui-stage-diagnostics.test.mjs tests/ui-recovery.test.mjs
+      - name: Build application and browser proof
+        run: npm run build && npm run build:browser-req-obs
